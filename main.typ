@@ -1,0 +1,483 @@
+// Set document properties.
+#set page(paper: "us-letter")
+#set text(size: 12pt, font: "New Computer Modern", weight: 500) // Larger font.
+#set text(hyphenate: false) // Prevent all automatic line breaks.
+#show "p-series": it => box(it) // Prohibit line breaks in this term.
+#set heading(numbering: "1.")
+#set math.equation(numbering: "(1)", supplement: [equation]) // Default reference is "equation".
+
+// #show math.equation.where(block: true): set align(left)
+
+// Notes
+/*
+There are 3 core modes: markup (content surrounded by [ ]), code (content preceded by #), and math (content surrounded by $ $).
+Markup is the default mode but you can explicitly enter markup mode by surrounding the content with square brackets.
+
+If a math expression inside the $ $ delimiters is surrounded by spaces then the expression is typeset in display (block) mode.
+Otherwise, the expression is typeset in line mode.
+
+In code mode, curly braces are used to define a code block.
+
+Code that needs to access contextual data, such as heading numbers, page numbers, equation numbers, etc, must run inside a context aware
+expression or code block introduced by the #context keyword. This requirement appears to be due to some kind of implementation detail.
+
+The @preview namespace on the import statement refers to the namespace for community contributed packages.
+
+Labels are enclosed in angle brackets, e.g. <sec:my_section>, and referenced using the @ notation, e.g. @sec:my_section.
+
+The show statement works like a CSS rule with a selector followed by styling.
+The show keyword followed by a selector and style are called a show rule.
+A show rule with a blank selector applies the styling every element in the document from the point of invocation.
+When a function is used as a show rule style, it is applied to each matching element, in a manner analogous to the visitor pattern.
+
+The let statement allows you to introduce a variable and assign a value to it or define a function.
+
+Content may be placed in square brackets following a function call. This construct is called a trailing content block.
+
+The argument spreading operator .. converts an array to a sequence of positional arguments.
+Functions like table and grid take data as a sequence of positional arguments rather than an array.
+
+*/
+
+// Imports
+#import "util.typ":*
+#import "@preview/theorion:0.3.3":*
+#import emoji:face
+
+// Apply the show-theorion function to all elements in the document.
+#show : show-theorion
+
+// Title
+#v(1in)
+#let title = [An informal guide to Taylor's theorem]
+#align(center, text(18pt)[#title])
+#v(0.5in)
+
+// My ORCID link
+#let orcid = link("https://orcid.org/0009-0004-8349-6212")[
+    #box(image("ORCID-iD_icon_32x32.png", width: 10pt))
+]
+
+// Author
+#let author = [David Elliman] + [#orcid]
+#align(center, text(14pt)[#author])
+
+// Publication date
+#align(center, text(14pt)[June 2026])
+#v(0.5in)
+
+// #align(horizon, heading(numbering: none)[Abstract])
+
+// Style the abstract heading.
+#show <sec:abstract>: set heading(numbering: none)
+#show <sec:abstract>: set align(center)
+
+= Abstract <sec:abstract>
+
+Work in progress!\
+Taylor's theorem is one of the most important in all of mathematics and truly understanding it means that you have achieved
+a significant level of _mathematical maturity_, but it can be challenging to find an explanation of the theorem in plain language.
+Taylor's theorem has enormous practical value. In fact, it is the theorem that provides the underlying algorithm that your
+calculator uses to almost instantly compute the values of functions such as sine, cosine, and the exponential function ($e^x$).
+In this paper, I'll present a somewhat informal account of what Taylor's theorem actually is, and why it is useful for calculating the 
+values of functions. On our journey to understanding Taylor's theorem we'll take a look a prerequisite objects such as
+polynomials, power series, Taylor polynomials, and the Taylor series.
+We'll conclude with a look at how Taylor's theorem is used to define the sine function from scratch, mathematically rather than
+geometrically.
+
+
+#pagebreak()
+
+// Start page numbering on page 2.
+#set page(numbering: "1")
+
+// Contents if I need it later.
+// #outline()
+
+= Introduction <sec:introduction>
+
+What will you need to understand this paper?
+Well, you'll need to be familiar with the real numbers, have a good grasp of what a function is
+and know a couple of different types of functions, like real-valued functions over the reals (aka real functions) and functions over the natural numbers.
+You'll also need a basic understanding of calculus, at least to the point where you know what a derivative is and what an integral is.
+It would be helpful if you've solved a quadratic equation or two.
+First-year college or AP highschool mathematics should be more than enough.
+
+When writing an _accessible_ paper on a topic it's hard to know how far back to go explaining the basic principles.
+Too much of this can result in endless backtracking where the main topic of the paper becomes lost in a sea of basic ideas, but too little
+risks not setting the stage sufficiently so that the reader can understand the core ideas with ease.
+
+In this paper, I'll try to strike a balance by briefly laying out some basic mathematical ideas that can be covered in just a page or two,
+without presenting an entire treatise on predicate logic.
+
+We'll begin by laying out all of our mathematical equipment on our workbench, so to speak, and look at each part to understand
+what it is and how it works.
+
+= Mathematical preliminaries
+
+Let's begin with a lightning tour of some useful mathematical concepts.
+In this section, there'll be a lot of statements like _there are only two of blah_ or _there is only one something or other_.
+You can think of statements like these as _intellectual handholds_ that you can literally, no metaphorically
+#text(emoji.face.smile.slight, 8pt),
+grab on to as you scale the heights of the mathematical edifice.
+They express ideas that you can _take to the bank_, that you can always count on.
+
+Also, you should know that mathematics is often written in an informal but highly stylized language, but for each piece of informal
+language there is a formal counterpart that sometimes looks a bit like computer code (especially the way I write it).
+I'll introduce the formal notation first because it is more precise and can actually be easier to understand.
+
+
+== Objects
+
+Mathematics is all about objects: natural numbers, real numbers, functions, vectors, matrices, perfectoid spaces, and on and on.
+
+== Statements
+
+
+== Quantifiers
+
+Before we look at the objects that are directly related to Taylor's theorem, let's briefly talk about the most important piece of
+mathematical machinery that you've (probably) never heard of, _quantifiers_.
+Stated simply, all mathematical variables (which are sometimes called "indeterminates") are introduced by quantifiers.
+There are only two quantifiers, the universal quantifier, represented by the symbol $forall$,
+and the existential quantifier, represented by the symbol $exists$.
+Quantifiers tell you which letters, or possibly words or symbols, are being used as variables in a given mathematical statement,
+and very importantly they tell you the _type_ of the variable, that is the type of number or object that the variable can contain.
+Also, quantifiers tell you the role of the variable as it relates to the truth of the statement.
+The universal quantifier tells you that the statement must be true for all values of the variable.
+The existential quantifier tells you that the statement must be true for at least one value of the variable.
+If the quantified statement does not meet these conditions then the statement is false.
+
+Predicate logic represents the place where the _logical rubber meets the mathematical road_.
+
+
+
+
+== Polynomial expressions
+
+== Polynomial functions
+
+== Taylor polynomials
+
+== Power series
+
+== Taylor series
+
+
+#pagebreak()
+
+= Euler's solution to the Basel problem <sec:solution>
+
+Euler solved the Basel problem by proving the following theorem.
+
+#theorem(title: "Basel problem")[$ sum_(n=1)^oo 1/n^2 = pi^2/6 $] <thm:basel_problem>
+
+== Proof
+
+The sine function is defined analytically by the Maclaurin series
+
+$ sin x = x - x^3/3! + x^5/5! - x^7/7! + dots.c . $ <eq:maclaurin_series_for_sin>
+
+Maclaurin series are a special type of power series.
+Since polynomial functions — which, by definition, contain only finitely many terms — can also be viewed as finite power series,
+Euler reasoned that the Maclaurin series for the sine function could be manipulated in much the same way as a polynomial.
+In particular, he treated it as though it could be factorized into a constant multiplied by infinitely many linear factors.
+Although this approach was controversial at the time, it was later placed on a firm mathematical foundation
+with the publication of Karl Weierstrass’s factorization theorem in 1876.
+
+Polynomial functions may be re-expressed via factorization
+as the product of a constant, a finite number of real linear factors, and a finite number of irreducible real quadratics.
+The irreducible real quadratics appear only when the polynomial function has one or more non-real, complex zeros.
+If the polynomial has all real zeros, then it can be expressed solely as the product of a constant and a finite number real linear factors. \
+For example, the polynomial function $f(x) = 2x^2 - 14x + 24$, which has real zeros 3 and 4, may be expressed as $f(x) = 2(x-3)(x-4)$.
+In the polynomial case, the constant is simply the leading coefficient, i.e., the coefficient of the highest degree term.
+In the case of power series however, since there are infinitely many terms, there is no _highest degree term_ and thus no leading coefficient.
+The constant is still part of the factorization of the power series; it's just that we can't determine it by looking at the highest
+degree term and we need to use a different technique to extract it, as we'll see later in the argument.
+
+Since $sin x$ is zero _only_ at $x=0, plus.minus pi, plus.minus 2pi, plus.minus 3pi, dots$, these values are the zeros of the Maclaurin series.
+Note that since the zeros have the form $plus.minus k pi$ for all $k in NN$ and are thus all real,
+the series can be expressed as the product of a constant $c$ and infinitely many real linear factors of \
+the form $(x plus.minus k pi)$.
+It is these zeros that explain why $pi$ appears in the value of the Basel sum.
+
+#pagebreak()
+
+Thus, we have
+
+$ sin x = c (x-0)(x-pi)(x+pi)(x-2pi)(x+2pi)(x-3pi)(x+3pi) dots.c $
+$ sin x = c x(x-pi)(x+pi)(x-2pi)(x+2pi)(x-3pi)(x+3pi) dots.c $
+$ (sin x)/x = c (x-pi)(x+pi)(x-2pi)(x+2pi)(x-3pi)(x+3pi) dots.c $
+$ (sin x)/x = c (x^2 - pi^2)(x^2 - 4pi^2)(x^2 - 9pi^2 ) dots.c wide "(difference of squares)," $ <eq:diff_of_squares>
+
+for some constant $c$.
+
+The next step is to determine the value of the constant $c$. \
+At $x=0$, $(sin x)/x = 0/0$, which is undefined, but in the context of limits $0/0$ is an indeterminate form,
+so we are permitted to take the limit of both sides as $x$ goes to zero.
+Taking the limit we get
+
+$ lim_(x->0) (sin x)/x = lim_(x->0) c (x^2 - pi^2)(x^2 - 4pi^2)(x^2 - 9pi^2 ) dots.c . $
+
+The limit of the left side is simply 1, i.e., $lim_(x->0) (sin x)/x = 1$,
+which can be verified through a simple application of L'Hospital's rule.
+Thus, we have
+
+$ 1 = c (- pi^2)(- 4pi^2)(- 9pi^2) dots.c $
+$ c = 1 / ((- pi^2)(- 4pi^2)(- 9pi^2) dots.c) $
+$ c = (1 / (- pi^2)) (1 / (- 4pi^2)) (1 / (- 9pi^2)) dots.c . $
+
+Pairing each factor of $c$ with its matching difference of squares factor from @eq:diff_of_squares, we get
+
+$ (sin x)/x = (1 / (- pi^2))(x^2 - pi^2) (1 / (- 4pi^2))(x^2 - 4pi^2) (1 / (- 9pi^2))(x^2 - 9pi^2 ) dots.c $
+$ (sin x)/x = (1-x^2/(pi^2)) (1-x^2/(4pi^2)) (1-x^2/(9pi^2)) dots.c . $ <eq:weierstrass>
+
+As a brief aside, we should note that @eq:weierstrass is equivalent to Weierstrass's factorization of $sin x$.
+
+$ sin x = x product_(n=1)^oo [1-x^2/(n^2 pi^2)] wide "Weierstrass factorization" $
+
+#pagebreak()
+
+Indeed, we could have used Weierstrass as our starting point for the proof.
+However, since we are following Euler's development of the argument, we chose to begin with the Maclaurin series for sine.
+
+If we progressively FOIL a number of factors of the infinite product on the right-hand side of @eq:weierstrass from left to right we get
+
+$ (1-x^2/(pi^2)) (1-x^2/(4pi^2)) (1-x^2/(9pi^2)) $ <exp:foil_1>
+$ (1-x^2/(pi^2) - x^2/(4pi^2) + x^4/(4pi^4)) (1-x^2/(9pi^2)) $ <exp:foil_2>
+$ (1-x^2/(pi^2) - x^2/(4pi^2) + x^4/(4pi^4) - x^2/(9pi^2) + x^4/(9pi^4) + x^4/(36pi^4) - x^6/(36pi^6)) . $ <exp:foil_3>
+
+Regrouping @exp:foil_3[expression] so that the matching terms are adjacent, we get
+
+$ 1-x^2/(pi^2) - x^2/(4pi^2) - x^2/(9pi^2) + x^4/(4pi^4) + x^4/(9pi^4) + x^4/(36pi^4) - x^6/(36pi^6) $
+$ 1 - (x^2/(pi^2) + x^2/(4pi^2) + x^2/(9pi^2)) + (x^4/(4pi^4) + x^4/(9pi^4) + x^4/(36pi^4)) - (x^6/(36pi^6)) $
+$ 1 - x^2/pi^2(1/1 + 1/4 + 1/9) + x^4/pi^4(1/4 + 1/9 + 1/36) - x^6/pi^6(1/36) . $
+
+Continuing this process indefinitely, we end up with a sum of the form
+
+$
+1 -
+x^2/pi^2(1/1 + 1/4 + 1/9 + dots.c) +
+x^4/pi^4(1/4 + 1/9 + 1/36 + dots.c) -
+x^6/pi^6(1/36 + dots.c) +
+dots.c .
+$ <exp:foil_infinite>
+
+We'll set $S_2, S_4, "and" S_6$ equal to the sums in the $x^2, x^4, "and" x^6$ terms respectively.\
+We'll set $C_2, C_4, "and" C_6$ equal to the coefficients of the $x^2, x^4, "and" x^6$ terms respectively,\
+such that $C_2 = 1/pi^2 S_2, C_4 = 1/pi^4 S_6, "and" C_6 =  1/pi^6 S_6$.
+
+The $S_2$ factor of the $C_2$ coefficient is the sum of reciprocal squares that we're aiming to compute, i.e.,
+
+$ S_2 = sum_(n=1)^oo 1/n^2 . $
+
+The $S_4$ and $S_6$ sums are more complicated, involving double and triple sums respectively,
+but since we're only interested in the $S_2$ sum, we won't need $S_4$ and $S_6$.
+
+#pagebreak()
+
+Rewriting the @exp:foil_infinite[expression] using the coefficients $C_2, C_4, "and" C_6$ defined earlier, we get
+
+$
+1 -
+x^2 C_2 +
+x^4 C_4 -
+x^6 C_6 +
+dots.c .
+$
+
+Per @eq:weierstrass, this sum is equal to $(sin x)/x$, so we have
+
+$
+(sin x)/x =
+1 -
+x^2 C_2 +
+x^4 C_4 -
+x^6 C_6 +
+dots.c .
+$ <eq:sum_of_sums>
+
+Recalling the Maclaurin series for sine from @eq:maclaurin_series_for_sin and dividing both sides by $x$ we get
+
+$ (sin x)/x = 1 - x^2/3! + x^4/5! - x^6/7! + dots.c . $ <eq:maclaurin_series_for_sin_over_x>
+
+Now we have two representations of $(sin x)/x$.
+
+Equating the coefficients of the $x^2$ terms from @eq:sum_of_sums and @eq:maclaurin_series_for_sin_over_x we get
+
+$ C_2 = 1/3! . $
+
+Rewriting $C_2$ and $S_2$, we get
+
+$ 1/pi^2 S_2 = 1/3! $
+$ 1/pi^2 sum_(n=1)^oo 1/n^2 = 1/3! $
+$ sum_(n=1)^oo 1/n^2 = pi^2/3! . $
+
+This completes the proof.
+
+= Using Euler's method to prove a related theorem <sec:similar_theorem>
+
+It is instructive to look at Euler's method applied to the $x^4$ terms of the
+Maclaurin series and the Weierstrass factorization of the sine function
+in order to prove the following theorem.
+
+#theorem(title: "Basel variant")[$ sum_(m=1)^oo sum_(n=m+1)^oo 1/(m^2n^2) = pi^4/120 $] <thm:basel_variant>
+
+The proof offers a glimpse of how Euler's method may be generalized to compute the values of sums that are similar to Basel sum.
+
+#pagebreak()
+
+== Proof
+
+We begin by recalling @eq:weierstrass, which as noted earlier is a form of Weierstrass's factorization of sine,
+
+#restate(<eq:weierstrass>)
+
+We are interested in the $x^4$ terms in the expansion of the right-hand side of @eq:weierstrass.
+These terms can only arise from the multiplication of pairs of factors containing $x^2$ terms.
+Let's expand a simpler product with just four factors to see if we can observe a pattern.
+
+$
+(1 - a x^2)(1 - b x^2)(1 - c x^2)(1 - d x^2) \
+= (1 - a x^2 - b x^2 + a b x^4)(1 - c x^2)(1 - d x^2) \
+= (1 - a x^2 - b x^2 + a b x^4 - c x^2 + a c x^4 + b c x^4 - a b c x^6)(1 - d x^2) \
+= 1 - a x^2 - b x^2 + a b x^4 - c x^2 + a c x^4 + b c x^4 - a b c x^6 \
+    - d x^2 + a d x^4 + b d x^4 - a b d x^6 + c d x^4 - a c d x^6 - b c d x^6 + a b c d x^8
+$ <exp:initial_expansion>
+
+Regrouping the 16 terms of @exp:initial_expansion[expression] we get
+
+$
+& 1 & wide binom(4,0) = 1 "term " \ 
+& - a x^2 - b x^2  - c x^2 - d x^2 & wide binom(4,1) = 4 "terms"  \
+& + a b x^4 + a c x^4 + b c x^4 + a d x^4 + b d x^4  + c d x^4 & wide binom(4,2) = 6 "terms" \
+& - a b c x^6 - a b d x^6 - a c d x^6 - b c d x^6 & wide binom(4,3) = 4 "terms" \
+& + a b c d x^8 & wide binom(4,4) = 1 "term."
+$ <exp:full_expansion>
+
+We note that the coefficients of the $x^4$ terms in @exp:full_expansion[expression] are the products of every #box([_2-combination_])
+drawn from the set of coefficients of the $x^2$ terms, ${a,b,c,d}$.
+That is, they are the products of every possible pair drawn from ${a,b,c,d}$ where the order does not matter and there are no repeats.
+
+Translating this pattern to the situation in @eq:weierstrass, where the coefficients of the $x^2$ terms have the form $1/(k^2pi^2)$,
+we need to sum the products of every possible pair of reciprocal square coefficients,
+such that the order does not matter and there are no repeats.
+
+#pagebreak()
+
+To get the required sum of products, we'll need two indexes, say $m$ and $n$, with appropriate constraints applied so that we have
+
+$ sum_(m=1)^oo sum_(n=m+1)^oo 1/(m^2 pi^2) x^2 1/(n^2 pi^2) x^2 . $ <exp:sum_of_reciprocal_products>
+
+Here, for each $m$ we run through every $n$ that is greater than $m$.
+Another option would be to run through every $n$ less than $m$, but in that case we would have to start $m$ at 2.
+Ultimately, it doesn't matter which indexing scheme we choose as long as $m != n$ and that either $m < n$ or $m > n$, but not both.
+Rewriting @exp:sum_of_reciprocal_products[expression], we get
+
+$ x^4/pi^4 sum_(m=1)^oo sum_(n=m+1)^oo 1/(m^2 n^2) . $ <exp:sum_of_reciprocal_products_final>
+
+Recalling @eq:maclaurin_series_for_sin_over_x, we have
+
+#restate(<eq:maclaurin_series_for_sin_over_x>)
+
+We can equate the coefficient of the $x^4$ term in the Maclaurin series on the right-hand side of @eq:maclaurin_series_for_sin_over_x
+with the coefficient of the $x^4$ term in @exp:sum_of_reciprocal_products_final[expression] to get
+
+$ 1/pi^4 sum_(m=1)^oo sum_(n=m+1)^oo 1/(m^2 n^2) = 1/5! . $
+
+Rewriting leads to the following statement which completes the proof.
+
+$ sum_(m=1)^oo sum_(n=m+1)^oo 1/(m^2 n^2) = pi^4/5! $
+
+#pagebreak()
+
+= Evaluating the 4-series
+
+Armed with the previous results, we can easily evaluate the 4-series.
+
+#theorem(title: "Sum of the 4-series")[$ sum_(n=1)^oo 1/(n^4) = pi^4/90 $] <thm:sum_of_4-series>
+
+== Proof
+
+We begin by using the Basel sum to evaluate the double sum
+
+$ sum_(m=1)^oo sum_(n=1)^oo 1/(m^2 n^2) , $ <exp:double_sum_reciprocal_product_squares>
+
+which is the sum of all reciprocals of the product of two squares of a natural number greater than zero.
+Note that this double sum is different from the one in @thm:basel_variant[theorem] because here the indexes are _unrestricted_,
+that is, $n$ does not depend on $m$.
+
+Clearly, we can rewrite the double sum as
+
+$ sum_(m=1)^oo sum_(n=1)^oo 1/m^2 1/n^2 . $
+
+And, since the $1/m^2$ term is not captured by the $n$ index of the inner sum, we can move it outside the inner sum to get
+
+$ sum_(m=1)^oo (1/m^2 sum_(n=1)^oo 1/n^2) . $
+
+Now in @thm:basel_problem[theorem], the Basel problem theorem, we showed that the Basel sum, $sum_(n=1)^oo 1/n^2$, converges to $pi^2/6$,
+so it is effectively just a constant multiplying each $1/m^2$ term, and thus by the distributive property, we can move it outside the outer sum to get
+
+$ sum_(n=1)^oo 1/n^2 dot sum_(m=1)^oo 1/m^2 . $
+
+In fact, this is a general result, so that we can always rewrite the double sum of a product as the product of a sum, provided that the two series are convergent.
+
+Finally, since we know that both series in the product evaluate to $pi^2/6$, we have
+
+$ sum_(m=1)^oo sum_(n=1)^oo 1/(m^2 n^2) = pi^4/36 . $ <eq:double_sum_reciprocal_product_squares>
+
+#pagebreak()
+
+@fig:reciprocal-product-of-squares depicts the terms of @exp:double_sum_reciprocal_product_squares[series] arranged in a grid.
+
+// Define the function that renders the content for each (i,j) cell.
+#let reciprocal-product-of-squares(i, j) = $ 1/(#i^2 #j^2) $
+
+// Alternatively, we can use a lambda abstraction for the expression function.
+// #number-array(4, 4, (i, j) => $ 1/(#i^2 #j^2) $ )
+
+// Create the number array table and render it inside a figure.
+#let number-array = number-array(5, 5,
+                                 reciprocal-product-of-squares,
+                                 upper-triangle-hl: hl-yellow,
+                                 diagonal-hl: hl-pink,
+                                 lower-triangle-hl: hl-green,
+                                 ellipsis: true)
+
+#figure(number-array, caption: [Sum of reciprocal product squares]) <fig:reciprocal-product-of-squares>
+
+Observe that the sum of the terms in upper triangle, highlighted in yellow, is the sum of @thm:basel_variant[theorem], that is, $pi^4/120$,
+and by symmetry the sum of the terms in the lower triangle, highlighted in green, has the the same value, also $pi^4/120$.
+
+The terms along the major diagonal, highlighted in pink, satisfy $m=n$.
+Thus the sum of the terms along the major diagonal is
+
+$ sum_(n=1)^oo 1/(n^2 n^2) = sum_(n=1)^oo 1/n^4  , $
+
+which is the series we are looking to evaluate.
+
+To compute the sum of the terms along the major diagonal we can subtract the sums of the upper and lower triangles, each $pi^4/120$,
+from the sum of all terms in the table, which we already showed in @eq:double_sum_reciprocal_product_squares is equal to $pi^4/36$.
+
+Thus we have
+
+$ sum_(n=1)^oo 1/n^4 =  pi^4/36 - 2pi^4/120 = 10pi^4/360 - 6pi^4/360 = 4pi^4/360 = pi^4/90 , $
+
+which concludes the proof.
+
+#pagebreak()
+
+= Conclusion <sec:conclusion>
+
+Euler's remarkable insight in solving the Basel problem was recognizing that the coefficients of like terms could be equated
+from two different representations of the function $(sin x)/x$.
+The Maclaurin series representation of sine was well known at the time of Euler's work.
+However, to establish a second representation of $(sin x)/x$, Euler assumed that sine could be expressed
+as an infinite product.
+His assumption anticipated Weierstrass's factorization theorem published in 1876 as part of a work on the theory of analytic functions.
+As noted in the introduction, Euler's method was an important step towards understanding p-series in general,
+and in particular can be used to compute the values of all p-series where p is a non-zero even natural number.
+Although many tests exist that determine whether a series converges or diverges,
+explicitly calculating the value of a series is often challenging.
+Euler's method therefore is a significant contribution to mathematics
+because it provides a tool for evaluating a whole class of p-series and related infinite series.
