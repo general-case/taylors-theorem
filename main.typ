@@ -122,16 +122,38 @@ You can think of statements like these as _intellectual handholds_ that you can 
 grab on to as you scale the heights of the mathematical edifice.
 They express ideas that you can _take to the bank_, that you can always count on.
 
-Also, you should know that mathematics is often written in an informal but highly stylized language, but for each piece of informal
-language there is a formal counterpart that sometimes looks a bit like computer code (especially the way I write it).
+Also, you should know that mathematics is mostly written in an informal but highly stylized language,
+but for each piece of informal language there is a formal counterpart that sometimes looks a bit like computer code
+(especially the way I write it).
 I'll introduce the formal notation first because it is more precise and can actually be easier to understand.
 
 
 == Objects
 
 Mathematics is all about objects: natural numbers, real numbers, functions, vectors, matrices, perfectoid spaces, and on and on.
+All mathematical objects have to be introduced into your paper via a _declaration_ at some point before you start making statements about them,
+but for many ordinary objects, like say the real numbers, the declaration is understood to be elsewhere, outside your paper.
+For example, if you write a paper in which you prove something about the real numbers, you don't have to declare the set of
+real numbers in your paper. They are assumed to be predefined somewhere else.
+That said, if you introduce some new object of your own invention, then you do have to declare it within your paper.
+
+Programmers are very used to this idea of declaring objects before using them.
+Back in the day, programming languages required that you declare every object before use, but these days some programming languages
+figure out (_infer_) the declaration for you based on the context that the object is used in.
+
 
 == Statements
+
+In everyday English, there are three kinds of sentences:
+
+- Interrogative which ask a question
+- Imperative which give an instruction or a command
+- Declarative which simply assert something is true
+
+In mathematics we're mainly concerned with that last one, declarative sentences.
+In English, these are statements that can be either true or false, for example, "the sky is blue" and "the grass is gree".
+In mathematics, statements say something about one or more objects, for example, $2+2=4$ or $2+2=5$,
+and they may be either true or false - it's up to you to determine which.
 
 
 == Quantifiers
