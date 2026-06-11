@@ -2,9 +2,11 @@
 #set page(paper: "us-letter")
 #set text(size: 12pt, font: "New Computer Modern", weight: 500) // Larger font.
 #set text(hyphenate: false) // Prevent all automatic line breaks.
-#show "p-series": it => box(it) // Prohibit line breaks in this term.
 #set heading(numbering: "1.")
 #set math.equation(numbering: "(1)", supplement: [equation]) // Default reference is "equation".
+
+#show "p-series": it => box(it) // Prohibit line breaks in this term.
+#show math.equation.where(block: false): box // Prohibit line breaks for inline math.
 
 // #show math.equation.where(block: true): set align(left)
 
@@ -49,7 +51,7 @@ Functions like table and grid take data as a sequence of positional arguments ra
 
 // Title
 #v(1in)
-#let title = [An informal guide to Taylor's theorem]
+#let title = [A friendly guide to Taylor's theorem]
 #align(center, text(18pt)[#title])
 #v(0.5in)
 
@@ -150,10 +152,22 @@ In everyday English, there are three kinds of sentences:
 - Imperative which give an instruction or a command
 - Declarative which simply assert something is true
 
-In mathematics we're mainly concerned with that last one, declarative sentences.
-In English, these are statements that can be either true or false, for example, "the sky is blue" and "the grass is gree".
-In mathematics, statements say something about one or more objects, for example, $2+2=4$ or $2+2=5$,
-and they may be either true or false - it's up to you to determine which.
+That last one, the _declarative sentence_, has a parallel in mathematics called the _mathematical statement_.
+In English, declarative sentences can be true or false. For example, I can say that "the sky is blue", but you can look up and perhaps
+see that the sky is in fact grey. Similarly, a mathematical statement is either true or false. For example, $2+2=4$ is true but $2+2=5$ is false. And just like declarative sentences, it's up to you to decide whether a given mathematical statement is true or false.
+In fact, mathematics is unconcerned with the truth or falsity of statements - it only cares about relationships between the statements.
+The theorems, properties, and axioms of mathematics are all just mathematical statements.
+
+It may surprise you to learn that there are only #underline[two kinds] of fundamental, _non-trivial_, mathematical statements.
+There are equality statements, again like $2+2=4$ and $2+2=5$, and there are set membership statements, for example $2 in NN$, which tells
+you that the number 2 is a member of the set of natural numbers.
+There are also a couple of _trivial_ fundamental statements, *true* and *false*.
+These are useful in certain technical scenarios inside mathematical proofs, but we won't be using them in this paper.
+They're labeled _trivial_ because they don't actually say anything about mathematical objects.
+
+Now you may be wondering how can it be that all of mathematics rests on these four kinds of statement?
+How can we possibly state all of the theorems, properties, and axioms of mathematics using just these four types of primitive statement?
+Well, we're allowed to combine the primitive statements using _logical operators_ to form more complex statements.
 
 
 == Quantifiers
