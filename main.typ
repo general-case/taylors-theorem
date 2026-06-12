@@ -168,6 +168,24 @@ They're labeled _trivial_ because they don't actually say anything about mathema
 Now you may be wondering how can it be that all of mathematics rests on these four kinds of statement?
 How can we possibly state all of the theorems, properties, and axioms of mathematics using just these four types of primitive statement?
 Well, we're allowed to combine the primitive statements using _logical operators_ to form more complex statements.
+These logical operators come from _propositional logic_ and are more or less identical to boolean operators, which if you've done
+any computer programming you will very likely be familiar with.
+
+There are #underline[just five] logical operators.
+Their names and symbols are: And $and$, Or $or$, Not $not$, Implies $=>$, and if-and-only-if $<=>$ (aka iff and equivalence).
+Now spoiler alert, these five operators can be reduced to just one called NAND, and this is often done in computer circuits for efficiency,
+but in mathematics we keep all five operators to maximize the descriptive power of our statements.
+It would be very hard to read a complex mathematical statement if it were entirely encoded with the NAND operator.
+Mathematics, although formal and technical, is ultimately a language whose purpose is communication between humans, at least for now.
+
+So we mentioned propositional logic. In fact, mathematics is based on something called _predicate logic_,
+which is an extension of propositional logic that includes _predicates_ and _quantifiers_, which we'll discuss next.
+Full predicate logic includes all kinds of predicates, but it turns out that mathematics is based on a restricted form of
+predicate logic that includes #underline[only four predicates]. These were alluded to earlier when we talked about the four kinds
+of mathematical statements. They are $=$, $in$, $#true$, and $#false$.
+It is the predicates that connect logic to the mathematical objects so that you can form mathematical statements.
+
+I like to say predicate logic represents the place where the _logical rubber meets the mathematical road_.
 
 
 == Quantifiers
@@ -184,10 +202,12 @@ The universal quantifier tells you that the statement must be true for all value
 The existential quantifier tells you that the statement must be true for at least one value of the variable.
 If the quantified statement does not meet these conditions then the statement is false.
 
-Predicate logic represents the place where the _logical rubber meets the mathematical road_.
 
+= Objects relevant to Taylor's theorem
 
-
+All of the objects we're about to discuss come in _multivariate_ versions,
+but we'll restrict our attention to single variable (_univariate_) forms because
+that's all we'll need to define the superstars of the function world -- sine, cosine, and exponential ($e^x$) -- in terms of Taylor series.
 
 == Polynomial expressions
 
