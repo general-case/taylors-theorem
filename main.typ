@@ -103,7 +103,8 @@ Well, you'll need to be familiar with the real numbers, have a good grasp of wha
 and know a couple of different types of functions, like real-valued functions over the reals (aka real functions) and functions over the natural numbers.
 You'll also need a basic understanding of calculus, at least to the point where you know what a derivative is and what an integral is.
 It would be helpful if you've solved a quadratic equation or two.
-First-year college or AP highschool mathematics should be more than enough.
+Also, you should know a little bit about sets, subsets, and power sets, at least what they are.
+First-year college mathematics or highschool AP calculus should be more than enough preparation.
 
 When writing an _accessible_ paper on a topic it's hard to know how far back to go explaining the basic principles.
 Too much of this can result in endless backtracking where the main topic of the paper becomes lost in a sea of basic ideas, but too little
@@ -112,12 +113,14 @@ risks not setting the stage sufficiently so that the reader can understand the c
 In this paper, I'll try to strike a balance by briefly laying out some basic mathematical ideas that can be covered in just a page or two,
 without presenting an entire treatise on predicate logic.
 
-We'll begin by laying out all of our mathematical equipment on our workbench, so to speak, and look at each part to understand
-what it is and how it works.
+Also, it's difficult to perfectly sequence concepts pedagogically, so you may encounter a term that has not yet been fully discussed.
+For that reason, you may want to read each section twice so that all the concepts are fully defined and fresh on your second reading.
+I've tried to keep each section as self-contained as possible.
+
 
 = Mathematical preliminaries
 
-Let's begin with a lightning tour of some useful mathematical concepts.
+Let's begin with a lightning tour of some essential mathematical concepts.
 In this section, there'll be a lot of statements like _there are only two of blah_ or _there is only one something or other_.
 You can think of statements like these as _intellectual handholds_ that you can literally, no metaphorically
 #text(emoji.face.smile.slight, 8pt),
@@ -129,6 +132,16 @@ but for each piece of informal language there is a formal counterpart that somet
 (especially the way I write it).
 I'll introduce the formal notation first because it is more precise and can actually be easier to understand.
 
+By the way, we should talk about that word "formal", and another word "rigor". These come up in mathematical texts all the time.
+When I was learning math as a teenager (a long time ago), I imagined that the phrase "formal mathematics" meant that you were supposed to 
+wear a tux, or at least a suit and tie, and scowl at people over a pair of reading glasses for not being formal enough.
+Of course that's not what _formal_ means in mathematics at all. It simply means that the mathematics is expressed in a language
+that has a _particular form_, whether that is the standard stylized language of most textbooks on the subject or the language of formal
+logic.
+As for rigor, I used to think that this meant that doing math was _arduous_ and involved a lot of _hard work_.
+Nope! Wrong again! Rigor simply means that no step is missed out or _hand-waved_ over. It's fair to say that some authors leave out steps
+that they consider elementary or trivial, but by and large a rigorous mathematical proof will explicitly state all of the steps of the argument.
+
 
 == Objects
 
@@ -136,12 +149,63 @@ Mathematics is all about objects: natural numbers, real numbers, functions, vect
 All mathematical objects have to be introduced into your paper via a _declaration_ at some point before you start making statements about them,
 but for many ordinary objects, like say the real numbers, the declaration is understood to be elsewhere, outside your paper.
 For example, if you write a paper in which you prove something about the real numbers, you don't have to declare the set of
-real numbers in your paper. They are assumed to be predefined somewhere else.
+real numbers inside your paper. They are assumed to be predefined somewhere else.
 That said, if you introduce some new object of your own invention, then you do have to declare it within your paper.
+Let's say you want to introduce some special integer, call it $n$, that you want to talk about in your paper.
+The notation to do that is like this:
 
-Programmers are very used to this idea of declaring objects before using them.
+$ n:ZZ; $
+
+If you want to introduce a real function, say $f$, here's how you would do that:
+
+$ f:RR -> RR; $
+
+The arrow is the function constructor that indicates a function is being declared.
+
+Lastly, let's say you want to introduce some set of integers. Let's call it $S$. Here's how you would do that:
+
+$ S:"type" ZZ; $
+
+This one says $S$ is one element of the power set of the integers, and therefore $S$ is a _subset_ of the integers, which, by the way,
+could be the entire set of integers or it could even be the empty set.
+
+In each case, the symbol to the left of the colon is the name we're introducing, the _handle_ if you will, that references the object.
+The symbol(s) to the right of the colon are the type of the object and the whole declaration is terminated by a semicolon.
+
+Now in most mathematical textbooks you won't see declarations written in such a formal, almost code like way.
+Instead, the objects will be introduced using that stylized mathematical language that we talked about earlier.
+For our three objects, the declarations would be something like: "let $n$ be an integer", "let $f$ be a real function",
+and "let $S$ be a set of integers".
+
+Incidentally, programmers are very used to this idea of declaring objects before using them.
 Back in the day, programming languages required that you declare every object before use, but these days some programming languages
-figure out (_infer_) the declaration for you based on the context that the object is used in.
+figure out (_infer_) the declaration for you based on the context in which the object is used.
+Here are our declarations as they might appear in the C programming language.
+
+```c
+
+// Let n be an integer.
+int n;
+
+// Approximate a real function.
+float f(float x)
+{
+    return x*x;
+}
+
+// Approximate a set of integers. This would need more to make it work like a mathematical set.
+int S[] = {-3,-2,-1,0,1,2,3}
+
+```
+
+Ok, so we have introduced the names of the objects we want to talk about but where do these objects live exactly?
+Well, some suggest that they might really exist in something call the _Platonic Universe_, a place where perfect abstract forms exist.
+I don't know if I'd go that far,
+but the objects do of course exist in your imagination, the shared imaginations of several people studying the same topic, and 
+if you're modelling them in a computer program, they exist in the computer's memory.
+They exist in the same way that talking lions exist in a fantasy novel.
+
+Now here comes another one of those _intellectual handholds_.
 
 
 == Statements
@@ -205,9 +269,13 @@ If the quantified statement does not meet these conditions then the statement is
 
 = Objects relevant to Taylor's theorem
 
-All of the objects we're about to discuss come in _multivariate_ versions,
-but we'll restrict our attention to single variable (_univariate_) forms because
+Let's begin by laying out all of our mathematical equipment on our workbench, so to speak, and look at each part to understand
+what it is and how it works.
+
+I should mention up front that all of the objects we're about to discuss come in _multivariate_ versions,
+but here we'll restrict our attention to the single variable (_univariate_) forms because
 that's all we'll need to define the superstars of the function world -- sine, cosine, and exponential ($e^x$) -- in terms of Taylor series.
+
 
 == Polynomial expressions
 
