@@ -125,7 +125,7 @@ In this section, there'll be a lot of statements like _there are only two of bla
 You can think of statements like these as _intellectual handholds_ that you can literally, no metaphorically
 #text(emoji.face.smile.slight, 8pt),
 grab on to as you scale the heights of the mathematical edifice.
-They express ideas that you can _take to the bank_, that you can always count on.
+They express ideas that you can _take to the bank_; that you can always count on.
 
 Also, you should know that mathematics is mostly written in an informal but highly stylized language,
 but for each piece of informal language there is a formal counterpart that sometimes looks a bit like computer code
@@ -139,18 +139,21 @@ Of course that's not what _formal_ means in mathematics at all. It simply means 
 that has a _particular form_, whether that is the standard stylized language of most textbooks on the subject or the language of formal
 logic.
 As for rigor, I used to think that this meant that doing math was _arduous_ and involved a lot of _hard work_.
-Nope! Wrong again! Rigor simply means that no step is missed out or _hand-waved_ over. It's fair to say that some authors leave out steps
-that they consider elementary or trivial, but by and large a rigorous mathematical proof will explicitly state all of the steps of the argument.
+Nope! Wrong again! Rigor simply means that no step is missed out or _hand-waved_ over in the process of deriving a formula.
+Now it's fair to say that some authors do leave out steps
+that they consider _elementary_ or _trivial_, but by and large in a _rigorous mathematical proof_ all of the steps of the argument
+will be stated explicitly.
 
 
 == Objects
 
 Mathematics is all about objects: natural numbers, real numbers, functions, vectors, matrices, perfectoid spaces, and on and on.
-All mathematical objects have to be introduced into your paper via a _declaration_ at some point before you start making statements about them,
-but for many ordinary objects, like say the real numbers, the declaration is understood to be elsewhere, outside your paper.
+All mathematical objects have to be introduced into your paper via a official _declaration_ at some point
+before you start making statements about them.
+That said, for many ordinary objects, like say the real numbers, the declaration is understood to be elsewhere, outside your paper.
 For example, if you write a paper in which you prove something about the real numbers, you don't have to declare the set of
-real numbers inside your paper. They are assumed to be predefined somewhere else.
-That said, if you introduce some new object of your own invention, then you do have to declare it within your paper.
+real numbers inside your paper. They are assumed to be _predefined_ somewhere else.
+However, if you introduce some new object of your own invention, then you do have to declare it within your paper.
 Let's say you want to introduce some special integer, call it $n$, that you want to talk about in your paper.
 The notation to do that is like this:
 
@@ -170,15 +173,16 @@ This one says $S$ is one element of the power set of the integers, and therefore
 could be the entire set of integers or it could even be the empty set.
 
 In each case, the symbol to the left of the colon is the name we're introducing, the _handle_ if you will, that references the object.
-The symbol(s) to the right of the colon are the type of the object and the whole declaration is terminated by a semicolon.
+The symbol(s) to the right of the colon are the _type_ of the object being declared.
+The whole declaration statement is terminated by a semicolon.
 
 Now in most mathematical textbooks you won't see declarations written in such a formal, almost code like way.
 Instead, the objects will be introduced using that stylized mathematical language that we talked about earlier.
-For our three objects, the declarations would be something like: "let $n$ be an integer", "let $f$ be a real function",
+For our three objects, the declarations would be written something like: "let $n$ be an integer", "let $f$ be a real function",
 and "let $S$ be a set of integers".
 
 Incidentally, programmers are very used to this idea of declaring objects before using them.
-Back in the day, programming languages required that you declare every object before use, but these days some programming languages
+Back in the day, programming languages required that you declare every single object before use, but these days some programming languages
 figure out (_infer_) the declaration for you based on the context in which the object is used.
 Here are our declarations as they might appear in the C programming language.
 
@@ -193,20 +197,35 @@ float f(float x)
     return x*x;
 }
 
-// Approximate a set of integers. This would need more to make it work like a mathematical set.
+// Approximate a set of integers.
+// This would need more to make it work like an actual mathematical set.
 int S[] = {-3,-2,-1,0,1,2,3}
 
 ```
 
-Ok, so we have introduced the names of the objects we want to talk about but where do these objects live exactly?
-Well, some suggest that they might really exist in something call the _Platonic Universe_, a place where perfect abstract forms exist.
+Ok, so we have introduced the names of the objects we want to talk about, but where do these objects live exactly?
+Well, some suggest that they might really exist in realm called the _Platonic Universe_, a place where perfect abstract forms exist.
 I don't know if I'd go that far,
-but the objects do of course exist in your imagination, the shared imaginations of several people studying the same topic, and 
-if you're modelling them in a computer program, they exist in the computer's memory.
-They exist in the same way that talking lions exist in a fantasy novel.
+but the objects do of course exist in your imagination and the shared imaginations of several people studying the same topic in math.
+Also, if you're modelling mathematical objects inside a computer program, they exist in the computer's memory.
+In a sense, mathematical objects exist in the same way that talking lions exist in a fantasy novel.
 
 Now here comes another one of those _intellectual handholds_.
+There are #underline[only two kinds of basic mathematical objects], sets and functions.
+The myriad of other mathematical objects are built out of just these two kinds of basic object.
+This situation is kind of like if you ordered a box of toy construction blocks, say Lego, from Amazon.
+The box arrives and the pictures on the outside show all of the things you can build, spaceships, planes, cars, and so on,
+but when you open the box you find that there are only two kinds of brick inside. What? You are confused.
+But as you start to play with the blocks, you find that you can indeed build all of those things from just the basic blocks in the set.
+Cool! That's how mathematics works. You can build everything from sets and functions.
 
+But if sets are collections of things what about the elements of a set?
+Aren't they some kind of atomic object with no internal structure?
+Well yes and no. Some accounts of mathematics include a third kind of basic object called a _urelement_ that is indeed an atomic
+object with no internal structure. However, if you think about it, you could use either a function or a set as a urelement as long
+as you decide not to talk about the internal structure of the element, and that's exactly what we'll do here.
+We can think of our simple set elements as being either sets or functions, but we're not going to say which and we're not going
+to talk about their set or function properties.
 
 == Statements
 
@@ -243,11 +262,13 @@ It would be very hard to read a complex mathematical statement if it were entire
 Mathematics, although formal and technical, is ultimately a language whose purpose is communication between humans, at least for now.
 
 So we mentioned propositional logic. In fact, mathematics is based on something called _predicate logic_,
-which is an extension of propositional logic that includes _predicates_ and _quantifiers_, which we'll discuss next.
+an extension to propositional logic that includes _predicates_ and _quantifiers_, which we'll discuss next.
 Full predicate logic includes all kinds of predicates, but it turns out that mathematics is based on a restricted form of
 predicate logic that includes #underline[only four predicates]. These were alluded to earlier when we talked about the four kinds
 of mathematical statements. They are $=$, $in$, $#true$, and $#false$.
-It is the predicates that connect logic to the mathematical objects so that you can form mathematical statements.
+The first two have placeholders for the name of an object, so that you can write two objects are equal, $a=b$, and you can write
+that one object is a member of another set object, $a in S$.
+It is the predicates that connect the language of logic to the mathematical objects so that you can form mathematical statements.
 
 I like to say predicate logic represents the place where the _logical rubber meets the mathematical road_.
 
