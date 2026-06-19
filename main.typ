@@ -242,7 +242,7 @@ In fact, mathematics is unconcerned with the truth or falsity of statements - it
 The theorems, properties, and axioms of mathematics are all just mathematical statements.
 
 It may surprise you to learn that there are only #underline[two kinds] of fundamental, _non-trivial_, mathematical statements.
-There are equality statements, again like $2+2=4$ and $2+2=5$, and there are set membership statements, for example $2 in NN$, which tells
+There are equality statements, again like $2+2=4$ and $2+2=5$, and there are set membership statements, like $2 in NN$, which tells
 you that the number 2 is a member of the set of natural numbers.
 There are also a couple of _trivial_ fundamental statements, *true* and *false*.
 These are useful in certain technical scenarios inside mathematical proofs, but we won't be using them in this paper.
@@ -258,7 +258,7 @@ There are #underline[just five] logical operators.
 Their names and symbols are: And $and$, Or $or$, Not $not$, Implies $=>$, and if-and-only-if $<=>$ (aka iff and equivalence).
 Now spoiler alert, these five operators can be reduced to just one called NAND, and this is often done in computer circuits for efficiency,
 but in mathematics we keep all five operators to maximize the descriptive power of our statements.
-It would be very hard to read a complex mathematical statement if it were entirely encoded with the NAND operator.
+It would be very challenging to read a complex mathematical statement if it were entirely encoded using only the NAND operator.
 Mathematics, although formal and technical, is ultimately a language whose purpose is communication between humans, at least for now.
 
 So we mentioned propositional logic. In fact, mathematics is based on something called _predicate logic_,
@@ -266,8 +266,9 @@ an extension to propositional logic that includes _predicates_ and _quantifiers_
 Full predicate logic includes all kinds of predicates, but it turns out that mathematics is based on a restricted form of
 predicate logic that includes #underline[only four predicates]. These were alluded to earlier when we talked about the four kinds
 of mathematical statements. They are $=$, $in$, $#true$, and $#false$.
-The first two have placeholders for the name of an object, so that you can write two objects are equal, $a=b$, and you can write
-that one object is a member of another set object, $a in S$.
+The first two have placeholders omn either side which accept the names of objects,
+so that you can write two objects are equal, $a=b$,
+and you can write that one object is a member of another _set_ object, $a in S$.
 It is the predicates that connect the language of logic to the mathematical objects so that you can form mathematical statements.
 
 I like to say predicate logic represents the place where the _logical rubber meets the mathematical road_.
@@ -277,7 +278,21 @@ I like to say predicate logic represents the place where the _logical rubber mee
 
 Before we look at the objects that are directly related to Taylor's theorem, let's briefly talk about the most important piece of
 mathematical machinery that you've (probably) never heard of, _quantifiers_.
-Stated simply, all mathematical variables (which are sometimes called "indeterminates") are introduced by quantifiers.
+
+Maybe at some point during your mathematical education you asked how do I know which letters in an expression or an equation
+represent variables and which represent constants?
+For example, in the general quadratic $a x^2 + b x + c = 0$ we know that $x$ represents the variable
+while $a$, $b$, and $c$ represent constants.
+But how do we know that?
+
+I'll bet you were told that it is _customary_, or a _convention_, to choose letters
+from the end of the alphabet as variables and letters from the beginning of the alphabet as constants, and that's how you know.
+While it is true that there is a convention, it is not strictly the case that the convention tells us which letter, or symbols
+are variables. The full story involves quantifiers.
+
+You may be surprised to learn that just like objects, all mathematical variables, which are sometimes called _indeterminates_ or _unknowns_,
+must introduced or _declared_ prior to their use and that this declaration is done via quantifiers.
+
 There are only two quantifiers, the universal quantifier, represented by the symbol $forall$,
 and the existential quantifier, represented by the symbol $exists$.
 Quantifiers tell you which letters, or possibly words or symbols, are being used as variables in a given mathematical statement,
@@ -287,14 +302,48 @@ The universal quantifier tells you that the statement must be true for all value
 The existential quantifier tells you that the statement must be true for at least one value of the variable.
 If the quantified statement does not meet these conditions then the statement is false.
 
+We use the universal quantifier to write statements that are true for all values of the variable.
+These kinds of statements are known as _identities_. Here are a couple of identities:
+
+$ forall x:RR {x+x=2x} $
+$ forall theta:RR {sin^2 theta + cos^2 theta = 1} $
+
+In the first one, the $forall$ symbol is followed by a declaration of the $x$ variable and we're saying that the statement inside the curly
+braces must be true for all values of the variable in order for the whole quantified statement to be true.
+
+In the second, one the $forall$ symbol is followed by a declaration of the $theta$ (greek letter theta) variable and again
+we're saying that the statement inside the curly braces must be true for all values of the variable
+in order for the whole quantified statement to be true.
+
+We use the existential quantifier to write statements that are true for one or more values of the variable.
+These kinds of statements are known as _conditional statements_. Here are a couple of conditional statements:
+
+$ exists x:RR {x+5 = 9} $
+$ exists x:RR {x^2 + 3 x + 2 = 0} $
+
+Again, we have the declaration of the $x$ variable immediately following the $exists$ symbol.
+The first statement is true only if $x$ is equal to 4.
+The second statement is true only if $x$ is equal to -1 or -2.
+Thus, in each case the truth of the statement is _conditional_ on which value we assign to the variable.
+
+In some sense, the existential quantifier can be viewed as an invitation, or an instruction, to solve for the variable,
+that is, to discover which values that when assigned to the variable make the statement in curly braces true.
+
+I should mention that a mathematical statement that is never true regardless of what values we assign to the variable is called
+a _contradiction_. The statement is always false. Here's an example:
+
+$ exists x:RR {x+1 = x} $
+
+Ok, with that discussion of mathematical fundamentals out of the way, let's move on to the main topic of this paper.
 
 = Objects relevant to Taylor's theorem
 
-Let's begin by laying out all of our mathematical equipment on our workbench, so to speak, and look at each part to understand
+It's time to talk about the mathematical objects that are directly related to Taylor's theorem.
+Let's begin by laying out all of our _mathematical equipment_ on our workbench, so to speak, and look at each part to understand
 what it is and how it works.
 
 I should mention up front that all of the objects we're about to discuss come in _multivariate_ versions,
-but here we'll restrict our attention to the single variable (_univariate_) forms because
+but here we'll restrict our attention to the single variable (_univariate_) versions because
 that's all we'll need to define the superstars of the function world -- sine, cosine, and exponential ($e^x$) -- in terms of Taylor series.
 
 
