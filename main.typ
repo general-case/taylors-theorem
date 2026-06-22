@@ -96,6 +96,7 @@ geometrically.
 // Contents if I need it later.
 // #outline()
 
+
 = Introduction <sec:introduction>
 
 What will you need to understand this paper?
@@ -198,10 +199,29 @@ float f(float x)
 }
 
 // Approximate a set of integers.
-// This would need more to make it work like an actual mathematical set.
+// Note: this would need more to make it work like an actual mathematical set.
 int S[] = {-3,-2,-1,0,1,2,3}
 
 ```
+
+The declaration statement associates every object with a type, but why is that? Why do we need a type on every object?
+Well, it's really an _apples to apples_ thing. The type is like a little _tag_, or a _label_, that stays with the object
+throughout your paper.
+Its purpose is to prevent you from comparing one object to a totally different kind of object.
+In other words, the type is used to stop you from comparing _apples to oranges_.
+In mathematics, mixing different kinds of objects inappropriately in a statement can lead to a _paradox_.
+For example, you wouldn't want to say that a natural number is equal to a matrix, or that a real number is a member of a set of vectors.
+Paradoxes are bad; they turn your conclusions into nonsense.
+One famous paradox was discovered by Bertrand Russell in 1901.
+It is known as _Russell's paradox_ and there's even a translation of it written in everyday language known as the _Barber Paradox_.
+
+In programming languages too we use types on objects (well, except in Python),
+and there's usually a type system built into the compiler that checks that every statement is correct from a types perspective.
+In programming we don't get paradoxes; we get bugs.
+In fact, arguably the second most important advance in computer science, after Turing's 1936 paper,
+was the introduction of types into programming languages (starting with the typed lambda calculus).
+A famous and very expensive bug due to a type mismatch occurred in NASA's Mars Climate Orbiter, which burned up in the Martian
+atmosphere after the software calculated the wrong orbit trajectory.
 
 Ok, so we have introduced the names of the objects we want to talk about, but where do these objects live exactly?
 Well, some suggest that they might really exist in realm called the _Platonic Universe_, a place where perfect abstract forms exist.
@@ -334,7 +354,8 @@ a _contradiction_. The statement is always false. Here's an example:
 
 $ exists x:RR {x+1 = x} $
 
-Ok, with that discussion of mathematical fundamentals out of the way, let's move on to the main topic of this paper.
+Ok, with the discussion of mathematical fundamentals out of the way, let's move on to the main topic of this paper.
+
 
 = Objects relevant to Taylor's theorem
 
@@ -346,10 +367,27 @@ I should mention up front that all of the objects we're about to discuss come in
 but here we'll restrict our attention to the single variable (_univariate_) versions because
 that's all we'll need to define the superstars of the function world -- sine, cosine, and exponential ($e^x$) -- in terms of Taylor series.
 
-
-== Polynomial expressions
-
 == Polynomial functions
+
+A polynomial function is a function whose body is a #underline[finite] sum of terms where each term is the product of a coefficient and
+a variable raised to a natural number (positive integer) power.
+Here's an example of a real polynomial function:
+
+$ f(x) = x^2 + 3 x + 2 $
+
+Technically, we should give the formal definition of the function by declaring it first and then stating how it behaves using
+the universal quantifier discussed earlier.
+
+$
+& f:RR -> RR; \
+& forall x:RR {f(x) = x^2 + 3 x + 2}; \
+$
+
+For this example I said that the function _real_ meaning that it takes real numbers as its inputs and returns a real number
+as its output, and as you can see the function is defined that way, as well as the variable $x$.
+However, if someone gives you a polynomial function, it is assumed to be complex.
+That is the most general type of polynomial function.
+
 
 == Taylor polynomials
 
