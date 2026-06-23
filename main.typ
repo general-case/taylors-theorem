@@ -371,25 +371,72 @@ that's all we'll need to define the superstars of the function world -- sine, co
 
 A polynomial function is a function whose body is a #underline[finite] sum of terms where each term is the product of a coefficient and
 a variable raised to a natural number (positive integer) power.
-Here's an example of a real polynomial function:
+Here's an example:
 
 $ f(x) = x^2 + 3 x + 2 $
 
-Technically, we should give the formal definition of the function by declaring it first and then stating how it behaves using
-the universal quantifier discussed earlier.
+We should give the formal definition of the function by declaring it first and then state how it behaves using
+the universal quantifier discussed earlier, so let's do that now.
 
 $
 & f:RR -> RR; \
 & forall x:RR {f(x) = x^2 + 3 x + 2}; \
 $
 
-For this example I said that the function _real_ meaning that it takes real numbers as its inputs and returns a real number
-as its output, and as you can see the function is defined that way, as well as the variable $x$.
-However, if someone gives you a polynomial function, it is assumed to be complex.
-That is the most general type of polynomial function.
+In this example, the function is _real_, meaning that it takes a real number as its input and returns a real number
+as its output, and as you can see the function is defined that way.
+However, if someone hands you some random polynomial function, it is usually assumed to be _complex_,
+because that's the most general type of polynomial function. Here is how that looks in our formal language:
 
+$
+& f:CC -> CC; \
+& forall x:CC {f(x) = x^2 + 3 x + 2}; \
+$
+
+We can classify any polynomial function in several ways:
+
+- by the type of the coefficients
+- by the number of terms
+- by the highest power of any of the terms
+- by the number of variables
+
+A polynomial function with integer coefficients is called an _integer polynomial function_.
+One with real coefficients is called a _real polynomial function_,
+and one with complex coefficients is called a _complex polynomial function_.
+
+Polynomial functions with one, two, or three terms are called _monomial_, _binomial_, or _trinomial_ respectively.
+Sometimes a polynomial function with two or more terms is called a _multinomial_ polynomial function.
+
+The highest power of the variable in any term is called the _degree_ of the polynomial function.
+Polynomial functions with degree 1, 2, and 3 are called linear, quadratic, and cubic, respectively,
+and one with degree zero is just a constant.
+
+You can also have polynomial functions with more than one variable, but as mentioned earlier we're only going to be talking
+about single variable, _univariate_, functions here.
 
 == Taylor polynomials
+
+This one is pretty easy to explain -- well, at least the basics of it are.
+
+A Taylor polynomial is just a polynomial function with special coefficients.
+Here's what those special coefficients look like:
+
+$ (f^((k))(c))/k! $
+
+The coefficient is the $k$#super[th] derivative of the function $f$ -- the one we're trying to approximate --
+applied to some constant $c$, called the _center_,
+all divided by the factorial of $k$, where $k$ is an index that runs from zero up to and including the degree of the polynomial function.
+Here's what each term of a Taylor polynomial looks like:
+
+$ (f^((k))(c))/k! (x-c)^k $
+
+Let's say we want a Taylor polynomial of degree 3.
+Here's what that would look like:
+
+$ (f^((0))(c))/0! (x-c)^0  + (f^((1))(c))/1! (x-c)^1 + (f^((2))(c))/2! (x-c)^2 + (f^((3))(c))/3! (x-c)^3 $
+
+See how $k$ runs from zero up to and including 3.
+But wait a second! Is that really a polynomial function? I mean each term has a coefficient but it's multiplying $(x-c)$ not $x$. Hmm..
 
 == Power series
 
