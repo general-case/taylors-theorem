@@ -416,9 +416,14 @@ about single variable, _univariate_, functions here.
 
 == Taylor polynomials
 
-This one is pretty easy to explain -- well, at least the basics of it are.
+The whole point of the Taylor polynomial is to approximate some function $f$ at some point $c$,
+called the center, using a polynomial function. The reason for doing this is because polynomial functions are easy to compute.
+The more terms we add to the Taylor polynomial the better the approximation becomes.
 
-A Taylor polynomial is just a polynomial function with special coefficients.
+Let's start by describing what the Taylor polynomial actually is and how it's built,
+and then we'll go over the reason why it's built the way it is.
+
+The Taylor polynomial is just a polynomial function with special coefficients.
 Here's what those special coefficients look like:
 
 $ (f^((k))(c))/k! $
@@ -436,7 +441,65 @@ Here's what that would look like:
 $ (f^((0))(c))/0! (x-c)^0  + (f^((1))(c))/1! (x-c)^1 + (f^((2))(c))/2! (x-c)^2 + (f^((3))(c))/3! (x-c)^3 $
 
 See how $k$ runs from zero up to and including 3.
-But wait a second! Is that really a polynomial function? I mean each term has a coefficient but it's multiplying $(x-c)$ not $x$. Hmm..
+But wait a second! Is that really a polynomial function? I mean each term has a coefficient but it's multiplying $(x-c)$ not $x$. Hmm...
+Well, yes it is a polynomial function, but to see why we'll need to expand some of the terms.
+
+The first term ($k=0$) is just $f(c)$, because $ f^((0)) = f$, $0! = 1$, and $(x-c)^0=1$. So the first term is just a constant.
+
+If you distribute the coefficient, the next term ($k=1$) looks like this:
+
+$ (f^((1))(c))/1! x - (f^((1))(c))/1! c $
+
+This is a polynomial function of degree 1.
+
+If you expand $(x-c)^2$ and distribute the coefficient, the third term ($k=2$) looks like this:
+
+$ (f^((2))(c))/1! x^2 - (f^((2))(c))/1! 2x c + (f^((2))(c))/1! c^2 $
+
+It's still a polynomial function, this time of degree 2.
+
+So each one of these expansions is by itself a polynomial function, and if we add them all together we still have a polynomial function.
+In other words, the Taylor polynomial is indeed a polynomial function.
+
+Now you may have one other nagging doubt regarding the Taylor polynomial.
+If the goal is to use the Taylor polynomial and its unbounded version the Taylor series, to _define_ the function $f$,
+how do we know the derivatives of $f$ before we have the definition?
+That's a good question, and one we'll address later when we develop the Taylor series for the sine function from scratch,
+so hold that thought for now.
+
+Going forward we don't want to have to write out every Taylor polynomial in long form, so of course we'll make use of sigma notation
+to express things more concisely.
+For the Taylor polynomial of degree 3 that we showed earlier, the sigma notation version looks like this:
+
+$ sum_(k=0)^3 (f^((k))(c))/k! (x-c)^k $
+
+In general, for some $n$ number of terms the sigma notation version looks like this:
+
+$ sum_(k=0)^n (f^((k))(c))/k! (x-c)^k $
+
+We can make things even more concise by using a notation parameterized by the degree $n$ and the center $c$:
+
+$ T_(n,c)(x) = sum_(k=0)^n (f^((k))(c))/k! (x-c)^k $
+
+Of course, the Taylor polynomial is just a special case of the polynomial function that we discussed previously,
+so I should give the excruciatingly formal definition of it, and since in this paper we'll only be discussing real Taylor polynomials
+I'll _keep it real_.
+Here's the formal definition:
+
+$
+& T_(n,c):RR -> RR; \
+& forall x:RR {T_(n,c)(x) = sum_(k=0)^n (f^((k))(c))/k! (x-c)^k}; \
+$
+
+Now let's talk about why the Taylor polynomial is constructed this way.
+
+A long time ago, in the early 1700's, a very smart person -- a genius in fact -- Brooke Taylor,
+reasoned that if your trying to approximate an arbitrary function $f$ with a polynomial function at and near some point $c$, the center,
+you should probably construct your polynomial function so that it matches the first few derivatives of $f$ at the point $c$.
+That way, at $c$, $f$ and your polynomial function will match exactly at point $c$, but in addition _around_ $c$
+the function's slope will match and the curvature will match, and so on.
+
+And the more terms we add to $T_(n,c)$, the more closely it will approximate $f$.
 
 == Power series
 
