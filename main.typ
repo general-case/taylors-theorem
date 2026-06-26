@@ -414,11 +414,28 @@ and one with degree zero is just a constant.
 You can also have polynomial functions with more than one variable, but as mentioned earlier we're only going to be talking
 about single variable, _univariate_, functions here.
 
+If we want to write a general polynomial function concisely, we can use sigma notation like this:
+
+$ P_n(x) = sum_(k=0)^n a_k x^k $
+
+In this notation, $n$ is the degree of the polynomial function,
+and $k$ is an index that runs from zero up to and including $n$.
+
+The coefficient on each term is represented by $a_k$, which is the $k$#super[th] coefficient,
+and $a_k$ is nothing more than a function from the natural numbers into the real or complex numbers
+like this:
+
+$
+& a:NN -> CC; \
+$
+
+
 == Taylor polynomials
 
 The whole point of the Taylor polynomial is to approximate some function $f$ at some point $c$,
 called the center, using a polynomial function. The reason for doing this is because polynomial functions are easy to compute.
-The more terms we add to the Taylor polynomial the better the approximation becomes.
+And, the more terms we add to the Taylor polynomial the better the approximation becomes.
+In fact, Taylor's theorem quantifies precisely how much better the approximation gets as you add more terms.
 
 Let's start by describing what the Taylor polynomial actually is and how it's built,
 and then we'll go over the reason why it's built the way it is.
@@ -467,13 +484,13 @@ how do we know the derivatives of $f$ before we have the definition?
 That's a good question, and one we'll address later when we develop the Taylor series for the sine function from scratch,
 so hold that thought for now.
 
-Going forward we don't want to have to write out every Taylor polynomial in long form, so of course we'll make use of sigma notation
-to express things more concisely.
+Going forward we don't want to have to write out every Taylor polynomial in long form,
+so of course we'll make use of sigma notation to express things more concisely.
 For the Taylor polynomial of degree 3 that we showed earlier, the sigma notation version looks like this:
 
 $ sum_(k=0)^3 (f^((k))(c))/k! (x-c)^k $
 
-In general, for some $n$ number of terms the sigma notation version looks like this:
+In general, for some $n$-degree Taylor polynomial the sigma notation version looks like this:
 
 $ sum_(k=0)^n (f^((k))(c))/k! (x-c)^k $
 
@@ -484,7 +501,7 @@ $ T_(n,c)(x) = sum_(k=0)^n (f^((k))(c))/k! (x-c)^k $
 Of course, the Taylor polynomial is just a special case of the polynomial function that we discussed previously,
 so I should give the excruciatingly formal definition of it, and since in this paper we'll only be discussing real Taylor polynomials
 I'll _keep it real_.
-Here's the formal definition:
+Here's the formal definition of the function:
 
 $
 & T_(n,c):RR -> RR; \
@@ -493,13 +510,27 @@ $
 
 Now let's talk about why the Taylor polynomial is constructed this way.
 
-A long time ago, in the early 1700's, a very smart person -- a genius in fact -- Brooke Taylor,
-reasoned that if your trying to approximate an arbitrary function $f$ with a polynomial function at and near some point $c$, the center,
+A long time ago, back in the early 1700's, a very smart person -- a genius in fact -- Brooke Taylor,
+reasoned that if you're trying to approximate an arbitrary function $f$ with a polynomial function at and near some point $c$, the center,
 you should probably construct your polynomial function so that it matches the first few derivatives of $f$ at the point $c$.
-That way, at $c$, $f$ and your polynomial function will match exactly at point $c$, but in addition _around_ $c$
-the function's slope will match and the curvature will match, and so on.
+That way, not only will $f$ and your polynomial function match exactly at point $c$, but in some neighborhood _around_ $c$
+the slopes of the functions will match, their curvatures will match, and so on.
+The more terms you add to your approximating polynomial function, the more of its properties will match those of $f$
+and therefore the more closely it will approximate $f$.
+The Taylor polynomial $T_(n,c)$ is purposely designed so that it matches the value of $f$ at $c$
+and similarly all of its derivatives match those of $f$ at $c$
+up to and including the $n$#super[th] derivative.
 
-And the more terms we add to $T_(n,c)$, the more closely it will approximate $f$.
+Let's look at an example of how this works.
+Suppose we want to approximate the function $f(x) = x^4$ at 2 (our chosen center) with a Taylor polynomial.
+IRL we probably wouldn't need to do this because $x^4$ is simple enough to calculate, but this example is just for demonstration purposes.
+
+$
+& f^((0))(x) = x^4      #h(8em)     & T_(3,2)^((0))(x) = x^4 \
+& f^((1))(x) = 4x^3     #h(8em)     & T_(3,2)^((0))(x) = x^4 \
+& f^((2))(x) = 12x^2    #h(8em)     & T_(3,2)^((0))(x) = x^4 \
+& f^((3))(x) = 24x      #h(8em)     & T_(3,2)^((0))(x) = x^4 \
+$
 
 == Power series
 
