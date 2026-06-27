@@ -523,14 +523,64 @@ up to and including the $n$#super[th] derivative.
 
 Let's look at an example of how this works.
 Suppose we want to approximate the function $f(x) = x^4$ at 2 (our chosen center) with a Taylor polynomial.
-IRL we probably wouldn't need to do this because $x^4$ is simple enough to calculate, but this example is just for demonstration purposes.
+IRL we probably wouldn't need to do this because $x^4$ is simple enough to calculate,
+and of course $x^4$ is already a polynomial function,
+but this example is just for demonstration purposes.
+
+Ok, let's start by listing the first four derivatives of $x^4$ and the values of those derivatives evaluated at our center 2.
+By the way, I'm counting the zeroth derivative, i.e. $f^((0))$, as the first one. This is just the function itself.
+Here's what we get:
 
 $
-& f^((0))(x) = x^4      #h(8em)     & T_(3,2)^((0))(x) = x^4 \
-& f^((1))(x) = 4x^3     #h(8em)     & T_(3,2)^((0))(x) = x^4 \
-& f^((2))(x) = 12x^2    #h(8em)     & T_(3,2)^((0))(x) = x^4 \
-& f^((3))(x) = 24x      #h(8em)     & T_(3,2)^((0))(x) = x^4 \
+& f^((0))(x) = x^4      #h(8em)     & f^((0))(2) = 16 \
+& f^((1))(x) = 4x^3     #h(8em)     & f^((1))(2) = 32 \
+& f^((2))(x) = 12x^2    #h(8em)     & f^((2))(2) = 48 \
+& f^((3))(x) = 24x      #h(8em)     & f^((3))(2) = 48 \
 $
+
+Now here is Taylor polynomial of degree 3 centered at 2, i.e. $T_(3,2)(x)$, for $x^4$:
+
+$ ((x^4)^((0))(2))/0! (x-2)^0  + ((x^4)^((1))(2))/1! (x-2)^1 + ((x^4)^((2))(2))/2! (x-2)^2 + ((x^4)^((3))(2))/3! (x-2)^3 wide $
+
+We have already listed the first four derivatives of $x^4$ evaluated at 2 so let's substitute those values in now:
+
+$ 16/0! (x-2)^0  + 32/1! (x-2)^1 + 48/2! (x-2)^2 + 48/3! (x-2)^3 $
+
+Doing some arithmetic (recall $0! = 1$, $1! = 1$, and $(x-2)^0 = 1$) we get:
+
+$ 16 + 32 (x-2)^1 + 24 (x-2)^2 + 8 (x-2)^3 $
+
+Now let's compute the first four derivatives of our Taylor polynomial, and remember I'm counting the zeroth derivative as the first one.
+We're going to use the chain rule here so you might think things are going to get complicated.
+However, because the inner function in each term is $(x-2)$ and its derivative is just 1,
+we can more or less ignore the chain rule and just differentiate the outer function in each case.
+
+$
+& T_(3,2)(x)^((0)) = 16 + 32 (x-2)^1 + 24 (x-2)^2 + 8 (x-2)^3 \
+& T_(3,2)(x)^((1)) = 32 + 48 (x-2)^1 + 24 (x-2)^2 \
+& T_(3,2)(x)^((2)) = 48 + 48 (x-2)^1 \
+& T_(3,2)(x)^((3)) = 48 \
+$
+
+Remember that Brooke Taylor's original idea was that the derivatives of the Taylor polynomial should match the derivatives of the function
+we're approximating exactly at $c$, so the four derivatives of our $T_(3,2)(x)$ better match the derivatives of $x^4$ exactly at 2;
+otherwise we'll have old Brooke to answer to.
+Let's check that now:
+
+$
+& T_(3,2)(2)^((0)) = 16 \
+& T_(3,2)(2)^((1)) = 32 \
+& T_(3,2)(2)^((2)) = 48 \
+& T_(3,2)(2)^((3)) = 48 \
+$
+
+Ok, they match perfectly.
+According to Brooke Taylor, the fact that the first four derivatives of our Taylor polynomial match the first four derivatives of $x^4$
+should make our $T_(3,2)(x)$ a pretty good approximation of $x^4$ in the neighborhood of 2.
+At this point, you'd be justified in asking what do I mean by _neighborhood_, and it's fair to say I have been a bit hand-wavy
+on this terminology so far.
+The precise meaning of neighborhood and how good of an approximation the Taylor polynomial is to the function is the topic
+of Taylor's theorem, so let's put a pin in that question for now.
 
 == Power series
 
