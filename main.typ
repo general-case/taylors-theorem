@@ -416,10 +416,9 @@ about single variable, _univariate_, functions here.
 
 If we want to write a general polynomial function concisely, we can use sigma notation like this:
 
-$ P_n(x) = sum_(k=0)^n a_k x^k $
+$ sum_(k=0)^n a_k x^k $
 
-In this notation, $n$ is the degree of the polynomial function,
-and $k$ is an index that runs from zero up to and including $n$.
+Here, $k$ is an index that runs from zero up to and including the degree $n$.
 
 The coefficient on each term is represented by $a_k$, which is the $k$#super[th] coefficient,
 and $a_k$ is nothing more than a function from the natural numbers into the real or complex numbers
@@ -429,6 +428,9 @@ $
 & a:NN -> CC; \
 $
 
+It's also common to represent a general polynomial function with a function parameterized by the degree $n$ like this:
+
+$ P_n(x) = sum_(k=0)^n a_k x^k $
 
 == Taylor polynomials
 
@@ -463,7 +465,7 @@ Well, yes it is a polynomial function, but to see why we'll need to expand some 
 
 The first term ($k=0$) is just $f(c)$, because $ f^((0)) = f$, $0! = 1$, and $(x-c)^0=1$. So the first term is just a constant.
 
-If you distribute the coefficient, the next term ($k=1$) looks like this:
+If you distribute the coefficient over $(x-c)^1$, the next term ($k=1$) looks like this:
 
 $ (f^((1))(c))/1! x - (f^((1))(c))/1! c $
 
@@ -508,6 +510,9 @@ $
 & forall x:RR {T_(n,c)(x) = sum_(k=0)^n (f^((k))(c))/k! (x-c)^k}; \
 $
 
+There's one last thing to mention before we move on.
+Some authors like to call the center point the _anchor point_ and they usually denote it with the letter $a$.
+
 Now let's talk about why the Taylor polynomial is constructed this way.
 
 A long time ago, back in the early 1700's, a very smart person -- a genius in fact -- Brooke Taylor,
@@ -521,13 +526,13 @@ The Taylor polynomial $T_(n,c)$ is purposely designed so that it matches the val
 and similarly all of its derivatives match those of $f$ at $c$
 up to and including the $n$#super[th] derivative.
 
-Let's look at an example of how this works.
+Let's look at an example to see how this works.
 Suppose we want to approximate the function $f(x) = x^4$ at 2 (our chosen center) with a Taylor polynomial.
-IRL we probably wouldn't need to do this because $x^4$ is simple enough to calculate,
+IRL we probably wouldn't ever do this because $x^4$ is simple enough to calculate,
 and of course $x^4$ is already a polynomial function,
 but this example is just for demonstration purposes.
 
-Ok, let's start by listing the first four derivatives of $x^4$ and the values of those derivatives evaluated at our center 2.
+Ok, let's start by listing the first four derivatives of $x^4$ along with the values of those derivatives evaluated at our center 2.
 By the way, I'm counting the zeroth derivative, i.e. $f^((0))$, as the first one. This is just the function itself.
 Here's what we get:
 
@@ -546,14 +551,14 @@ We have already listed the first four derivatives of $x^4$ evaluated at 2 so let
 
 $ 16/0! (x-2)^0  + 32/1! (x-2)^1 + 48/2! (x-2)^2 + 48/3! (x-2)^3 $
 
-Doing some arithmetic (recall $0! = 1$, $1! = 1$, and $(x-2)^0 = 1$) we get:
+Finally, doing some arithmetic (recall $0! = 1$, $1! = 1$, and $(x-2)^0 = 1$) we get:
 
-$ 16 + 32 (x-2)^1 + 24 (x-2)^2 + 8 (x-2)^3 $
+$ T_(3,2)(x) = 16 + 32 (x-2)^1 + 24 (x-2)^2 + 8 (x-2)^3 $
 
-Now let's compute the first four derivatives of our Taylor polynomial, and remember I'm counting the zeroth derivative as the first one.
-We're going to use the chain rule here so you might think things are going to get complicated.
-However, because the inner function in each term is $(x-2)$ and its derivative is just 1,
-we can more or less ignore the chain rule and just differentiate the outer function in each case.
+Now let's compute the first four derivatives of our Taylor polynomial, and again I'm counting the zeroth derivative as the first one.
+We're going to use the chain rule here, so you may be thinking that things are about to get complicated.
+However, it turns out that because the inner function in each term is $(x-2)$, its derivative is just 1,
+so that we can, for all intents and purposes, ignore the chain rule and just differentiate the outer function of each term.
 
 $
 & T_(3,2)(x)^((0)) = 16 + 32 (x-2)^1 + 24 (x-2)^2 + 8 (x-2)^3 \
@@ -574,13 +579,54 @@ $
 & T_(3,2)(2)^((3)) = 48 \
 $
 
-Ok, they match perfectly.
+They match perfectly. Good!
+
 According to Brooke Taylor, the fact that the first four derivatives of our Taylor polynomial match the first four derivatives of $x^4$
-should make our $T_(3,2)(x)$ a pretty good approximation of $x^4$ in the neighborhood of 2.
+should make $T_(3,2)(x)$ a pretty good approximation of $x^4$ in the neighborhood of 2.
 At this point, you'd be justified in asking what do I mean by _neighborhood_, and it's fair to say I have been a bit hand-wavy
 on this terminology so far.
-The precise meaning of neighborhood and how good of an approximation the Taylor polynomial is to the function is the topic
+The precise meaning of neighborhood and how good of an approximation the Taylor polynomial is to the function is precisely the topic
 of Taylor's theorem, so let's put a pin in that question for now.
+
+To get a visual of how the approximation works, you could copy-paste our target function $f(x) = x^4$ and our
+Taylor Polynomial \
+$T_(3,2)(x) = 16 + 32 (x-2)^1 + 24 (x-2)^2 + 8 (x-2)^3$
+into a graphing calculator like Desmos. Unfortunately, Desmos doesn't allow more than one subscript on function names, so you'd need
+to name the Taylor polynomial function something like $T(x)$.
+You'll see immediately that the approximation is really good at and around $c=2$ for degree $n=3$.
+But what about for other values of $c$ and $n$?
+In Desmos you can set up a general Taylor polynomial, but, be warned, it's a bit clunky. Here's how.
+
+First, you'll need a couple of sliders for $n$ and $c$, and you'll want to enter the function $f(x) = x^4$.
+
+Next you'll need to enter a list of derivatives evaluated at $c$:
+
+$ D = [f(c), f'(c), f''(c), f'''(c), f''''(c), f'''''(c), f''''''(c), f'''''''(c)] $
+
+Desmos doesn't support the superscript notation for derivatives, so you have to use all those primes.
+
+Finally, enter the general Taylor polynomial itself:
+
+$ T(x) = sum_(k=0)^n D[k+1]/k! (x-c)^k $
+
+Note: Desmos uses 1-based indexing for lists. That's why we have $D[k+1]$ instead of $D[k]$ in the coefficient.
+
+Playing around with the sliders you'll discover a couple interesting things.
+First, for $n=3$ the approximation is really good for $c!=0$, but at $c=0$, $T(x)$ is just zero everywhere.
+Not good, but you can see why: $x^4$ and all of its derivatives are equal to zero when evaluated at zero.
+That makes the whole approximation equal to zero for $c=0$.
+This is not always the case for other functions.
+In fact, you can easily change the function in your Desmos set up to another one, sine for example, by setting $f(x) = sin(x)$.
+Try it and see what happens.
+
+Second, you'll notice if you increase the degree to 4 or more, the approximation is perfect.
+In other words, the Taylor polynomial becomes exactly equal to the target function $x^4$.
+
+Ok, so that about wraps it up for Taylor polynomials.
+A Taylor polynomial is nothing more than an ordinary polynomial with special coefficients engineered so that when evaluated at the center $c$,
+the value and the values of the first $n$ derivatives match those of the function being approximated.
+We left a couple of questions regarding neighborhoods and how to get the derivatives of $f$ unresolved,
+but we'll address those in due course.
 
 == Power series
 
