@@ -473,7 +473,7 @@ This is a polynomial function of degree 1.
 
 If you expand $(x-c)^2$ and distribute the coefficient, the third term ($k=2$) looks like this:
 
-$ (f^((2))(c))/1! x^2 - (f^((2))(c))/1! 2x c + (f^((2))(c))/1! c^2 $
+$ (f^((2))(c))/2! x^2 - (f^((2))(c))/2! 2x c + (f^((2))(c))/2! c^2 $
 
 It's still a polynomial function, this time of degree 2.
 
@@ -588,22 +588,28 @@ on this terminology so far.
 The precise meaning of neighborhood and how good of an approximation the Taylor polynomial is to the function is precisely the topic
 of Taylor's theorem, so let's put a pin in that question for now.
 
-To get a visual of how the approximation works, you could copy-paste our target function $f(x) = x^4$ and our
+To get a visual of how the approximation works, it's helpful to examine the system in a graphing calculator.
+We'll assume Desmos here, but there are other graphing solutions like Geogebra or Wolfram Alpha.
+
+Start by copy-pasting the target function $f(x) = x^4$ and the
 Taylor Polynomial \
 $T_(3,2)(x) = 16 + 32 (x-2)^1 + 24 (x-2)^2 + 8 (x-2)^3$
-into a graphing calculator like Desmos. Unfortunately, Desmos doesn't allow more than one subscript on function names, so you'd need
+into Desmos cells.
+Unfortunately, Desmos doesn't allow more than one subscript on function names, so you'll need
 to name the Taylor polynomial function something like $T(x)$.
-You'll see immediately that the approximation is really good at and around $c=2$ for degree $n=3$.
+You'll notice immediately that the approximation is really good at and around $c=2$ for degree $n=3$.
 But what about for other values of $c$ and $n$?
-In Desmos you can set up a general Taylor polynomial, but, be warned, it's a bit clunky. Here's how.
+You study what happens at other values by setting up a _general_ Taylor polynomial in Desmos.
+Be warned, the set up is a bit clunky.
+Here's how.
 
-First, you'll need a couple of sliders for $n$ and $c$, and you'll want to enter the function $f(x) = x^4$.
+First, you'll need a couple of sliders for $n$ and $c$.
 
-Next you'll need to enter a list of derivatives evaluated at $c$:
+Next you'll need to enter a list of derivatives of $f$ evaluated at $c$:
 
 $ D = [f(c), f'(c), f''(c), f'''(c), f''''(c), f'''''(c), f''''''(c), f'''''''(c)] $
 
-Desmos doesn't support the superscript notation for derivatives, so you have to use all those primes.
+Desmos doesn't support the superscript notation for derivatives, so you have no choice but to use all those primes.
 
 Finally, enter the general Taylor polynomial itself:
 
@@ -612,18 +618,26 @@ $ T(x) = sum_(k=0)^n D[k+1]/k! (x-c)^k $
 Note: Desmos uses 1-based indexing for lists. That's why we have $D[k+1]$ instead of $D[k]$ in the coefficient.
 
 Playing around with the sliders you'll discover a couple interesting things.
+
 First, for $n=3$ the approximation is really good for $c!=0$, but at $c=0$, $T(x)$ is just zero everywhere.
 Not good, but you can see why: $x^4$ and all of its derivatives are equal to zero when evaluated at zero.
 That makes the whole approximation equal to zero for $c=0$.
-This is not always the case for other functions.
-In fact, you can easily change the function in your Desmos set up to another one, sine for example, by setting $f(x) = sin(x)$.
+This is not always the case however. For many functions, the approximation is very good at $c=0$.
+In fact, a Taylor polynomial centered at zero has a special name; it's called a Maclaurin polynomial.
+You can easily change the target function in your Desmos set up to another one, sine for example, by setting $f(x) = sin(x)$.
 Try it and see what happens.
 
-Second, you'll notice if you increase the degree to 4 or more, the approximation is perfect.
+Second, you'll notice that if you increase the degree to 4 or more, the approximation is perfect.
 In other words, the Taylor polynomial becomes exactly equal to the target function $x^4$.
+Perhaps it's not too surprising that the Taylor polynomial morphs itself into the target polynomial when its degree
+matches the degree of the target polynomial function.
+This phenomenon underscores why there is little value to approximating polynomial functions with Taylor polynomials.
+The real pay off comes with approximating other kinds of functions, such as the transcendental functions
+$sin x$, $cos x$, and $e^x$.
 
 Ok, so that about wraps it up for Taylor polynomials.
-A Taylor polynomial is nothing more than an ordinary polynomial with special coefficients engineered so that when evaluated at the center $c$,
+A Taylor polynomial is nothing more than an ordinary polynomial function with special coefficients engineered
+so that when evaluated at the center $c$,
 the value and the values of the first $n$ derivatives match those of the function being approximated.
 We left a couple of questions regarding neighborhoods and how to get the derivatives of $f$ unresolved,
 but we'll address those in due course.
