@@ -650,9 +650,9 @@ Here is the definition using sigma notation:
 
 $ sum_(n=0)^oo a_n (x-c)^n $ <exp:power_series>
 
-Strictly speaking, a power series is not a polynomial function, because, as you may recall, the defining characteristics of
-polynomial functions is that they have a finite number of terms and a finite degree.
-Just like with polynomial functions, there is an index, but this time the index runs from zero all the way to infinity.
+Strictly speaking, a power series is not a polynomial function, because, as you may recall, one of the defining characteristics of
+polynomial functions is that they have a finite number of terms and consequently a finite degree.
+Just like in the sigma notation for polynomial functions, there is an index, but this time the index runs from zero all the way to infinity.
 For this reason, we usually name the index $n$ as opposed to $k$.
 And just like with polynomial functions, there is a coefficient $a_n$, which again is a function from the natural numbers to the real
 or complex numbers.
@@ -660,20 +660,26 @@ Notice, however, that there is a new feature, the center $c$.
 Because power series have an infinite number of terms, we have to worry about _convergence_, so let's talk about that now.
 
 Technically, the sigma notation we used in @exp:power_series[expression] is not quite right.
-In fact, what we wrote is a kind of notational convenience, sometimes called _abuse of notation_, that's more or less
-suggestive of the meaning we intend.
-The problem is the infinity symbol $oo$ on top of the $sum$ symbol, which suggests a completed infinity, whereas what we actually
-want is the value that the sum approaches as $n$ increases without bound. In other words, we need a limit, like this:
+In fact, what we wrote is a kind of notational convenience, sometimes called _abuse of notation_ in mathematics textbooks,
+that's more or less suggestive of the meaning we intend.
+The problem is the infinity symbol $oo$ on top of the $sum$ symbol, which represents a _completed infinity_, but what we actually
+want is the value that the sum approaches as $n$ increases without bound.
+In other words, we need a limit, like this:
 
 $ lim_(n->oo) sum_(k=0)^n a_k (x-c)^k $ <exp:power_series_limit>
 
 If you're familiar with calculus,
-you may recognize the similarity of the notational convenience to an improper integral which is also essentially a limit.
+you may recognize the similarity of the notational convenience to that of an _improper integral_,
+which, as it turns out, is the limit of a definite integral.
+
+The limit is guaranteed to exist at $c$, but it may or may not exist in a region around $c$ known as the _interval of convergence_, or IOC.
+The distance from the center to the outermost values for which the limit exists is called the _radius of convergence_, or ROC.
+Why _radius_? Recall we mentioned that the default domain for polynomial functions is the complex numbers.
+The complex numbers can be visualized as existing in a plane.
+The region around $c$ where the power series converges is therefore a disc.
+
 
 == Taylor series
-
-
-
 
 
 #pagebreak()
