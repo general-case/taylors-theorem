@@ -243,7 +243,7 @@ But if sets are collections of things what about the elements of a set?
 Aren't they some kind of atomic object with no internal structure?
 Well yes and no. Some accounts of mathematics include a third kind of basic object called a _urelement_ that is indeed an atomic
 object with no internal structure. However, if you think about it, you could use either a function or a set as a urelement as long
-as you decide not to talk about the internal structure of the element, and that's exactly what we'll do here.
+as you commit to not talking about its internal structure, and that's exactly what we'll do here.
 We can think of our simple set elements as being either sets or functions, but we're not going to say which and we're not going
 to talk about their set or function properties.
 
@@ -644,7 +644,36 @@ but we'll address those in due course.
 
 == Power series
 
+You can think of a power series as an infinite version of a polynomial function,
+with an infinite number of terms and an infinite degree.
+Here is the definition using sigma notation:
+
+$ sum_(n=0)^oo a_n (x-c)^n $ <exp:power_series>
+
+Strictly speaking, a power series is not a polynomial function, because, as you may recall, the defining characteristics of
+polynomial functions is that they have a finite number of terms and a finite degree.
+Just like with polynomial functions, there is an index, but this time the index runs from zero all the way to infinity.
+For this reason, we usually name the index $n$ as opposed to $k$.
+And just like with polynomial functions, there is a coefficient $a_n$, which again is a function from the natural numbers to the real
+or complex numbers.
+Notice, however, that there is a new feature, the center $c$.
+Because power series have an infinite number of terms, we have to worry about _convergence_, so let's talk about that now.
+
+Technically, the sigma notation we used in @exp:power_series[expression] is not quite right.
+In fact, what we wrote is a kind of notational convenience, sometimes called _abuse of notation_, that's more or less
+suggestive of the meaning we intend.
+The problem is the infinity symbol $oo$ on top of the $sum$ symbol, which suggests a completed infinity, whereas what we actually
+want is the value that the sum approaches as $n$ increases without bound. In other words, we need a limit, like this:
+
+$ lim_(n->oo) sum_(k=0)^n a_k (x-c)^k $ <exp:power_series_limit>
+
+If you're familiar with calculus,
+you may recognize the similarity of the notational convenience to an improper integral which is also essentially a limit.
+
 == Taylor series
+
+
+
 
 
 #pagebreak()
