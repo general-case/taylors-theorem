@@ -183,8 +183,8 @@ For our three objects, the declarations would be written something like: "let $n
 and "let $S$ be a set of integers".
 
 Incidentally, programmers are very used to this idea of declaring objects before using them.
-Back in the day, programming languages required that you declare every single object before use, but these days some programming languages
-figure out (_infer_) the declaration for you based on the context in which the object is used.
+Back in the day, programming languages required that you declare every single object before use, but these days many programming languages
+figure out, or _infer_, the declaration for you based on the context in which the object is used.
 Here are our declarations as they might appear in the C programming language.
 
 ```c
@@ -424,9 +424,7 @@ The coefficient on each term is represented by $a_k$, which is the $k$#super[th]
 and $a_k$ is nothing more than a function from the natural numbers into the real or complex numbers
 like this:
 
-$
-& a:NN -> CC; \
-$
+$ a:NN -> CC; $
 
 It's also common to represent a general polynomial function with a function parameterized by the degree $n$ like this:
 
@@ -644,14 +642,15 @@ but we'll address those in due course.
 
 == Power series
 
-You can think of a power series as an infinite version of a polynomial function,
+Right of the bat, let's note that a power series is a function.
+In fact, you can think of a power series as an infinite version of a polynomial function,
 with an infinite number of terms and an infinite degree.
 Here is the definition using sigma notation:
 
 $ sum_(n=0)^oo a_n (x-c)^n $ <exp:power_series>
 
 Strictly speaking, a power series is not a polynomial function, because, as you may recall, one of the defining characteristics of
-polynomial functions is that they have a finite number of terms and consequently a finite degree.
+polynomial functions is that they have a finite number of terms and consequently have a finite degree.
 Just like in the sigma notation for polynomial functions, there is an index, but this time the index runs from zero all the way to infinity.
 For this reason, we usually name the index $n$ as opposed to $k$.
 And just like with polynomial functions, there is a coefficient $a_n$, which again is a function from the natural numbers to the real
@@ -671,13 +670,29 @@ $ lim_(n->oo) sum_(k=0)^n a_k (x-c)^k $ <exp:power_series_limit>
 If you're familiar with calculus,
 you may recognize the similarity of the notational convenience to that of an _improper integral_,
 which, as it turns out, is the limit of a definite integral.
+All of that said, the sigma notation we used in @exp:power_series[expression] is customary in mathematics, so we'll continue to use it here.
 
-The limit is guaranteed to exist at $c$, but it may or may not exist in a region around $c$ known as the _interval of convergence_, or IOC.
+The limit of the series is guaranteed to exist at $x=c$, but it may or may not exist elsewhere.
+The region around $c$ where the limit does exist is known as the _interval of convergence_, or IOC.
 The distance from the center to the outermost values for which the limit exists is called the _radius of convergence_, or ROC.
-Why _radius_? Recall we mentioned that the default domain for polynomial functions is the complex numbers.
+Why _radius_? Recall we mentioned that the default type for domain and range of polynomial functions is the complex numbers.
+This is true for power series too.
+That is, in it's most general form, the power series is a complex valued function of the complex numbers.
 The complex numbers can be visualized as existing in a plane.
-The region around $c$ where the power series converges is therefore a disc.
+The region around $c$ where the power series converges is therefore a disc, not just an interval, which would be the case for
+a function over the reals.
 
+Let's put everything we've learned about power series into one formal definition.
+We can use any function name we like for the power series. Here we'll just use $f$.
+
+$
+& a:NN -> CC; #h(4em) #`// General coefficient function.` #h(12em) \
+& f:CC -> CC; #h(4em) #`// The power series function.` \
+& \
+& #`// For all x, if x is within the IOC then f(x) is the limit ` \
+& #`// of the sum as n increases without bound.` \
+& forall x:CC {x in "IOC" => f(x) = sum_(n=0)^oo a_n (x-c)^n}; \
+$
 
 == Taylor series
 
