@@ -218,10 +218,11 @@ It is known as _Russell's paradox_ and there's even a translation of it written 
 In programming languages too we use types on objects (well, except in Python),
 and there's usually a type system built into the compiler that checks that every statement is correct from a types perspective.
 In programming we don't get paradoxes; we get bugs.
-In fact, arguably the second most important advance in computer science, after Turing's 1936 paper,
+In fact, arguably the second most important milestone in computer science, after Turing's seminal 1936 paper,
 was the introduction of types into programming languages (starting with the typed lambda calculus).
 A famous and very expensive bug due to a type mismatch occurred in NASA's Mars Climate Orbiter, which burned up in the Martian
-atmosphere after the software calculated the wrong orbit trajectory.
+atmosphere after the software calculated the wrong orbit trajectory
+because one component used metric units while another used imperial units.
 
 Ok, so we have introduced the names of the objects we want to talk about, but where do these objects live exactly?
 Well, some suggest that they might really exist in realm called the _Platonic Universe_, a place where perfect abstract forms exist.
@@ -642,21 +643,22 @@ but we'll address those in due course.
 
 == Power series
 
-Right of the bat, let's note that a power series is a function.
-In fact, you can think of a power series as an infinite version of a polynomial function,
+Right of the bat, I'll point out that a power series is a function.
+In fact, you can think of a power series as kind of _infinite version_ of a polynomial function,
 with an infinite number of terms and an infinite degree.
-Here is the definition using sigma notation:
+Now strictly speaking, a power series is not a polynomial function, because, obviously,
+one of the defining characteristics of polynomial functions is that they have a finite number of terms and consequently have a finite degree.
+That said, the analogy is good enough to help with understanding this new object.
+Here is the definition of a general power series using sigma notation:
 
 $ sum_(n=0)^oo a_n (x-c)^n $ <exp:power_series>
 
-Strictly speaking, a power series is not a polynomial function, because, as you may recall, one of the defining characteristics of
-polynomial functions is that they have a finite number of terms and consequently have a finite degree.
 Just like in the sigma notation for polynomial functions, there is an index, but this time the index runs from zero all the way to infinity.
 For this reason, we usually name the index $n$ as opposed to $k$.
 And just like with polynomial functions, there is a coefficient $a_n$, which again is a function from the natural numbers to the real
 or complex numbers.
 Notice, however, that there is a new feature, the center $c$.
-Because power series have an infinite number of terms, we have to worry about _convergence_, so let's talk about that now.
+Because power series have an infinite number of terms, we need to worry about _convergence_, so let's talk about that now.
 
 Technically, the sigma notation we used in @exp:power_series[expression] is not quite right.
 In fact, what we wrote is a kind of notational convenience, sometimes called _abuse of notation_ in mathematics textbooks,
@@ -672,26 +674,28 @@ you may recognize the similarity of the notational convenience to that of an _im
 which, as it turns out, is the limit of a definite integral.
 All of that said, the sigma notation we used in @exp:power_series[expression] is customary in mathematics, so we'll continue to use it here.
 
-The limit of the series is guaranteed to exist at $x=c$, but it may or may not exist elsewhere.
+The limit of any power series is guaranteed to exist at $x=c$, but it may or may not exist elsewhere.
 The region around $c$ where the limit does exist is known as the _interval of convergence_, or IOC.
 The distance from the center to the outermost values for which the limit exists is called the _radius of convergence_, or ROC.
 Why _radius_? Recall we mentioned that the default type for domain and range of polynomial functions is the complex numbers.
 This is true for power series too.
 That is, in it's most general form, the power series is a complex valued function of the complex numbers.
 The complex numbers can be visualized as existing in a plane.
-The region around $c$ where the power series converges is therefore a disc, not just an interval, which would be the case for
-a function over the reals.
+The region around $c$ where the power series converges is therefore a disc, not just an interval in the reals.
+Some authors call this region in the complex plane the _disc of convergence_ to distinguish it from a real interval.
+To keep things simple, we're going to discuss only real power series.
 
 Let's put everything we've learned about power series into one formal definition.
 We can use any function name we like for the power series. Here we'll just use $f$.
+Here's the definition for a general real power series:
 
 $
-& a:NN -> CC; #h(4em) #`// General coefficient function.` #h(12em) \
-& f:CC -> CC; #h(4em) #`// The power series function.` \
+& a:NN -> RR; #h(4em) #`// General coefficient function.` #h(12em) \
+& f:RR -> RR; #h(4em) #`// The power series function.` \
 & \
-& #`// For all x, if x is within the IOC then f(x) is the limit ` \
-& #`// of the sum as n increases without bound.` \
-& forall x:CC {x in "IOC" => f(x) = sum_(n=0)^oo a_n (x-c)^n}; \
+& #`// For all x, if x is within the IOC (denoted "I" here) ` \
+& #`// then f(x) is the limit of the sum as n increases without bound.` \
+& forall x:RR {x in I => f(x) = sum_(n=0)^oo a_n (x-c)^n}; \
 $
 
 == Taylor series
