@@ -674,29 +674,52 @@ you may recognize the similarity of the notational convenience to that of an _im
 which, as it turns out, is the limit of a definite integral.
 All of that said, the sigma notation we used in @exp:power_series[expression] is customary in mathematics, so we'll continue to use it here.
 
-The limit of any power series is guaranteed to exist at $x=c$, but it may or may not exist elsewhere.
-The region around $c$ where the limit does exist is known as the _interval of convergence_, or IOC.
-The distance from the center to the outermost values for which the limit exists is called the _radius of convergence_, or ROC.
+We said that a power series is a function which we can give a name to, say $f$.
+The limit of our power series $f$ as $n$ increases without bound for some value of $x$ is the value of the function evaluated at $x$, $f(x)$,
+but as is the case with any limit we have to be concerned about whether that limit exists or not.
+It turns out that the limit of any power series is guaranteed to exist at the center, $x=c$, but it may or may not exist elsewhere.
+The region around $c$ where the limit _does_ exist is known as the _interval of convergence_, or the IOC.
+For values inside the IOC, the function has a value, but for values outside the series _diverges_, which means the value of the function at those
+outside points shoots off to positive or negative infinity.
+The distance from the center to the outermost values for which the limit exists is called the _radius of convergence_, or the ROC.
 Why _radius_? Recall we mentioned that the default type for domain and range of polynomial functions is the complex numbers.
 This is true for power series too.
 That is, in it's most general form, the power series is a complex valued function of the complex numbers.
 The complex numbers can be visualized as existing in a plane.
-The region around $c$ where the power series converges is therefore a disc, not just an interval in the reals.
-Some authors call this region in the complex plane the _disc of convergence_ to distinguish it from a real interval.
-To keep things simple, we're going to discuss only real power series.
+The region around $c$ where the power series converges is therefore a disc in the complex plane, not just an interval in the reals.
+Some authors call this region in the complex plane the _disc of convergence_, or the DOC, to distinguish it from a real interval.
+To keep things simple, we're going to discuss only real power series, so we will only need to think about IOCs not DOCs.
 
 Let's put everything we've learned about power series into one formal definition.
-We can use any function name we like for the power series. Here we'll just use $f$.
+We can use any function name we like for the power series. Here we'll just use $f$ again.
 Here's the definition for a general real power series:
 
 $
 & a:NN -> RR; #h(4em) #`// General coefficient function.` #h(12em) \
 & f:RR -> RR; #h(4em) #`// The power series function.` \
 & \
-& #`// For all x, if x is within the IOC (denoted "I" here) ` \
+& #`// For every real number x, if x is within the IOC (denoted "I" here) ` \
 & #`// then f(x) is the limit of the sum as n increases without bound.` \
 & forall x:RR {x in I => f(x) = sum_(n=0)^oo a_n (x-c)^n}; \
 $
+
+Notice that I've been suspiciously vague about that IOC. I just named it $I$, but gave no further details about it. Let's see why.
+If you know something about real intervals you'll know that they come in a four varieties depending on whether the endpoints are included in the set or not.
+An interval by the way, is just a set of contiguous points on the real number line.
+If you have a real interval with endpoints, say $a$ and $b$, you can have an _open interval_ $(a,b)$, where neither endpoint is included in the set,
+you can have a _closed interval_ $[a,b]$, where both endpoints are included,
+or you can have two _half-open_ intervals $[a,b)$ and $(a,b]$ where either $a$ or $b$ is included but not both.
+Here's the set builder notation for each of those four kinds of interval:
+
+$
+(a,b) &= { x in RR | a < x < b }   && #h(1em) #`// Open` \
+[a,b] &= { x in RR | a <= x <= b } && #h(1em) #`// Closed` \
+[a,b) &= { x in RR | a <= x < b }  && #h(1em) #`// Half-open` \
+(a,b] &= { x in RR | a < x <= b }  && #h(1em) #`// Half-open` \
+$
+
+The IOC for a power series can be any one of these cases, so if we're working with a particular power series, we need to work out its IOC.
+To do this we can use one of several convergence tests for series. Some common ones include the _ratio test_ and the _root test_.
 
 == Taylor series
 
