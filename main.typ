@@ -258,7 +258,9 @@ In everyday English, there are three kinds of sentences:
 
 That last one, the _declarative sentence_, has a parallel in mathematics called the _mathematical statement_.
 In English, declarative sentences can be true or false. For example, I can say that "the sky is blue", but you can look up and perhaps
-see that the sky is in fact grey. Similarly, a mathematical statement is either true or false. For example, $2+2=4$ is true but $2+2=5$ is false. And just like declarative sentences, it's up to you to decide whether a given mathematical statement is true or false.
+see that the sky is in fact grey. Similarly, a mathematical statement is either true or false.
+For example, $2+2=4$ is true but $2+2=5$ is false. And just like declarative sentences,
+it's up to you to decide whether a given mathematical statement is true or false.
 In fact, mathematics is unconcerned with the truth or falsity of statements - it only cares about relationships between the statements.
 The theorems, properties, and axioms of mathematics are all just mathematical statements.
 
@@ -704,9 +706,11 @@ $
 $
 
 Notice that I've been suspiciously vague about that IOC. I just named it $I$, but gave no further details about it. Let's see why.
-If you know something about real intervals you'll know that they come in a four varieties depending on whether the endpoints are included in the set or not.
+If you know something about real intervals you'll know that they come in a four varieties
+depending on whether the endpoints are included in the set or not.
 An interval by the way, is just a set of contiguous points on the real number line.
-If you have a real interval with endpoints, say $a$ and $b$, you can have an _open interval_ $(a,b)$, where neither endpoint is included in the set,
+If you have a real interval with endpoints, say $a$ and $b$, you can have an _open interval_ $(a,b)$,
+where neither endpoint is included in the set,
 you can have a _closed interval_ $[a,b]$, where both endpoints are included,
 or you can have two _half-open_ intervals $[a,b)$ and $(a,b]$ where either $a$ or $b$ is included but not both.
 Here's the set builder notation for each of those four kinds of interval:
@@ -718,8 +722,52 @@ $
 (a,b] &= { x in RR | a < x <= b }  && #h(1em) #`// Half-open` \
 $
 
-The IOC for a power series can be any one of these cases, so if we're working with a particular power series, we need to work out its IOC.
-To do this we can use one of several convergence tests for series. Some common ones include the _ratio test_ and the _root test_.
+The IOC for a power series can be any one of these four cases.
+If you're given some arbitrary power series, the main thing you need to do next is to work out its IOC.
+To do this you will normally use a _series convergence test_.
+There are several of these tests. A couple of common ones are the _ratio test_ and the _root test_.
+Now, the convergence test will give you the radius of convergence, but it won't tell you whether the endpoints are included in the IOC or not.
+To see what I'm talking about here, it's best to look at a straightforward example.
+Assume you've been given the following power series and you need to work out its IOC.
+
+$ sum_(n=0)^oo (x-3)^n / (n+1) $
+
+For this power series, the center is 3 and the coefficient is $1/(n+1)$.
+
+We'll use the ratio test for this one, for no better reason than it's kind of the default.
+If a test doesn't work for some reason, use your best judgement to choose another one.
+For the ratio test, we first calculate a limit L using the following formula.
+
+$ L = lim_(k->oo) |a_(k+1)/a_k| $
+
+The ratio test establishes a limiting value of the ratio of two consecutive terms in the series
+represented by $a_(k+1)$ and $a_k$ in the formula.
+For an ordinary series these two terms will always be just numbers, and the limit $L$ will be a number.
+However, for a power series, not only is the whole series a function of $x$, but also each individual term is a function of $x$,
+and the calculated limit will be a function of $x$.
+Essentially the situation is this:
+
+$ L(x) = lim_(k->oo) |(a_(k+1) (x)) / (a_k (x))| $
+
+For a power series, the ratio test works like this.
+
+- If $L(x)<1$ then the series converges.
+- If $L(x)>1$ then the series diverges.
+- If $L(x)=1$ then the test is inconclusive.
+
+So the region where the power series converges is all the values of $x$ where $L(x)<1$.
+At the endpoints, let's call them $a$ and $b$, $L(a)=1$ and $L(b)=1$ so the test is inconclusive at the endpoint and we'll
+have to test those points individually.
+
+Ok, so applying the ratio test to our example power series we get this:
+
+$
+L(x) &= lim_(k->oo) |(a_(k+1) (x)) / (a_k (x))| \
+     &= lim_(k->oo) |(x-3)^(k+1) / (k+2) div (x-3)^k / (k+1)| \
+     &= lim_(k->oo) |(x-3)^(k+1) / (k+2) times (k+1)/(x-3)^k| \
+     &= lim_(k->oo) |(x-3) (k+1)/(k+2)| \
+     &= lim_(k->oo) |(x-3) (1+1/k)/(1+2/k)|  = |x-3| \
+$
 
 == Taylor series
 
