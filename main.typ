@@ -74,6 +74,7 @@ Functions like table and grid take data as a sequence of positional arguments ra
 #show <sec:abstract>: set heading(numbering: none)
 #show <sec:abstract>: set align(center)
 
+
 = Abstract <sec:abstract>
 
 Work in progress!\
@@ -248,6 +249,7 @@ as you commit to not talking about its internal structure, and that's exactly wh
 We can think of our simple set elements as being either sets or functions, but we're not going to say which and we're not going
 to talk about their set or function properties.
 
+
 == Statements
 
 In everyday English, there are three kinds of sentences:
@@ -370,6 +372,7 @@ I should mention up front that all of the objects we're about to discuss come in
 but here we'll restrict our attention to the single variable (_univariate_) versions because
 that's all we'll need to define the superstars of the function world -- sine, cosine, and exponential ($e^x$) -- in terms of Taylor series.
 
+
 == Polynomial functions
 
 A polynomial function is a function whose body is a #underline[finite] sum of terms where each term is the product of a coefficient and
@@ -432,6 +435,7 @@ $ a:NN -> CC; $
 It's also common to represent a general polynomial function with a function parameterized by the degree $n$ like this:
 
 $ P_n(x) = sum_(k=0)^n a_k x^k $
+
 
 == Taylor polynomials
 
@@ -643,6 +647,7 @@ the value and the values of the first $n$ derivatives match those of the functio
 We left a couple of questions regarding neighborhoods and how to get the derivatives of $f$ unresolved,
 but we'll address those in due course.
 
+
 == Power series
 
 Right of the bat, I'll point out that a power series is a function.
@@ -709,10 +714,11 @@ Notice that I've been suspiciously vague about that IOC. I just named it $I$, bu
 If you know something about real intervals you'll know that they come in a four varieties
 depending on whether the endpoints are included in the set or not.
 An interval by the way, is just a set of contiguous points on the real number line.
-If you have a real interval with endpoints, say $a$ and $b$, you can have an _open interval_ $(a,b)$,
-where neither endpoint is included in the set,
-you can have a _closed interval_ $[a,b]$, where both endpoints are included,
-or you can have two _half-open_ intervals $[a,b)$ and $(a,b]$ where either $a$ or $b$ is included but not both.
+Suppose you have an interval with endpoints, say $a$ and $b$.
+Your interval can be an _open interval_ $(a,b)$,
+where neither endpoint is included,
+it can be a _closed interval_ $[a,b]$, where both endpoints are included,
+or it could be one of two _half-open_ intervals $[a,b)$ and $(a,b]$, where either $a$ or $b$ is included but not both.
 Here's the set builder notation for each of those four kinds of interval:
 
 $
@@ -740,24 +746,26 @@ For the ratio test, we first calculate a limit L using the following formula.
 
 $ L = lim_(k->oo) |a_(k+1)/a_k| $
 
+In this formula, the $a_k$ refers to each term of the series, not just the coefficient, so just be aware of that gotcha.
 The ratio test establishes a limiting value of the ratio of two consecutive terms in the series
-represented by $a_(k+1)$ and $a_k$ in the formula.
+represented by $a_k$ and $a_(k+1)$ in the formula.
 For an ordinary series these two terms will always be just numbers, and the limit $L$ will be a number.
 However, for a power series, not only is the whole series a function of $x$, but also each individual term is a function of $x$,
-and the calculated limit will be a function of $x$.
-Essentially the situation is this:
+so the calculated limit will be a function of $x$. In other words, the limit will be $L(x)$.
+Essentially, for a power series, the ratio test formula looks like this:
 
 $ L(x) = lim_(k->oo) |(a_(k+1) (x)) / (a_k (x))| $
 
-For a power series, the ratio test works like this.
+The limit tells us the behavior of the power series for each value of $x$. Here's how it works:
 
 - If $L(x)<1$ then the series converges.
 - If $L(x)>1$ then the series diverges.
 - If $L(x)=1$ then the test is inconclusive.
 
-So the region where the power series converges is all the values of $x$ where $L(x)<1$.
-At the endpoints, let's call them $a$ and $b$, $L(a)=1$ and $L(b)=1$ so the test is inconclusive at the endpoint and we'll
-have to test those points individually.
+So the region where the power series converges is all the values of $x$ where $L(x)<1$,
+and at all the values of $x$ where $L(x)>1$ we know for sure that the series diverges (shoots off to infinity).
+But, at the endpoints, let's call them $a$ and $b$ again, $L(a)=1$ and $L(b)=1$, the test is inconclusive,
+so we'll have to test those points separately.
 
 Ok, so applying the ratio test to our example power series we get this:
 
@@ -768,6 +776,17 @@ L(x) &= lim_(k->oo) |(a_(k+1) (x)) / (a_k (x))| \
      &= lim_(k->oo) |(x-3) (k+1)/(k+2)| \
      &= lim_(k->oo) |(x-3) (1+1/k)/(1+2/k)|  = |x-3| \
 $
+
+All right, we have found that $L(x) = |x-3|$, and we know that when it's less than 1 our power series definitely converges,
+so we can at least work out the contiguous part of our IOC like this:
+
+$
+|x-3| < 1 \
+-1 < x-3 < 1 \
+-1+3 < x < 1+3 \
+2 < x < 4 \
+$
+
 
 == Taylor series
 
