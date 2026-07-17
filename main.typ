@@ -650,8 +650,10 @@ but we'll address those in due course.
 
 == Power series
 
-Right of the bat, I'll point out that a power series is a function.
-In fact, you can think of a power series as kind of _infinite version_ of a polynomial function,
+Right of the bat, I'll point out that power series are functions.
+I make this point here to underscore that power series are different from the usual infinite series,
+which are sums of _constant terms_ where the sum itself is just a number, not a function.
+You can think of a power series as kind of _infinite version_ of a polynomial function,
 with an infinite number of terms and an infinite degree.
 Now strictly speaking, a power series is not a polynomial function, because, obviously,
 one of the defining characteristics of polynomial functions is that they have a finite number of terms and consequently have a finite degree.
@@ -677,7 +679,7 @@ In other words, we need a limit, like this:
 $ lim_(n->oo) sum_(k=0)^n a_k (x-c)^k $ <exp:power_series_limit>
 
 If you're familiar with calculus,
-you may recognize the similarity of the notational convenience to that of an _improper integral_,
+you may recognize the similarity of the notational convenience to that of the _improper integral_,
 which, as it turns out, is the limit of a definite integral.
 All of that said, the sigma notation we used in @exp:power_series[expression] is customary in mathematics, so we'll continue to use it here.
 
@@ -736,17 +738,17 @@ Now, the convergence test will give you the radius of convergence, but it won't 
 To see what I'm talking about here, it's best to look at a straightforward example.
 Assume you've been given the following power series and you need to work out its IOC.
 
-$ sum_(n=0)^oo (x-3)^n / (n+1) $
+$ f(x) = sum_(n=0)^oo (x-3)^n / (n+1) $
 
 For this power series, the center is 3 and the coefficient is $1/(n+1)$.
 
 We'll use the ratio test for this one, for no better reason than it's kind of the default.
-If a test doesn't work for some reason, use your best judgement to choose another one.
+If a particular test doesn't work for some reason, use your best judgement to choose another one.
 For the ratio test, we first calculate a limit L using the following formula.
 
 $ L = lim_(k->oo) |a_(k+1)/a_k| $
 
-In this formula, the $a_k$ refers to each term of the series, not just the coefficient, so just be aware of that gotcha.
+In this formula, the $a_k$ refers to each _whole_ term of the series, not just the coefficient, so just be aware of that gotcha.
 The ratio test establishes a limiting value of the ratio of two consecutive terms in the series
 represented by $a_k$ and $a_(k+1)$ in the formula.
 For an ordinary series these two terms will always be just numbers, and the limit $L$ will be a number.
@@ -758,9 +760,9 @@ $ L(x) = lim_(k->oo) |(a_(k+1) (x)) / (a_k (x))| $
 
 The limit tells us the behavior of the power series for each value of $x$. Here's how it works:
 
-- If $L(x)<1$ then the series converges.
-- If $L(x)>1$ then the series diverges.
-- If $L(x)=1$ then the test is inconclusive.
+- If $L(x) < 1$ then the series converges.
+- If $L(x) > 1$ then the series diverges.
+- If $L(x) = 1$ then the test is inconclusive.
 
 So the region where the power series converges is all the values of $x$ where $L(x)<1$,
 and at all the values of $x$ where $L(x)>1$ we know for sure that the series diverges (shoots off to infinity).
@@ -786,6 +788,41 @@ $
 -1+3 < x < 1+3 \
 2 < x < 4 \
 $
+
+Now we can see that the endpoints of the interval are 2 and 4.
+At these two values of x, our limit $|x-3|$ is equal to 1, and we know that the ratio test is inconclusive when $L(x) = 1$.
+Since the ratio test has nothing to say about the endpoints, we need to test each one separately.
+We do this by plugging in each endpoint into our original power series and seeing what happens.
+
+$
+f(4) &= sum_(n=0)^oo (4-3)^n / (n+1) \
+     &= sum_(n=0)^oo 1 / (n+1) \
+$
+
+Oh, now that's interesting.
+The series that we got by plugging in the endpoint 4 is none other than the world famous _harmonic series_.
+This series is known to diverge. You can check out the proof by Nicole Oresme which he developed around 1350.
+The proof is both elegant and easy to understand.
+
+Let's try the other one.
+
+$
+f(2) &= sum_(n=0)^oo (2-3)^n / (n+1) \
+     &= sum_(n=0)^oo (-1)^n / (n+1) \
+$
+
+Wow! That one is none other than the world famous _alternating harmonic series_.
+This series is known to converge. Check out the _alternating series test_ for more information on how we know it converges.
+So now we know the behavior of our power series at both endpoints. We know it converges at 2 and diverges at 4.
+With these results we can write down our IOC as follows.
+
+$ 2 <= x < 4 $
+
+We have ourselves the _half-open_ interval $[2,4)$.
+The _radius of convergence_ (ROC) is the distance from the center, 3, to either one of the endpoints, so in this case the ROC is 1.
+It's worth noting here that for some power series, the IOC is the entire real number line and the ROC is $oo$.
+For example, the IOC of the sine function is $(oo,oo)$, i.e. the entire set of real numbers.
+Ok, so that concludes our example and concludes our discussion of power series.
 
 
 == Taylor series
