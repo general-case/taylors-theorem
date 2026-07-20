@@ -144,7 +144,8 @@ As for rigor, I used to think that this meant that doing math was _arduous_ and 
 Nope! Wrong again! Rigor simply means that no step is missed out or _hand-waved_ over in the process of deriving a formula.
 Now it's fair to say that some authors do leave out steps
 that they consider _elementary_ or _trivial_, but by and large in a _rigorous mathematical proof_ all of the steps of the argument
-will be stated explicitly.
+will be stated explicitly. Many authors will say that if you have _mathematical maturity_ then you can intuit those missing elementary steps.
+Having mathematical maturity means you have been exposed to a lot of math.
 
 
 == Objects
@@ -259,23 +260,30 @@ In everyday English, there are three kinds of sentences:
 - Declarative which simply assert something is true
 
 That last one, the _declarative sentence_, has a parallel in mathematics called the _mathematical statement_.
-In English, declarative sentences can be true or false. For example, I can say that "the sky is blue", but you can look up and perhaps
+In English, declarative sentences can be either true or false. For example, I can say that "the sky is blue", but you can look up and perhaps
 see that the sky is in fact grey. Similarly, a mathematical statement is either true or false.
 For example, $2+2=4$ is true but $2+2=5$ is false. And just like declarative sentences,
 it's up to you to decide whether a given mathematical statement is true or false.
 In fact, mathematics is unconcerned with the truth or falsity of statements - it only cares about relationships between the statements.
-The theorems, properties, and axioms of mathematics are all just mathematical statements.
+Notice that declarative sentences always say something about one or more objects, either real or imaginary.
+For example, an instruction manual may say something, hopefully true, about your washing machine,
+whereas a fantasy novel may say something true or false about
+humans, centaurs, and unicorns.
+
+Mathematical statements are the same way, with one very small exception that we'll point out next.
 
 It may surprise you to learn that there are only #underline[two kinds] of fundamental, _non-trivial_, mathematical statements.
 There are equality statements, again like $2+2=4$ and $2+2=5$, and there are set membership statements, like $2 in NN$, which tells
 you that the number 2 is a member of the set of natural numbers.
+Both of these kinds of statements say something true or false about mathematical objects.
 There are also a couple of _trivial_ fundamental statements, *true* and *false*.
 These are useful in certain technical scenarios inside mathematical proofs, but we won't be using them in this paper.
-They're labeled _trivial_ because they don't actually say anything about mathematical objects.
+They're labeled _trivial_ because they _don't_ actually say anything about mathematical objects.
 
 Now you may be wondering how can it be that all of mathematics rests on these four kinds of statement?
 How can we possibly state all of the theorems, properties, and axioms of mathematics using just these four types of primitive statement?
 Well, we're allowed to combine the primitive statements using _logical operators_ to form more complex statements.
+This is of course how it works in English too.
 These logical operators come from _propositional logic_ and are more or less identical to boolean operators, which if you've done
 any computer programming you will very likely be familiar with.
 
@@ -291,12 +299,20 @@ an extension to propositional logic that includes _predicates_ and _quantifiers_
 Full predicate logic includes all kinds of predicates, but it turns out that mathematics is based on a restricted form of
 predicate logic that includes #underline[only four predicates]. These were alluded to earlier when we talked about the four kinds
 of mathematical statements. They are $=$, $in$, $#true$, and $#false$.
-The first two have placeholders omn either side which accept the names of objects,
+The first two have placeholders on either side which accept the names of objects,
 so that you can write two objects are equal, $a=b$,
 and you can write that one object is a member of another _set_ object, $a in S$.
 It is the predicates that connect the language of logic to the mathematical objects so that you can form mathematical statements.
 
 I like to say predicate logic represents the place where the _logical rubber meets the mathematical road_.
+
+You've probably come across terms like _theorem_, _axiom_, _lemma_, _postulate_, _conjecture_, and _property_ in mathematics textbooks,
+and maybe you've wondered what those all mean so let's sort that out now.
+
+First off, they are all just mathematical statements.
+The names, however, classify the statements by purpose and how they came into being.
+
+Needs work here!!
 
 
 == Quantifiers
@@ -398,6 +414,12 @@ $
 & f:CC -> CC; \
 & forall x:CC {f(x) = x^2 + 3 x + 2}; \
 $
+
+We call this kind of definition an _axiomatic definition_ because
+the universally quantified statement about the function is not something we _derive_ logically or prove somehow.
+Instead, it's something we're just saying, or _declaring unilaterally_ if you like,
+and in this case it says exactly how we _want_ our function to behave for each value in its domain.
+In other words the statement is an _axiom_.
 
 We can classify any polynomial function in several ways:
 
@@ -657,7 +679,7 @@ You can think of a power series as kind of _infinite version_ of a polynomial fu
 with an infinite number of terms and an infinite degree.
 Now strictly speaking, a power series is not a polynomial function, because, obviously,
 one of the defining characteristics of polynomial functions is that they have a finite number of terms and consequently have a finite degree.
-That said, the analogy is good enough to help with understanding this new object.
+That said, the analogy is good enough to help us understand this new object.
 Here is the definition of a general power series using sigma notation:
 
 $ sum_(n=0)^oo a_n (x-c)^n $ <exp:power_series>
@@ -683,21 +705,25 @@ you may recognize the similarity of the notational convenience to that of the _i
 which, as it turns out, is the limit of a definite integral.
 All of that said, the sigma notation we used in @exp:power_series[expression] is customary in mathematics, so we'll continue to use it here.
 
-We said that a power series is a function which we can give a name to, say $f$.
+We said that a power series is just a function, and as a result, we can give it a name, say $f$.
 The limit of our power series $f$ as $n$ increases without bound for some value of $x$ is the value of the function evaluated at $x$, $f(x)$,
 but as is the case with any limit we have to be concerned about whether that limit exists or not.
 It turns out that the limit of any power series is guaranteed to exist at the center, $x=c$, but it may or may not exist elsewhere.
 The region around $c$ where the limit _does_ exist is known as the _interval of convergence_, or the IOC.
-For values inside the IOC, the function has a value, but for values outside the series _diverges_, which means the value of the function at those
-outside points shoots off to positive or negative infinity.
-The distance from the center to the outermost values for which the limit exists is called the _radius of convergence_, or the ROC.
+For values inside the IOC, the power series _converges_ and the function has a value; it is _defined_.
+On the other hand, for values outside the IOC, the series _diverges_, which means the value of the function at those
+outside points shoots off to positive or negative infinity, and the function is _undefined_.
+It will probably come as no surprise to you that the IOC is in fact the _domain_ of the function.
+The domain is a pretty important characteristic of any function so it's a good thing we're exploring it thoroughly here.
+
+The distance from the center to the outer edges of the IOC is called the _radius of convergence_, or the ROC.
 Why _radius_? Recall we mentioned that the default type for domain and range of polynomial functions is the complex numbers.
 This is true for power series too.
-That is, in it's most general form, the power series is a complex valued function of the complex numbers.
+That is, in its most general form, the power series is a complex valued function of the complex numbers.
 The complex numbers can be visualized as existing in a plane.
-The region around $c$ where the power series converges is therefore a disc in the complex plane, not just an interval in the reals.
+The region around $c$ where the power series converges is therefore a disc in the complex plane, not just straight line interval in the reals.
 Some authors call this region in the complex plane the _disc of convergence_, or the DOC, to distinguish it from a real interval.
-To keep things simple, we're going to discuss only real power series, so we will only need to think about IOCs not DOCs.
+To keep things simple, we're going to discuss only real power series, so we will only need to think about IOCs, not DOCs.
 
 Let's put everything we've learned about power series into one formal definition.
 We can use any function name we like for the power series. Here we'll just use $f$ again.
@@ -822,11 +848,13 @@ We have ourselves the _half-open_ interval $[2,4)$.
 The _radius of convergence_ (ROC) is the distance from the center, 3, to either one of the endpoints, so in this case the ROC is 1.
 It's worth noting here that for some power series, the IOC is the entire real number line and the ROC is $oo$.
 For example, the IOC of the sine function is $(oo,oo)$, i.e. the entire set of real numbers.
-Ok, so that concludes our example and concludes our discussion of power series.
+Ok, so that concludes our example and concludes our discussion of power series. Let's keep going.
 
 
 == Taylor series
 
+Surprisingly doesn't play a big role in Taylor's theorem.
+It's more important in a second act.
 
 #pagebreak()
 
