@@ -853,8 +853,51 @@ Ok, so that concludes our example and concludes our discussion of power series. 
 
 == Taylor series
 
-Surprisingly doesn't play a big role in Taylor's theorem.
-It's more important in a second act.
+Fortunately, the Taylor series is easy to understand because it's just a power series with the same special coefficients
+that we already saw when discussing Taylor polynomials earlier.
+
+Here is the definition of the Taylor series:
+
+$ sum_(n=0)^oo (f^((n))(c))/n! (x-c)^n $
+
+The Taylor series is a function, of course, with the usual center $c$, and again it's one of those limits of a sum that we
+talked about in the power series section.
+
+Now, you may be surprised to learn that the Taylor series doesn't play a huge role in our explanation of Taylor's theorem.
+In fact, it's more important in a second act, where we see what happens to the Taylor polynomial as we let $k$ increase without bound.
+Spoiler alert. Under those conditions the Taylor polynomial _becomes_ the Taylor series, and the Taylor series ends up _becoming_
+the function we were approximating in the first place.
+Well, this happens for certain functions, and those functions are called _analytic functions_.
+The fact that the limit of Taylor polynomial becomes the exact function is a theorem, but there isn't a universally accepted name for that theorem.
+The most commonly used name I could find is "Convergence of Taylor Series Theorem", which is used in various papers from reputable universities.
+
+At last we are finally in a position to launch into the details of Taylor's theorem.
+
+== Taylor's theorem
+
+If we try to approximate some function, say $f$ with another function, say $g$, we're going to have something left over, a difference,
+which we could describe with yet another function, say $d$.
+This is the nature of approximation. You don't get an exact match. You get something close, but there's a difference.
+In other words, for each value of $x$ the actual value of the approximated function at $x$, $f(x)$ is going to be
+$g(x)$ plus some difference $d(x)$.
+We can state this idea formally like this:
+
+$
+forall x:RR{f(x) = g(x) + d(x)}
+$
+
+But why would we want to approximate $f$ in the first place?
+Well, maybe we don't know how to calculate $f$. How can that happen?
+It could be that we know some geometric facts about $f$ and some basic properties, but we don't have a full _algebraic_ description of it.
+Without an algebraic expression for the function we can't make an algorithm to compute its value for any input value.
+This situation comes up more than you might think.
+There are functions that are called _transcendental_ that do not have _algebraic_ representations. trans
+They _transcend_ algebra.
+Some examples include the afore mentioned _super stars_ of the function world, sine, cosine, log, and the exponential function $e^x$.
+Those are some pretty important functions so we better have a way to calculate them at least to arbitrary precision.
+That's where Taylor's theorem comes into play.
+It gives us an algebraic approximation to these transcendental functions, so that we can approximate their values pretty closely;
+in fact as close as we like.
 
 #pagebreak()
 
