@@ -701,20 +701,24 @@ In other words, we need a limit, like this:
 $ lim_(n->oo) sum_(k=0)^n a_k (x-c)^k $ <exp:power_series_limit>
 
 If you're familiar with calculus,
-you may recognize the similarity of the notational convenience to that of the _improper integral_,
+you may recognize the similarity of the notational convenience for power series to that of the _improper integral_,
 which, as it turns out, is the limit of a definite integral.
-All of that said, the sigma notation we used in @exp:power_series[expression] is customary in mathematics, so we'll continue to use it here.
+All of that said, the convenient but slightly incorrect sigma notation we used in @exp:power_series[expression]
+is customary in mathematics, so we'll continue to use it here.
 
 We said that a power series is just a function, and as a result, we can give it a name, say $f$.
-The limit of our power series $f$ as $n$ increases without bound for some value of $x$ is the value of the function evaluated at $x$, $f(x)$,
-but as is the case with any limit we have to be concerned about whether that limit exists or not.
-It turns out that the limit of any power series is guaranteed to exist at the center, $x=c$, but it may or may not exist elsewhere.
+The value of our power series function $f$ evaluated at some value $x$
+is the value the underlying sum approaches as $n$ increases without bound.
+In other words, the value is the limit shown in @exp:power_series_limit[expression]
+But, as is the case with any limit, we have to be concerned about whether that limit exists or not.
+It turns out that this limit for any power series is guaranteed to exist at the center, $x=c$, but it may or may not exist elsewhere.
 The region around $c$ where the limit _does_ exist is known as the _interval of convergence_, or the IOC.
 For values inside the IOC, the power series _converges_ and the function has a value; it is _defined_.
-On the other hand, for values outside the IOC, the series _diverges_, which means the value of the function at those
+On the other hand, for values outside the IOC, the power series _diverges_, which means the value of the function at those
 outside points shoots off to positive or negative infinity, and the function is _undefined_.
 It will probably come as no surprise to you that the IOC is in fact the _domain_ of the function.
-The domain is a pretty important characteristic of any function so it's a good thing we're exploring it thoroughly here.
+I'm sure you'll agree that the domain is a pretty important characteristic of any function,
+so it's a good thing we're exploring it thoroughly here.
 
 The distance from the center to the outer edges of the IOC is called the _radius of convergence_, or the ROC.
 Why _radius_? Recall we mentioned that the default type for domain and range of polynomial functions is the complex numbers.
@@ -786,9 +790,9 @@ $ L(x) = lim_(k->oo) |(a_(k+1) (x)) / (a_k (x))| $
 
 The limit tells us the behavior of the power series for each value of $x$. Here's how it works:
 
-- If $L(x) < 1$ then the series converges.
-- If $L(x) > 1$ then the series diverges.
-- If $L(x) = 1$ then the test is inconclusive.
+- If $L(x) < 1$ then the series converges at $x$.
+- If $L(x) > 1$ then the series diverges at $x$.
+- If $L(x) = 1$ then the test is inconclusive at $x$.
 
 So the region where the power series converges is all the values of $x$ where $L(x)<1$,
 and at all the values of $x$ where $L(x)>1$ we know for sure that the series diverges (shoots off to infinity).
@@ -837,17 +841,18 @@ f(2) &= sum_(n=0)^oo (2-3)^n / (n+1) \
      &= sum_(n=0)^oo (-1)^n / (n+1) \
 $
 
-Wow! That one is none other than the world famous _alternating harmonic series_.
+Wow! The series that we got by plugging in the endpoint 2 is none other than the world famous _alternating harmonic series_.
 This series is known to converge. Check out the _alternating series test_ for more information on how we know it converges.
 So now we know the behavior of our power series at both endpoints. We know it converges at 2 and diverges at 4.
-With these results we can write down our IOC as follows.
+With these results we can write down our IOC like this:
 
 $ 2 <= x < 4 $
 
-We have ourselves the _half-open_ interval $[2,4)$.
-The _radius of convergence_ (ROC) is the distance from the center, 3, to either one of the endpoints, so in this case the ROC is 1.
+We have ourselves a _half-open_ interval. Using proper interval notation it is $[2,4)$.
+
+The _radius of convergence_ (ROC) is the distance from the center, 3, to either one of the endpoints, so the ROC is 1.
 It's worth noting here that for some power series, the IOC is the entire real number line and the ROC is $oo$.
-For example, the IOC of the sine function is $(oo,oo)$, i.e. the entire set of real numbers.
+For example, the IOC for the sine function is $(oo,oo)$, i.e. the entire set of real numbers.
 Ok, so that concludes our example and concludes our discussion of power series. Let's keep going.
 
 
@@ -875,9 +880,9 @@ At last we are finally in a position to launch into the details of Taylor's theo
 
 == Taylor's theorem
 
-If we try to approximate some function, say $f$ with another function, say $g$, we're going to have something left over, a difference,
-which we could describe with yet another function, say $d$.
-This is the nature of approximation. You don't get an exact match. You get something close, but there's a difference.
+If we try to approximate some function, say $f$ with another function, say $g$, in most cases we're going to have a little something left over,
+a difference, which we can represent with yet another function, say $d$.
+This is the nature of approximation. You don't always get an exact match. You get something close, but there's usually a difference.
 In other words, for each value of $x$ the actual value of the approximated function at $x$, $f(x)$ is going to be
 $g(x)$ plus some difference $d(x)$.
 We can state this idea formally like this:
@@ -888,16 +893,43 @@ $
 
 But why would we want to approximate $f$ in the first place?
 Well, maybe we don't know how to calculate $f$. How can that happen?
-It could be that we know some geometric facts about $f$ and some basic properties, but we don't have a full _algebraic_ description of it.
-Without an algebraic expression for the function we can't make an algorithm to compute its value for any input value.
+It could be that we know some geometric facts about $f$ and maybe some basic properties, but we don't have a full _algebraic_ expression for it.
+Without an algebraic expression for the function, we can't make an algorithm to compute its output value for any input value.
 This situation comes up more than you might think.
-There are functions that are called _transcendental_ that do not have _algebraic_ representations. trans
-They _transcend_ algebra.
+There are functions called _transcendental functions_ that do not have _algebraic_ representations -- 
+they _transcend_ algebra.
 Some examples include the afore mentioned _super stars_ of the function world, sine, cosine, log, and the exponential function $e^x$.
-Those are some pretty important functions so we better have a way to calculate them at least to arbitrary precision.
+Those are some pretty important functions, so we better have a way to calculate them at least to arbitrary precision.
 That's where Taylor's theorem comes into play.
-It gives us an algebraic approximation to these transcendental functions, so that we can approximate their values pretty closely;
+It gives us an algebraic approximation for these transcendental functions, so that we can approximate their values pretty closely;
 in fact as close as we like.
+And what is the algebraic approximation that we use? Well, of course it's the Taylor polynomial.
+Taylor's theorem says that we can approximate a function $f$ with a Taylor polynomial and we will have a difference
+which in the context of Taylor's theorem is called the _remainder_.
+Let's rework our previous statement but this time we'll replace $g$ the Taylor polynomial and $d$ with the remainder function.
+Because both the Taylor polynomial and the remainder function have a degree $n$, we'll need to include a quantifier for all of those.
+Also, there's a center $c$ that we'll just assume is some constant defined somewhere. In fact the center it's quite often zero.
+With those changes our reworked statement looks like this:
+
+$
+forall n:NN{forall x:RR{f(x) = T_(n,c)(x) + R_(n,c)(x)}}
+$
+
+Recall we said that the Taylor polynomial is just a polynomial function,
+which we know from experience should be easy to compute provided we have the coefficients. More on the coefficients later.
+So this statement says we can approximate a function $f$ by computing the value of the Taylor polynomial of some degree $n$
+at $x$ and we will have a remainder. The remainder measures how inaccurate our approximation is.
+The bigger the remainder the worse of an approximation we have.
+Now unfortunately we can't calculate an exact value for the remainder,
+but we can figure out a range of values and calculate the maximum value within that range.
+The maximum is a kind of worst case remainder.
+
+I mean think about it for a second. If we could compute the exact value of the remainder then we wouldn't have an approximation;
+we'd have the actual function itself.
+
+In order to see how this all works, we need to delve into the remainder in more detail, so let's do that now.
+The remainder function is defined like this:
+
 
 #pagebreak()
 
