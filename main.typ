@@ -456,8 +456,14 @@ $ a:NN -> CC; $
 
 It's also common to represent a general polynomial function with a function parameterized by the degree $n$ like this:
 
-$ P_n(x) = sum_(k=0)^n a_k x^k $
+$ P_n (x) = sum_(k=0)^n a_k x^k $
 
+I'll note here that parameters expressed as subscripts are really just arguments to the function in disguise.
+The purpose of the subscript notation is to draw your attention to the fact that the particular argument, $n$ in this case,
+is meant to be held fixed while the other argument $x$ varies independently. Essentially, for each $n$ we get a function of $x$.
+The process of generating a single argument function of $x$ this way by supplying one of the two arguments is called _currying_.
+Currying is a little beyond the scope of this paper,
+but if you remember that subscripted _parameters_ are really just arguments you'll be fine.
 
 == Taylor polynomials
 
@@ -905,8 +911,8 @@ It gives us an algebraic approximation for these transcendental functions, so th
 in fact as close as we like.
 And what is the algebraic approximation that we use? Well, of course it's the Taylor polynomial.
 Taylor's theorem says that we can approximate a function $f$ with a Taylor polynomial and we will have a difference
-which in the context of Taylor's theorem is called the _remainder_.
-Let's rework our previous statement but this time we'll replace $g$ the Taylor polynomial and $d$ with the remainder function.
+which in the context of Taylor's theorem is called the _remainder_, or sometimes the _error_.
+Let's rework our previous statement, but this time we'll replace $g$ the Taylor polynomial and $d$ with the remainder function.
 Because both the Taylor polynomial and the remainder function have a degree $n$, we'll need to include a quantifier for all of those.
 Also, there's a center $c$ that we'll just assume is some constant defined somewhere. In fact the center it's quite often zero.
 With those changes our reworked statement looks like this:
@@ -929,6 +935,11 @@ we'd have the actual function itself.
 
 In order to see how this all works, we need to delve into the remainder in more detail, so let's do that now.
 The remainder function is defined like this:
+
+$
+R_(n,c)(x, z) = (f^(n+1)(z))/(n+1)!(x-c)^n
+$
+
 
 
 #pagebreak()
