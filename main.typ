@@ -875,8 +875,9 @@ The Taylor series is a function, of course, with the usual center $c$, and again
 talked about in the power series section.
 
 Now, you may be surprised to learn that the Taylor series doesn't play a huge role in our explanation of Taylor's theorem.
-In fact, it's more important in a second act, where we see what happens to the Taylor polynomial as we let $k$ increase without bound.
-Spoiler alert. Under those conditions the Taylor polynomial _becomes_ the Taylor series, and the Taylor series ends up _becoming_
+It turns out that it's more important in a kind of second act,
+where we see what happens to the Taylor polynomial as we let $k$ increase without bound.
+Spoiler alert! Under those conditions the Taylor polynomial _becomes_ the Taylor series, and the Taylor series ends up _becoming_
 the function we were approximating in the first place.
 Well, this happens for certain functions, and those functions are called _analytic functions_.
 The fact that the limit of Taylor polynomial becomes the exact function is a theorem, but there isn't a universally accepted name for that theorem.
@@ -902,10 +903,10 @@ Well, maybe we don't know how to calculate $f$. How can that happen?
 It could be that we know some geometric facts about $f$ and maybe some basic properties, but we don't have a full _algebraic_ expression for it.
 Without an algebraic expression for the function, we can't make an algorithm to compute its output value for any input value.
 This situation comes up more than you might think.
-There are functions called _transcendental functions_ that do not have _algebraic_ representations -- 
+There are functions called _transcendental functions_ that do not have _algebraic_ representations --
 they _transcend_ algebra.
-Some examples include the afore mentioned _super stars_ of the function world, sine, cosine, log, and the exponential function $e^x$.
-Those are some pretty important functions, so we better have a way to calculate them at least to arbitrary precision.
+Some examples include the aforementioned _super stars_ of the function world, sine, cosine, log, and the exponential function $e^x$.
+Those are some pretty important functions, so we better have a way to calculate them, at least to an arbitrary level of precision.
 That's where Taylor's theorem comes into play.
 It gives us an algebraic approximation for these transcendental functions, so that we can approximate their values pretty closely;
 in fact as close as we like.
@@ -914,7 +915,8 @@ Taylor's theorem says that we can approximate a function $f$ with a Taylor polyn
 which in the context of Taylor's theorem is called the _remainder_, or sometimes the _error_.
 Let's rework our previous statement, but this time we'll replace $g$ the Taylor polynomial and $d$ with the remainder function.
 Because both the Taylor polynomial and the remainder function have a degree $n$, we'll need to include a quantifier for all of those.
-Also, there's a center $c$ that we'll just assume is some constant defined somewhere. In fact the center it's quite often zero.
+Also, there's a center $c$ that we'll just assume is some constant defined somewhere.
+In fact the center is quite often zero.
 With those changes our reworked statement looks like this:
 
 $
@@ -930,7 +932,7 @@ Now unfortunately we can't calculate an exact value for the remainder,
 but we can figure out a range of values and calculate the maximum value within that range.
 The maximum is a kind of worst case remainder.
 
-I mean think about it for a second. If we could compute the exact value of the remainder then we wouldn't have an approximation;
+I mean think about it for a second. If we could compute the exact value of the remainder then we wouldn't have an approximation anymore;
 we'd have the actual function itself.
 
 In order to see how this all works, we need to delve into the remainder in more detail, so let's do that now.
@@ -940,6 +942,37 @@ $
 R_(n,c)(x, z) = (f^(n+1)(z))/(n+1)!(x-c)^n
 $
 
+Uh oh! There's a new variable $z$ in this expression, so we better introduce it with a quantifier, but which one.
+Well, that $z$ variable represents the uncertainty in the remainder I was talking about.
+We know $z$ exists but we don't know its value. For situations like this we use an existential quantifier.
+Let's do another re-work:
+
+$
+forall n:NN{forall x:RR{exists z:RR{f(x) = T_(n,c)(x) + R_(n,c)(x,z)}}}
+$
+
+Now in Taylor's theorem the value of $z$ lives somewhere _in between_ the center $c$ and the value of $x$.
+The tricky part is we don't know if the value of $x$ is bigger or smaller than $c$, so to say that $z$ lies between
+the two, we have to account for both situations.
+In other words, we have to say where $z$ is when $x>c$ *and* when $x<a$.
+We need to say something like if $x>c$ then $c<z<x$ and if $x<a$ then $x<z<c$.
+To write and _if-then_ statement in mathematics we use the _implies_ logical operator which has the symbol $=>$.
+We're also going to need the _and_ logical operator which as the symbol $and$.
+Let's put all of this together and write the the restriction on $z$ in symbols like this:
+
+$
+(x > c => c < z < x) and (x < a => x < z < c)
+$
+
+Now it's time for yet another rework.
+We're going to stuff the restriction into our prototype for Taylor's theorem like this:
+
+$
+forall n:NN
+{
+forall x:RR{exists z:RR{(x > c => c < z < x) and (x < a => x < z < c) and f(x) = T_(n,c)(x) + R_(n,c)(x,z)}}
+}
+$
 
 
 #pagebreak()
