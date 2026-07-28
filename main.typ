@@ -289,7 +289,7 @@ any computer programming you will very likely be familiar with.
 
 There are #underline[just five] logical operators.
 Their names and symbols are: And $and$, Or $or$, Not $not$, Implies $=>$, and if-and-only-if $<=>$ (aka iff and equivalence).
-Now spoiler alert, these five operators can be reduced to just one called NAND, and this is often done in computer circuits for efficiency,
+Now spoiler alert! These five operators can be reduced to just one called NAND, and this is often done in computer circuits for efficiency,
 but in mathematics we keep all five operators to maximize the descriptive power of our statements.
 It would be very challenging to read a complex mathematical statement if it were entirely encoded using only the NAND operator.
 Mathematics, although formal and technical, is ultimately a language whose purpose is communication between humans, at least for now.
@@ -939,40 +939,87 @@ In order to see how this all works, we need to delve into the remainder in more 
 The remainder function is defined like this:
 
 $
-R_(n,c)(x, z) = (f^(n+1)(z))/(n+1)!(x-c)^n
+R_(n,c)(x, z) = (f^((n+1))(z))/(n+1)!(x-c)^n
 $
 
-Uh oh! There's a new variable $z$ in this expression, so we better introduce it with a quantifier, but which one.
-Well, that $z$ variable represents the uncertainty in the remainder I was talking about.
-We know $z$ exists but we don't know its value. For situations like this we use an existential quantifier.
+Notice how the remainder picks up at $n+1$, right where the Taylor polynomial left off.
+In fact, it's pretty much the $n+1$#super[th] term of the Taylor polynomial, but with one small twist;
+there's a new variable $z$ in the expression.
+We can think of the remainder as the next term of the Taylor polynomial, but with a teaspoon of uncertainty added in.
+That $z$ variable represents the uncertainty in the remainder I was talking about earlier.
+Now $z$ is a new mathematical variable in this expression, so we had better introduce it with a quantifier, but which one?
+We'll we know $z$ exists, but we don't know its value.
+For situations like this we use the existential quantifier.\
 Let's do another re-work:
 
 $
-forall n:NN{forall x:RR{exists z:RR{f(x) = T_(n,c)(x) + R_(n,c)(x,z)}}}
+forall n:NN{exists z:RR{forall x:RR{f(x) = T_(n,c)(x) + R_(n,c)(x,z)}}}
 $
 
 Now in Taylor's theorem the value of $z$ lives somewhere _in between_ the center $c$ and the value of $x$.
-The tricky part is we don't know if the value of $x$ is bigger or smaller than $c$, so to say that $z$ lies between
+The tricky part is we don't know if the value of $x$ is bigger or smaller than $c$, so in order to say that $z$ lies between
 the two, we have to account for both situations.
 In other words, we have to say where $z$ is when $x>c$ *and* when $x<a$.
 We need to say something like if $x>c$ then $c<z<x$ and if $x<a$ then $x<z<c$.
-To write and _if-then_ statement in mathematics we use the _implies_ logical operator which has the symbol $=>$.
-We're also going to need the _and_ logical operator which as the symbol $and$.
+To write an _if-then_ statement in mathematics we use the _implies_ logical operator which has the symbol $=>$.
+We're also going to need the _and_ logical operator, represented by the symbol $and$, to say that two things are true at the same time.
 Let's put all of this together and write the the restriction on $z$ in symbols like this:
 
 $
 (x > c => c < z < x) and (x < a => x < z < c)
 $
 
-Now it's time for yet another rework.
-We're going to stuff the restriction into our prototype for Taylor's theorem like this:
+Technical note: the parentheses around the if-then statements are necessary because the $=>$ operator
+has _lower precedence_ in logic than $and$. Without them the $and$ operator would bind the middle two statements together
+like this $c < z < x and x < a$ which is definitely not what we meant to say.
 
+Now it's time for yet another rework.
+We're going to stuff this restriction on the value of $z$ into our prototype statement for Taylor's theorem.
+I'm going to reformat the statement over multiple lines so that it's not so dense and you can see how the quantifiers are
+nested inside of one another, kind of like those Russian matryoshka dolls.
+If you've done some coding this new layout should look pretty familiar.\
+Here's the new statement:
+
+// Local scope to confine styling.
+#[
+#set text(size: 0.9em)
+
+// Align the whole block with the left margin.
+#show math.equation.where(block: true): set align(left)
+
+// Make curly braces bold and a reasonable size.
+#show "{": set text(weight: "bold")
+#show "}": set text(weight: "bold")
+#show "{": it => scale(85%, it)
+#show "}": it => scale(85%, it)
+
+
+// Use monospace math font.
 $
-forall n:NN
-{
-forall x:RR{exists z:RR{(x > c => c < z < x) and (x < a => x < z < c) and f(x) = T_(n,c)(x) + R_(n,c)(x,z)}}
-}
+mono(
+& forall n:NN \
+& { \
+& #h(2em) exists z:RR \
+& #h(2em) { \
+& #h(4em) forall x:RR \
+& #h(4em) { \
+& #h(6em) (x > c => c < z < x) and (x < a => x < z < c) => f(x) = T_(n,c)(x) + R_(n,c)(x,z)  \
+& #h(4em) } \
+& #h(2em) } \
+& } \
+)
 $
+]
+
+In words, this rather complicated mathematical statement says this: for every Taylor polynomial of degree $n$, there is some value $z$
+such that for every real number $x$, if $z$ sits in between $x$ and the center $c$ then the function $f$ is equal to the 
+Taylor polynomial, which remember is our approximation, plus the remainder.
+
+Ok, we're real close now to having the complete formal statement of Taylor's theorem.
+We just have a couple of picayune details that we need to include.
+Almost all theorems have _preconditions_, constraints on objects that specify exactly under what circumstances
+the main statement in the theorem applies.
+Taylor's theorem is no exception, so let's take a look at its preconditions now.
 
 
 #pagebreak()
