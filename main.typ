@@ -942,6 +942,9 @@ $
 R_(n,c)(x, z) = (f^((n+1))(z))/(n+1)!(x-c)^n
 $
 
+Be aware that there are a few different versions of the remainder function.
+This one is called _the Lagrange form of the remainder_ and is commonly found in popular calculus textbooks.
+
 Notice how the remainder picks up at $n+1$, right where the Taylor polynomial left off.
 In fact, it's pretty much the $n+1$#super[th] term of the Taylor polynomial, but with one small twist;
 there's a new variable $z$ in the expression.
@@ -1020,6 +1023,33 @@ We just have a couple of picayune details that we need to include.
 Almost all theorems have _preconditions_, constraints on objects that specify exactly under what circumstances
 the main statement in the theorem applies.
 Taylor's theorem is no exception, so let's take a look at its preconditions now.
+
+We need a region in which the conditions for the approximation apply.
+
+Continuity at a point:
+
+$
+lim_(x->a) f(x) = f(a)
+$
+
+
+Continuity over an interval $I$:
+
+$
+forall a:RR{a in I => lim_(x->a) f(x) = f(a)}
+$
+
+Differentiable at a point:
+
+$
+exists L:RR{lim_(x->a) (f(x) - f(a))/(x-a) = L}
+$
+
+Differentiable over an interval $I$:
+
+$
+forall a:RR{a in I => exists L:RR{lim_(x->a) (f(x) - f(a))/(x-a) = L}}
+$
 
 
 #pagebreak()
