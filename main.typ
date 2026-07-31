@@ -102,7 +102,8 @@ geometrically.
 
 What will you need to understand this paper?
 Well, you'll need to be familiar with the real numbers, have a good grasp of what a function is
-and know a couple of different types of functions, like real-valued functions over the reals (aka real functions) and functions over the natural numbers.
+and know a couple of different types of functions,
+like real-valued functions over the reals (aka real functions) and functions over the natural numbers.
 You'll also need a basic understanding of calculus, at least to the point where you know what a derivative is and what an integral is.
 It would be helpful if you've solved a quadratic equation or two.
 Also, you should know a little bit about sets, subsets, and power sets, at least what they are.
@@ -458,7 +459,7 @@ It's also common to represent a general polynomial function with a function para
 
 $ P_n (x) = sum_(k=0)^n a_k x^k $
 
-I'll note here that parameters expressed as subscripts are really just arguments to the function in disguise.
+I'll note here that parameters expressed as subscripts like this are really just arguments to the function in disguise.
 The purpose of the subscript notation is to draw your attention to the fact that the particular argument, $n$ in this case,
 is meant to be held fixed while the other argument $x$ varies independently. Essentially, for each $n$ we get a function of $x$.
 The process of generating a single argument function of $x$ this way by supplying one of the two arguments is called _currying_.
@@ -531,7 +532,7 @@ $ sum_(k=0)^n (f^((k))(c))/k! (x-c)^k $
 
 We can make things even more concise by using a notation parameterized by the degree $n$ and the center $c$:
 
-$ T_(n,c)(x) = sum_(k=0)^n (f^((k))(c))/k! (x-c)^k $
+$ T_(n,c)(x) = sum_(k=0)^n (f^((k))(c))/k! (x-c)^k $ <eq:taylor_polynomial>
 
 Of course, the Taylor polynomial is just a special case of the polynomial function that we discussed previously,
 so I should give the excruciatingly formal definition of it, and since in this paper we'll only be discussing real Taylor polynomials
@@ -544,7 +545,7 @@ $
 $
 
 There's one last thing to mention before we move on.
-Some authors like to call the center point the _anchor point_ and they usually denote it with the letter $a$.
+Some authors like to call the center point the _anchor point_ and denote it with the letter $a$.
 
 Now let's talk about why the Taylor polynomial is constructed this way.
 
@@ -941,12 +942,13 @@ The remainder function is defined like this:
 $
 R_(n,c)(x, z) = (f^((n+1))(z))/(n+1)!(x-c)^n
 $
+<eq:remainder_function>
 
 Be aware that there are a few different versions of the remainder function.
 This one is called _the Lagrange form of the remainder_ and is commonly found in popular calculus textbooks.
 
 Notice how the remainder picks up at $n+1$, right where the Taylor polynomial left off.
-In fact, it's pretty much the $n+1$#super[th] term of the Taylor polynomial, but with one small twist;
+In fact, it's pretty much the $(n+1)$#super[th] term of the Taylor polynomial, but with one small twist;
 there's a new variable $z$ in the expression.
 We can think of the remainder as the next term of the Taylor polynomial, but with a teaspoon of uncertainty added in.
 That $z$ variable represents the uncertainty in the remainder I was talking about earlier.
@@ -1024,14 +1026,52 @@ Almost all theorems have _preconditions_, constraints on objects that specify ex
 the main statement in the theorem applies.
 Taylor's theorem is no exception, so let's take a look at its preconditions now.
 
-We need a region in which the conditions for the approximation apply.
+The first order of business is to set up, or _define_, a region, actually an open interval $I$, on the real line
+that contains both the center of our Taylor polynomial $c$ and the value $x$ that we are going to evaluate at.
+We'll make this region an open interval, say $I = (a,b)$, because for technical reasons we don't need to include the endpoints.
+Now the function $f$ that we're approximating had better be defined for all points within the interval.
+Otherwise, what would be the point of approximating it?
+The interval doesn't have to be the whole domain of $f$, but it does at least have to be a subset of the domain.
+In fact, for many functions, like sine for example, the interval is the whole real line, so that $I = (-oo,oo)$.
+So that's the first precondition: $x$ and $c$ must be in $I$.
+
+The second precondition involves making sure that the derivatives within the theorem exist.
+
+Recall that in the Taylor polynomial we introduced in @eq:taylor_polynomial contains derivatives of the function $f$
+evaluated at the center $c$ in its coefficients.
+In fact, the Taylor polynomial coefficients start with the zero#super[th] derivative and go up to the $n$#super[th] derivative.
+
+Also, recall that the remainder function we introduced in @eq:remainder_function contains the $(n+1)$#super[th] derivative of $f$,
+this time evaluated at the _unknown_ value $z$.
+
+In order for approximation to work, the function $f$ must be _k-times differentiable_ on the interval $I$.
+What does that mean? It means that first through the $(n+1)$#super[th] derivatives of $f$ must exist for every point in $I$.
+Let's take this step by step.
+The phrase _differentiable at a point_ means the same thing as _the derivative exists at a point_.
+You may (or may not) recall from calculus that the derivative is the limit of something called the _difference quotient_.
+The difference quotient for our function $f$ at some point, let's call it $a$, is $(f(x) - f(a))/(x-a)$.
+So for our derivative to exist at point $a$ we need the limit of the difference quotient to exist.
+Here's how we write the existence statement, not surprisingly, using the existential quantifier:
+
+$
+exists L:RR{lim_(x->a) (f(x) - f(a))/(x-a) = L} #`// f is differentiable at a point a.`
+$
+
+I'll mention here that limits if they exist are unique, but that's a discussion for another day.
+Now we need to extend this idea to assert that $f$ is differentiable for every point $a$ in our interval $I$.
+No surprise we're going to need a universal quantifier and write it like this:
+
+$
+forall a:RR{a in I => exists L:RR{lim_(x->a) (f(x) - f(a))/(x-a) = L}}
+$
+
+
 
 Continuity at a point:
 
 $
 lim_(x->a) f(x) = f(a)
 $
-
 
 Continuity over an interval $I$:
 
