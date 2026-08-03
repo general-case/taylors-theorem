@@ -1026,23 +1026,55 @@ Almost all theorems have _preconditions_, constraints on objects that specify ex
 the main statement in the theorem applies.
 Taylor's theorem is no exception, so let's take a look at its preconditions now.
 
+The first order of business is to explain four concepts from calculus concerning properties of functions.
+
+Recall that a property is nothing more than a mathematical statement about an object, a function in this case.
+
+Property number one is _continuity at a point_.
+A function is continuous at a point, let's call it $a$, if its limit as $x$ approaches $a$ is in fact $f(a)$.
+We can write this in our formal language like this:
+
+$
+lim_(x->a) f(x) = f(a)
+$
+
+What this means is the value that the function appears to be approaching as $x$ gets super close to $a$ is in fact the
+value the function actually achieves when it finally gets to $a$.
+You would probably kind of expect this to always be the case, but in reality it's not always true.
+To see why let's have a look at a function that is discontinuous at a point.
+Say we define the following function piecewise.
+
+$
+f(x) = cases(x^2 "if" x !=2,
+             0 "if" x = 2)
+$
+
+
+
 The first order of business is to set up, or _define_, a region, actually an open interval $I$, on the real line
 that contains both the center of our Taylor polynomial $c$ and the value $x$ that we are going to evaluate at.
-We'll make this region an open interval, say $I = (a,b)$, because for technical reasons we don't need to include the endpoints.
+This region is an open interval, say $I = (a,b)$, because for technical reasons in the proof of Taylor's theorem,
+we don't include the endpoints.
 Now the function $f$ that we're approximating had better be defined for all points within the interval.
 Otherwise, what would be the point of approximating it?
 The interval doesn't have to be the whole domain of $f$, but it does at least have to be a subset of the domain.
-In fact, for many functions, like sine for example, the interval is the whole real line, so that $I = (-oo,oo)$.
+
+However, for many functions, like sine for example, the domain is the whole real line
+and it turns out that it's convenient just to use the whole domain as the interval, so in these cases we set $I = (-oo,oo)$.
+In contrast, the domain of the natural log function $ln$ is the positive reals, so in this case we usually set $I = (0,oo)$.
+
 So that's the first precondition: $x$ and $c$ must be in $I$.
 
 The second precondition involves making sure that the derivatives within the theorem exist.
 
-Recall that in the Taylor polynomial we introduced in @eq:taylor_polynomial contains derivatives of the function $f$
+Recall that the Taylor polynomial, which we introduced in @eq:taylor_polynomial, contains derivatives of the function $f$
 evaluated at the center $c$ in its coefficients.
 In fact, the Taylor polynomial coefficients start with the zero#super[th] derivative and go up to the $n$#super[th] derivative.
 
-Also, recall that the remainder function we introduced in @eq:remainder_function contains the $(n+1)$#super[th] derivative of $f$,
+Also, recall that the remainder function, which we introduced in @eq:remainder_function, contains the $(n+1)$#super[th] derivative of $f$,
 this time evaluated at the _unknown_ value $z$.
+
+In order for the approximation to work, these derivatives must exist at the points they are evaluated at.
 
 In order for approximation to work, the function $f$ must be _k-times differentiable_ on the interval $I$.
 What does that mean? It means that first through the $(n+1)$#super[th] derivatives of $f$ must exist for every point in $I$.
