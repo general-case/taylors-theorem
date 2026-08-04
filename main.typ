@@ -886,7 +886,7 @@ The most commonly used name I could find is "Convergence of Taylor Series Theore
 
 At last we are finally in a position to launch into the details of Taylor's theorem.
 
-== Taylor's theorem
+= Taylor's theorem
 
 If we try to approximate some function, say $f$ with another function, say $g$, in most cases we're going to have a little something left over,
 a difference, which we can represent with yet another function, say $d$.
@@ -1028,28 +1028,84 @@ Taylor's theorem is no exception, so let's take a look at its preconditions now.
 
 The first order of business is to explain four concepts from calculus concerning properties of functions.
 
-Recall that a property is nothing more than a mathematical statement about an object, a function in this case.
+Recall that a property is nothing more than a mathematical statement about one or more mathematical objects.
 
-Property number one is _continuity at a point_.
-A function is continuous at a point, let's call it $a$, if its limit as $x$ approaches $a$ is in fact $f(a)$.
-We can write this in our formal language like this:
+== Continuity at a point
+
+A function is continuous at a point, let's call it $a$, if the limit of the function as $x$ approaches $a$ is in fact $f(a)$.
+We can write this fact like this:
 
 $
 lim_(x->a) f(x) = f(a)
 $
+<eq:continuity_at_a_point>
 
 What this means is the value that the function appears to be approaching as $x$ gets super close to $a$ is in fact the
-value the function actually achieves when it finally gets to $a$.
+value the function actually achieves when $x$ finally gets right on top of $a$.
 You would probably kind of expect this to always be the case, but in reality it's not always true.
-To see why let's have a look at a function that is discontinuous at a point.
-Say we define the following function piecewise.
+To see why let's have a look at a function that is not continuous, that is it's _discontinuous_ at a point.
+Say we define the following function piecewise:
 
 $
 f(x) = cases(x^2 "if" x !=2,
-             0 "if" x = 2)
+             8 "if" x = 2)
 $
 
+At everywhere except $x=2$ this function behaves exactly like $x^2$.
+As $x$ gets closer and closer to 2, $f(x)$ gets closer and closer to 4, so the limit of the function at 2 is 4,
+i.e., $lim_(x->2) f(x) = 4$.
+However, limits have nothing to say about the situation when $x$ actually reaches the target value, 2 in this case;
+they only tell you what happens as $x$ get super close to the target,
+and in this case our function suddenly jumps to 8 when $x$ reaches 2.
+That sudden jump by the way is called a _discontinuity_.
+So now look back at our definition of continuity at a point in @eq:continuity_at_a_point.
+Is this statement true for our function at the target value 2?
+In other words is the statement $lim_(x->2) f(x) = f(2)$ true? Nope!
+Why? Because the limit on the left is 4, as we saw earlier, but $f(2)$ on the right is 8, and 4 is not equal to 8.
+Ok, that was a fairly long winded explanation of continuity at a point.
+Let's move on to the next property.
 
+== Continuity on an interval
+
+This one is fairly easy to understand.
+We just need to extend our previous _continuity at a point_ property to all of the points in some interval of our choosing,
+which we'll call $I$. The interval can be open, closed, or half-open.
+We can apply the point continuity requirement to every point in the interval using the universal quantifier like this:
+
+$
+forall a:RR{a in I => lim_(x->a) f(x) = f(a)}
+$
+
+That's really all there is to it. The function $f$ must be continuous for every point $a$ in the interval $I$.
+
+== Differentiability at a point
+
+A function, let's call it $f$ again, is _differentiable at a point_ if its _derivative_ exists at that specific point.
+You may (or may not) recall from calculus that the derivative of a function is the limit of something called the _difference quotient_.
+The difference quotient for our function $f$ at some point, let's call it $a$, is $(f(x) - f(a))/(x-a)$.
+It's literally the ratio, or quotient, of two differences.
+So for our derivative to exist at point $a$ we need the limit of the difference quotient to exist.
+Here's how we write the existence statement, perhaps not surprisingly, using the existential quantifier:
+
+$
+exists L:RR{lim_(x->a) (f(x) - f(a))/(x-a) = L} #`// f is differentiable at a point a.`
+$
+
+I'll mention here that limits if they exist are unique, but that's a discussion for another day.
+
+== Differentiability on an interval
+
+Just like we did with continuity, we're going to extend the point version of the differentiability property to all of the points
+in an interval $I$. Just like before, the interval can be open, closed, or half-open.
+And, as you might expect, we're going to use the universal quantifier again like this:
+
+$
+forall a:RR{a in I => exists L:RR{lim_(x->a) (f(x) - f(a))/(x-a) = L}}
+$
+
+In words, the function $f$ must be differentiable for every point $a$ in the interval $I$. 
+
+== Preconditions
 
 The first order of business is to set up, or _define_, a region, actually an open interval $I$, on the real line
 that contains both the center of our Taylor polynomial $c$ and the value $x$ that we are going to evaluate at.
@@ -1084,44 +1140,6 @@ You may (or may not) recall from calculus that the derivative is the limit of so
 The difference quotient for our function $f$ at some point, let's call it $a$, is $(f(x) - f(a))/(x-a)$.
 So for our derivative to exist at point $a$ we need the limit of the difference quotient to exist.
 Here's how we write the existence statement, not surprisingly, using the existential quantifier:
-
-$
-exists L:RR{lim_(x->a) (f(x) - f(a))/(x-a) = L} #`// f is differentiable at a point a.`
-$
-
-I'll mention here that limits if they exist are unique, but that's a discussion for another day.
-Now we need to extend this idea to assert that $f$ is differentiable for every point $a$ in our interval $I$.
-No surprise we're going to need a universal quantifier and write it like this:
-
-$
-forall a:RR{a in I => exists L:RR{lim_(x->a) (f(x) - f(a))/(x-a) = L}}
-$
-
-
-
-Continuity at a point:
-
-$
-lim_(x->a) f(x) = f(a)
-$
-
-Continuity over an interval $I$:
-
-$
-forall a:RR{a in I => lim_(x->a) f(x) = f(a)}
-$
-
-Differentiable at a point:
-
-$
-exists L:RR{lim_(x->a) (f(x) - f(a))/(x-a) = L}
-$
-
-Differentiable over an interval $I$:
-
-$
-forall a:RR{a in I => exists L:RR{lim_(x->a) (f(x) - f(a))/(x-a) = L}}
-$
 
 
 #pagebreak()
