@@ -901,7 +901,8 @@ $
 
 But why would we want to approximate $f$ in the first place?
 Well, maybe we don't know how to calculate $f$. How can that happen?
-It could be that we know some geometric facts about $f$ and maybe some basic properties, but we don't have a full _algebraic_ expression for it.
+It could be that we know some geometric facts about the function $f$ and some basic properties,
+but maybe we don't have a full _algebraic_ expression for it.
 Without an algebraic expression for the function, we can't make an algorithm to compute its output value for any input value.
 This situation comes up more than you might think.
 There are functions called _transcendental functions_ that do not have _algebraic_ representations --
@@ -912,8 +913,8 @@ That's where Taylor's theorem comes into play.
 It gives us an algebraic approximation for these transcendental functions, so that we can approximate their values pretty closely;
 in fact as close as we like.
 And what is the algebraic approximation that we use? Well, of course it's the Taylor polynomial.
-Taylor's theorem says that we can approximate a function $f$ with a Taylor polynomial and we will have a difference
-which in the context of Taylor's theorem is called the _remainder_, or sometimes the _error_.
+Taylor's theorem says that we can approximate a function $f$ with a Taylor polynomial and we will have a difference,
+which in the context of Taylor's theorem is called the _remainder_, or sometimes, the _error_.
 Let's rework our previous statement, but this time we'll replace $g$ the Taylor polynomial and $d$ with the remainder function.
 Because both the Taylor polynomial and the remainder function have a degree $n$, we'll need to include a quantifier for all of those.
 Also, there's a center $c$ that we'll just assume is some constant defined somewhere.
@@ -951,7 +952,7 @@ Notice how the remainder picks up at $n+1$, right where the Taylor polynomial le
 In fact, it's pretty much the $(n+1)$#super[th] term of the Taylor polynomial, but with one small twist;
 there's a new variable $z$ in the expression.
 We can think of the remainder as the next term of the Taylor polynomial, but with a teaspoon of uncertainty added in.
-That $z$ variable represents the uncertainty in the remainder I was talking about earlier.
+That $z$ variable represents the uncertainty in the remainder.
 Now $z$ is a new mathematical variable in this expression, so we had better introduce it with a quantifier, but which one?
 We'll we know $z$ exists, but we don't know its value.
 For situations like this we use the existential quantifier.\
@@ -975,14 +976,14 @@ $
 $
 
 Technical note: the parentheses around the if-then statements are necessary because the $=>$ operator
-has _lower precedence_ in logic than $and$. Without them the $and$ operator would bind the middle two statements together
+has _lower precedence_ in logic than $and$. Without the parens the $and$ operator would bind the middle two statements together
 like this $c < z < x and x < a$ which is definitely not what we meant to say.
 
 Now it's time for yet another rework.
 We're going to stuff this restriction on the value of $z$ into our prototype statement for Taylor's theorem.
 I'm going to reformat the statement over multiple lines so that it's not so dense and you can see how the quantifiers are
 nested inside of one another, kind of like those Russian matryoshka dolls.
-If you've done some coding this new layout should look pretty familiar.\
+If you've done some coding, this new layout should look pretty familiar. It looks a little bit like nested loops. \
 Here's the new statement:
 
 // Local scope to confine styling.
@@ -1004,11 +1005,11 @@ $
 mono(
 & forall n:NN \
 & { \
-& #h(2em) exists z:RR \
+& #h(2em) forall x:RR \
 & #h(2em) { \
-& #h(4em) forall x:RR \
+& #h(4em) exists z:RR \
 & #h(4em) { \
-& #h(6em) (x > c => c < z < x) and (x < a => x < z < c) => f(x) = T_(n,c)(x) + R_(n,c)(x,z)  \
+& #h(6em) (x > c => c < z < x) and (x < a => x < z < c) and f(x) = T_(n,c)(x) + R_(n,c)(x,z)  \
 & #h(4em) } \
 & #h(2em) } \
 & } \
@@ -1016,9 +1017,18 @@ mono(
 $
 ]
 
-In words, this rather complicated mathematical statement says this: for every Taylor polynomial of degree $n$, there is some value $z$
-such that for every real number $x$, if $z$ sits in between $x$ and the center $c$ then the function $f$ is equal to the 
-Taylor polynomial, which remember is our approximation, plus the remainder.
+In words, this rather complicated mathematical statement says this:
+assuming we have a Taylor polynomial of degree $n$, built to approximate a function $f$, and centered at some point $c$,
+and we have the corresponding remainder function,
+then for each natural number $n$ and for each real number $x$,
+there is some value $z$ that sits in between $x$ and the center $c$ such that $f(x)$ is equal to the 
+Taylor polynomial evaluated at $x$ plus the remainder evaluated at $x$ and $z$.
+
+This statement turns out to be super useful because although we don't know the precise value of $z$,
+we do know that it is always somewhere between our current value for $x$ and the center $c$, so we can calculate the _maximum_
+value of the remainder function for each $x$.
+As we crank up the degree of the approximating Taylor polynomial, we can check the maximum value of the remainder to see
+if the approximation is accurate enough to meet our requirements.
 
 Ok, we're real close now to having the complete formal statement of Taylor's theorem.
 We just have a couple of picayune details that we need to include.
@@ -1054,7 +1064,7 @@ $
 At everywhere except $x=2$ this function behaves exactly like $x^2$.
 As $x$ gets closer and closer to 2, $f(x)$ gets closer and closer to 4, so the limit of the function at 2 is 4,
 i.e., $lim_(x->2) f(x) = 4$.
-However, limits have nothing to say about the situation when $x$ actually reaches the target value, 2 in this case;
+However, limits have nothing to say about the situation when $x$ actually reaches the target value, 2 in this example;
 they only tell you what happens as $x$ get super close to the target,
 and in this case our function suddenly jumps to 8 when $x$ reaches 2.
 That sudden jump by the way is called a _discontinuity_.
@@ -1106,6 +1116,10 @@ $
 In words, the function $f$ must be differentiable for every point $a$ in the interval $I$. 
 
 == Preconditions
+
+So now that we have a reasonable understanding of what it means for a function to be continuous and differentiable,
+both at a point and over a whole interval, we are ready to explain the preconditions that must exist
+for the main statement of Taylor's theorem to be true.
 
 The first order of business is to set up, or _define_, a region, actually an open interval $I$, on the real line
 that contains both the center of our Taylor polynomial $c$ and the value $x$ that we are going to evaluate at.
