@@ -1037,6 +1037,8 @@ the main statement in the theorem applies.
 Taylor's theorem is no exception, so let's take a look at its preconditions now.
 
 The first order of business is to explain four concepts from calculus concerning properties of functions.
+We're going to talk about _continuity_ and _differentiability_, but for each property there is a basic _point_ version plus
+an _interval_ version, making four properties in total.
 
 Recall that a property is nothing more than a mathematical statement about one or more mathematical objects.
 
@@ -1113,7 +1115,25 @@ $
 forall a:RR{a in I => exists L:RR{lim_(x->a) (f(x) - f(a))/(x-a) = L}}
 $
 
-In words, the function $f$ must be differentiable for every point $a$ in the interval $I$. 
+In words, the function $f$ must be differentiable for every point $a$ in the interval $I$.
+
+== Making things more readable with macros
+
+The two properties that we're going to be using in the next section are
+_continuity on an interval_ and _differentiability on an interval_.
+You may be thinking that those properties are a bit unwieldy if we want to use them in our preconditions.
+Also, the statements by themselves just look like a bunch of code and don't really give you any clue as to their purpose.
+So what can we do? Well we can borrow an idea from programming and package these complicated statements into a _macro_.
+Technically, we'll use something called a _predicate macro_ because it's a macro that wraps up a mathematical statement
+containing a predicate.
+
+Here's how we do that for both properties:
+
+$
+"cont"[f] := forall a:RR{a in I => lim_(x->a) f(x) = f(a)} \
+"diff"[f] := forall a:RR{a in I => exists L:RR{lim_(x->a) (f(x) - f(a))/(x-a) = L}}
+$
+
 
 == Preconditions
 
@@ -1121,39 +1141,42 @@ So now that we have a reasonable understanding of what it means for a function t
 both at a point and over a whole interval, we are ready to explain the preconditions that must exist
 for the main statement of Taylor's theorem to be true.
 
-The first order of business is to set up, or _define_, a region, actually an open interval $I$, on the real line
-that contains both the center of our Taylor polynomial $c$ and the value $x$ that we are going to evaluate at.
+We're going to set up, or _define_, a region on the real line and tie our preconditions to that region.
+The preconditions of course will be properties of various objects mentioned in Taylor's theorem.
+You can think of this region as the area of interest, or the segment of the real line where we want to use Taylor's theorem
+to approximate a function.
+
+The region is going to be an _open interval_ -- we'll call it $I$ -- that will contain
+both the center of our Taylor polynomial $c$ and the value $x$ that we are going to evaluate at.
 This region is an open interval, say $I = (a,b)$, because for technical reasons in the proof of Taylor's theorem,
 we don't include the endpoints.
 Now the function $f$ that we're approximating had better be defined for all points within the interval.
 Otherwise, what would be the point of approximating it?
 The interval doesn't have to be the whole domain of $f$, but it does at least have to be a subset of the domain.
 
-However, for many functions, like sine for example, the domain is the whole real line
+For many functions, like sine for example, the domain is the whole real line
 and it turns out that it's convenient just to use the whole domain as the interval, so in these cases we set $I = (-oo,oo)$.
 In contrast, the domain of the natural log function $ln$ is the positive reals, so in this case we usually set $I = (0,oo)$.
 
-So that's the first precondition: $x$ and $c$ must be in $I$.
+So that's the first precondition: $x$ and $c$ must be in $I$ which we can write mathematically, like this:
+
+$
+x in I and c in I
+$
 
 The second precondition involves making sure that the derivatives within the theorem exist.
 
 Recall that the Taylor polynomial, which we introduced in @eq:taylor_polynomial, contains derivatives of the function $f$
 evaluated at the center $c$ in its coefficients.
 In fact, the Taylor polynomial coefficients start with the zero#super[th] derivative and go up to the $n$#super[th] derivative.
-
 Also, recall that the remainder function, which we introduced in @eq:remainder_function, contains the $(n+1)$#super[th] derivative of $f$,
 this time evaluated at the _unknown_ value $z$.
+As a result, we have a sequence of derivatives of $f$ starting with the zero#super[th] derivative, $f^((0))$,
+which by the way is not a derivative at all -- it's just $f$ -- all the way through to the $(n+1)$#super[th] derivative $f^((n+1))$.
 
-In order for the approximation to work, these derivatives must exist at the points they are evaluated at.
-
-In order for approximation to work, the function $f$ must be _k-times differentiable_ on the interval $I$.
-What does that mean? It means that first through the $(n+1)$#super[th] derivatives of $f$ must exist for every point in $I$.
-Let's take this step by step.
-The phrase _differentiable at a point_ means the same thing as _the derivative exists at a point_.
-You may (or may not) recall from calculus that the derivative is the limit of something called the _difference quotient_.
-The difference quotient for our function $f$ at some point, let's call it $a$, is $(f(x) - f(a))/(x-a)$.
-So for our derivative to exist at point $a$ we need the limit of the difference quotient to exist.
-Here's how we write the existence statement, not surprisingly, using the existential quantifier:
+In order for Taylor's theorem to work, the function $f$ must be _k-times differentiable_ on the interval $I$.
+What does that mean? It means that first through the last, $(n+1)$#super[th], derivatives of $f$ must exist for every point in $I$,
+and the last derivative must also be continuous or every point in $I$.
 
 
 #pagebreak()
