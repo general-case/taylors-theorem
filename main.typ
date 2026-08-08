@@ -1121,18 +1121,58 @@ In words, the function $f$ must be differentiable for every point $a$ in the int
 
 The two properties that we're going to be using in the next section are
 _continuity on an interval_ and _differentiability on an interval_.
-You may be thinking that those properties are a bit unwieldy if we want to use them in our preconditions.
+You may be thinking that those properties are a bit unwieldy, especially if we want to use them in our preconditions.
 Also, the statements by themselves just look like a bunch of code and don't really give you any clue as to their purpose.
-So what can we do? Well we can borrow an idea from programming and package these complicated statements into a _macro_.
-Technically, we'll use something called a _predicate macro_ because it's a macro that wraps up a mathematical statement
-containing a predicate.
+So what can we do?
+Well, we can borrow an idea from programming and package each of these complicated statements into a nice,
+concise package called a _macro_.
+Technically, we'll use something called a _predicate macro_, which is called that
+because it's a macro that wraps up a mathematical statement containing a predicate.
 
 Here's how we do that for both properties:
 
 $
-"cont"[f] := forall a:RR{a in I => lim_(x->a) f(x) = f(a)} \
-"diff"[f] := forall a:RR{a in I => exists L:RR{lim_(x->a) (f(x) - f(a))/(x-a) = L}}
+"cont"[f,I] := forall a:RR{a in I => lim_(x->a) f(x) = f(a)} \
+"diff"[f,I] := forall a:RR{a in I => exists L:RR{lim_(x->a) (f(x) - f(a))/(x-a) = L}}
 $
+
+The $:=$ operator is used to define the macro.
+The macro name and any parameters are on the left side of the $:=$ symbol, whereas the statement is on the right.
+When you're ready to use the macro in a larger statement like Taylor's theorem, you _call_ it
+by writing its name followed by any required arguments as a comma separated list inside square brackets.
+Behind the scenes, the macro is _expanded_, meaning that the name and arguments are replaced by the full statement
+with any parameters replaced by the arguments you provided on the call.
+
+Let's say we wanted to state that the sine function is differentiable over the open interval from zero to $pi$.
+Here's how you do that:
+
+$
+"diff"[sin, (0,pi)]
+$
+
+This is of course a true statement.
+Here is what the macro call looks like after expansion:
+
+$
+forall a:RR{a in (0,pi) => exists L:RR{lim_(x->a) (sin(x) - sin(a))/(x-a) = L}}
+$
+
+Let's look at a few more examples:
+
+$
+& "diff"[sin', (oo,oo)]      && #`//` "Derivative of sine is differentiable over the reals." \
+& "diff"[sin^((3)), (oo,oo)] && #`//` "Third derivative of sine is differentiable over the reals." \
+& "cont"[cos^((3)), (oo,oo)] && #`//` "Third derivative of cosine is continuous over the reals." \
+& "cont"[ln, (0,oo)]         && #`//` "Natural log is continuous over the positive reals." \
+& "diff"[e^x, (oo,oo)]       && #`//` "Exponential functions are differentiable over the reals." \
+$
+
+The macro notational convenience will make the preconditions in the next section far more concise and readable.
+
+Here's one last word of caution before we move on.
+These macro thingies have arguments, but don't confuse them with functions.
+They're not the same thing.
+Macros are simply abbreviations for complicated mathematical statements, whereas functions are full blown mathematical objects.
 
 
 == Preconditions
