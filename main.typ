@@ -1164,13 +1164,13 @@ $
 & "diff"[sin^((3)), (oo,oo)] && #`//` "Third derivative of sine is differentiable over the reals." \
 & "cont"[cos^((3)), (oo,oo)] && #`//` "Third derivative of cosine is continuous over the reals." \
 & "cont"[ln, (0,oo)]         && #`//` "Natural log is continuous over the positive reals." \
-& "diff"[e^x, (oo,oo)]       && #`//` "Exponential functions are differentiable over the reals." \
+& "diff"[e^x, (oo,oo)]       && #`//` "Exponential function is differentiable over the reals." \
 $
 
 The macro notational convenience will make the preconditions in the next section far more concise and readable.
 
 Here's one last word of caution before we move on.
-These macro thingies have arguments, but don't confuse them with functions.
+These macros take arguments, but don't confuse them with functions.
 They're not the same thing.
 Macros are simply abbreviations for complicated mathematical statements, whereas functions are full blown mathematical objects.
 
@@ -1180,11 +1180,67 @@ Macros are simply abbreviations for complicated mathematical statements, whereas
 So now that we have a reasonable understanding of what it means for a function to be continuous and differentiable,
 both at a point and over a whole interval, we are ready to explain the preconditions that must exist
 for the main statement of Taylor's theorem to be true.
+By the way, I'm just going to state the preconditions without proof, just like everything else in this paper.
 
-We're going to set up, or _define_, a region on the real line and tie our preconditions to that region.
+We're going to set up, or _define_, a couple of intervals on the real line and tie each precondition to one of those intervals.
 The preconditions of course will be properties of various objects mentioned in Taylor's theorem.
-You can think of this region as the area of interest, or the segment of the real line where we want to use Taylor's theorem
+You can think of these intervals as the regions of interest, or segments of the real line where we want to use Taylor's theorem
 to approximate a function.
+
+For the preconditions of Taylor's theorem, we're going to take a minimalist approach
+and pick the absolute smallest possible intervals that will work.
+When using Taylor's theorem to actually build an approximation for a specific function,
+you are free to pick a larger interval, as long it encompasses the two intervals in the theorem,
+and doing so often works out to be very convenient as we shall see later.
+
+Ok, so the two intervals we're going to tie our preconditions are the closed interval $[c,x]$
+and the open interval $(c,x)$. For now, I'm assuming $x$ is larger than the center $x$ to keep things simple.
+We'll deal with the $x<c$ situation later.
+
+There are exactly two preconditions and each one is tied to one of the intervals.
+The first precondition emerges from the Taylor polynomial and is tied to the closed interval $[c,x]$.
+The second one comes from the remainder function and is tied to the open interval $(c,x)$.
+
+Let's talk about the first precondition.
+Recall that the Taylor polynomial, which we introduced in @eq:taylor_polynomial, contains derivatives of the function $f$
+evaluated at the center $c$ in its coefficients.
+In fact, the Taylor polynomial coefficients start with the zero#super[th] derivative and go up to the $n$#super[th] derivative.
+Of course the zero#super[th] derivative is not a derivative at all; it's just $f$.
+All of these derivatives must exist on the closed interval $[c,x]$, and they all need to be continuous.
+If we say a function is differentiable on some interval $I$, then we're saying its derivative exists on $I$.
+Now it turns out that if a function is differentiable on some interval $I$ it is also continuous on $I$.
+In other words, differentiability implies continuity.
+We can write this idea mathematically like this:
+
+$
+"diff"[f, I] => "cont"[f, I]
+$
+
+So for every derivative except the very last one, continuity is implied, but for that last ($n$#super[th]) derivative,
+we're going to need to state the continuity property separately.
+
+Here's how we write the full precondition:
+
+$
+forall k:NN{k <= n-1 => "diff"[f^((k)), [c,x]]} and "cont"[f^((n)), [c,x]]
+$
+
+Now let's tackle the second precondition.
+Recall that the remainder function, which we introduced in @eq:remainder_function, contains the $(n+1)$#super[th] derivative of $f$,
+this time evaluated at the _unknown_ value $z$.
+This derivative must exist on the open interval $(c,x)$, but it doesn't need to be continuous.
+
+$
+"diff"[f^((n)), (c,x)]
+$
+
+By saying that the $n$#super[th] derivative is differentiable we're guaranteeing that the next one in the chain,
+that is the $(n+1)$#super[th] derivative, exists.
+We're not saying that the $(n+1)$#super[th] derivative is continuous, but that's fine for this precondition.
+
+
+
+---------------------------------------------------------------
 
 The region is going to be an _open interval_ -- we'll call it $I$ -- that will contain
 both the center of our Taylor polynomial $c$ and the value $x$ that we are going to evaluate at.
@@ -1214,7 +1270,17 @@ this time evaluated at the _unknown_ value $z$.
 As a result, we have a sequence of derivatives of $f$ starting with the zero#super[th] derivative, $f^((0))$,
 which by the way is not a derivative at all -- it's just $f$ -- all the way through to the $(n+1)$#super[th] derivative $f^((n+1))$.
 
-In order for Taylor's theorem to work, the function $f$ must be _k-times differentiable_ on the interval $I$.
+In order for Taylor's theorem to work, all of these derivatives must exist on the interval $I$.
+In addition, the very last derivative $f^((n+1))$.
+Let's take care of the derivative existence precondition first.
+We can write this precondition using our diff macro like this:
+
+$
+forall k:NN{k <= n => "diff"[f^((k)), I]}
+$
+
+
+
 What does that mean? It means that first through the last, $(n+1)$#super[th], derivatives of $f$ must exist for every point in $I$,
 and the last derivative must also be continuous or every point in $I$.
 
