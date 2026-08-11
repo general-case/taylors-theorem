@@ -87,6 +87,10 @@ values of functions. On our journey to understanding Taylor's theorem we'll take
 polynomials, power series, Taylor polynomials, and the Taylor series.
 We'll conclude with a look at how Taylor's theorem is used to define the sine function from scratch, mathematically rather than
 geometrically.
+A lot of people think that Taylor's theorem is mainly about the Taylor series but in reality the theorem is more about
+approximating functions, particularly transcendental functions, and measuring how good or bad the approximation is over
+a given interval.
+If you're intrigued by this idea, read on.
 
 
 #pagebreak()
@@ -1129,7 +1133,7 @@ concise package called a _macro_.
 Technically, we'll use something called a _predicate macro_, which is called that
 because it's a macro that wraps up a mathematical statement containing a predicate.
 
-Here's how we do that for both properties:
+Here's how bundle our properties as macros:
 
 $
 "cont"[f,I] := forall a:RR{a in I => lim_(x->a) f(x) = f(a)} \
@@ -1138,6 +1142,7 @@ $
 
 The $:=$ operator is used to define the macro.
 The macro name and any parameters are on the left side of the $:=$ symbol, whereas the statement is on the right.
+The expression on the right is often called the _body_ of the macro, especially in programming books.
 When you're ready to use the macro in a larger statement like Taylor's theorem, you _call_ it
 by writing its name followed by any required arguments as a comma separated list inside square brackets.
 Behind the scenes, the macro is _expanded_, meaning that the name and arguments are replaced by the full statement
@@ -1168,10 +1173,11 @@ $
 $
 
 The macro notational convenience will make the preconditions in the next section far more concise and readable.
+And, if you forget the precise meaning of a macro, you can always return here to look at the statement in full.
 
-Here's one last word of caution before we move on.
-These macros take arguments, but don't confuse them with functions.
-They're not the same thing.
+Before we move on, here's one quick word of caution to consider when using macros.
+These macros take arguments, right?
+But don't confuse them with functions, because they're not the same thing.
 Macros are simply abbreviations for complicated mathematical statements, whereas functions are full blown mathematical objects.
 
 
@@ -1193,7 +1199,7 @@ When using Taylor's theorem to actually build an approximation for a specific fu
 you are free to pick a larger interval, as long it encompasses the two intervals in the theorem,
 and doing so often works out to be very convenient as we shall see later.
 
-Ok, so the two intervals we're going to tie our preconditions are the closed interval $[c,x]$
+Ok, so the two intervals we're going to tie our preconditions to are the closed interval $[c,x]$
 and the open interval $(c,x)$. For now, I'm assuming $x$ is larger than the center $x$ to keep things simple.
 We'll deal with the $x<c$ situation later.
 
@@ -1201,11 +1207,11 @@ There are exactly two preconditions and each one is tied to one of the intervals
 The first precondition emerges from the Taylor polynomial and is tied to the closed interval $[c,x]$.
 The second one comes from the remainder function and is tied to the open interval $(c,x)$.
 
-Let's talk about the first precondition.
+Let's talk about the *first* precondition.
 Recall that the Taylor polynomial, which we introduced in @eq:taylor_polynomial, contains derivatives of the function $f$
 evaluated at the center $c$ in its coefficients.
 In fact, the Taylor polynomial coefficients start with the zero#super[th] derivative and go up to the $n$#super[th] derivative.
-Of course the zero#super[th] derivative is not a derivative at all; it's just $f$.
+Of course the zero#super[th] derivative is not really a derivative at all; it's just $f$.
 All of these derivatives must exist on the closed interval $[c,x]$, and they all need to be continuous.
 If we say a function is differentiable on some interval $I$, then we're saying its derivative exists on $I$.
 Now it turns out that if a function is differentiable on some interval $I$ it is also continuous on $I$.
@@ -1225,7 +1231,11 @@ $
 forall k:NN{k <= n-1 => "diff"[f^((k)), [c,x]]} and "cont"[f^((n)), [c,x]]
 $
 
-Now let's tackle the second precondition.
+Remember $n$ represents the degree of the Taylor polynomial, so here we're saying that all of the functions
+from $f^((0))$ up to $f^((n-1))$ are differentiable which means that the derivatives $f^((1))$ up to $f^((n))$ all exist.
+Additionally, on the right side of the *and* operator, we're saying that the $f^((n))$ itself is continuous.
+
+Now let's tackle the *second* precondition.
 Recall that the remainder function, which we introduced in @eq:remainder_function, contains the $(n+1)$#super[th] derivative of $f$,
 this time evaluated at the _unknown_ value $z$.
 This derivative must exist on the open interval $(c,x)$, but it doesn't need to be continuous.
@@ -1236,16 +1246,11 @@ $
 
 By saying that the $n$#super[th] derivative is differentiable we're guaranteeing that the next one in the chain,
 that is the $(n+1)$#super[th] derivative, exists.
-We're not saying that the $(n+1)$#super[th] derivative is continuous, but that's fine for this precondition.
-
-
+We're not saying that the $(n+1)$#super[th] derivative is continuous,
+but that's fine because we don't need continuity for $f^((n+1))$ in this precondition.
 
 ---------------------------------------------------------------
 
-The region is going to be an _open interval_ -- we'll call it $I$ -- that will contain
-both the center of our Taylor polynomial $c$ and the value $x$ that we are going to evaluate at.
-This region is an open interval, say $I = (a,b)$, because for technical reasons in the proof of Taylor's theorem,
-we don't include the endpoints.
 Now the function $f$ that we're approximating had better be defined for all points within the interval.
 Otherwise, what would be the point of approximating it?
 The interval doesn't have to be the whole domain of $f$, but it does at least have to be a subset of the domain.
@@ -1253,36 +1258,6 @@ The interval doesn't have to be the whole domain of $f$, but it does at least ha
 For many functions, like sine for example, the domain is the whole real line
 and it turns out that it's convenient just to use the whole domain as the interval, so in these cases we set $I = (-oo,oo)$.
 In contrast, the domain of the natural log function $ln$ is the positive reals, so in this case we usually set $I = (0,oo)$.
-
-So that's the first precondition: $x$ and $c$ must be in $I$ which we can write mathematically, like this:
-
-$
-x in I and c in I
-$
-
-The second precondition involves making sure that the derivatives within the theorem exist.
-
-Recall that the Taylor polynomial, which we introduced in @eq:taylor_polynomial, contains derivatives of the function $f$
-evaluated at the center $c$ in its coefficients.
-In fact, the Taylor polynomial coefficients start with the zero#super[th] derivative and go up to the $n$#super[th] derivative.
-Also, recall that the remainder function, which we introduced in @eq:remainder_function, contains the $(n+1)$#super[th] derivative of $f$,
-this time evaluated at the _unknown_ value $z$.
-As a result, we have a sequence of derivatives of $f$ starting with the zero#super[th] derivative, $f^((0))$,
-which by the way is not a derivative at all -- it's just $f$ -- all the way through to the $(n+1)$#super[th] derivative $f^((n+1))$.
-
-In order for Taylor's theorem to work, all of these derivatives must exist on the interval $I$.
-In addition, the very last derivative $f^((n+1))$.
-Let's take care of the derivative existence precondition first.
-We can write this precondition using our diff macro like this:
-
-$
-forall k:NN{k <= n => "diff"[f^((k)), I]}
-$
-
-
-
-What does that mean? It means that first through the last, $(n+1)$#super[th], derivatives of $f$ must exist for every point in $I$,
-and the last derivative must also be continuous or every point in $I$.
 
 
 #pagebreak()
