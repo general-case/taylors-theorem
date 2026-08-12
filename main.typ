@@ -125,7 +125,7 @@ For that reason, you may want to read each section twice so that all the concept
 I've tried to keep each section as self-contained as possible.
 
 
-= Mathematical preliminaries
+= Mathematical preliminaries <sec:preliminaries>
 
 Let's begin with a lightning tour of some essential mathematical concepts.
 In this section, there'll be a lot of statements like _there are only two of blah_ or _there is only one something or other_.
@@ -890,7 +890,7 @@ The most commonly used name I could find is "Convergence of Taylor Series Theore
 
 At last we are finally in a position to launch into the details of Taylor's theorem.
 
-= Taylor's theorem
+= Taylor's theorem <sec:theorem>
 
 If we try to approximate some function, say $f$ with another function, say $g$, in most cases we're going to have a little something left over,
 a difference, which we can represent with yet another function, say $d$.
@@ -1019,6 +1019,7 @@ mono(
 & } \
 )
 $
+<prop:theorem_main>
 ]
 
 In words, this rather complicated mathematical statement says this:
@@ -1054,7 +1055,7 @@ We can write this fact like this:
 $
 lim_(x->a) f(x) = f(a)
 $
-<eq:continuity_at_a_point>
+<prop:continuity_at_a_point>
 
 What this means is the value that the function appears to be approaching as $x$ gets super close to $a$ is in fact the
 value the function actually achieves when $x$ finally gets right on top of $a$.
@@ -1074,7 +1075,7 @@ However, limits have nothing to say about the situation when $x$ actually reache
 they only tell you what happens as $x$ get super close to the target,
 and in this case our function suddenly jumps to 8 when $x$ reaches 2.
 That sudden jump by the way is called a _discontinuity_.
-So now look back at our definition of continuity at a point in @eq:continuity_at_a_point.
+So now look back at our definition of continuity at a point in @prop:continuity_at_a_point[statement].
 Is this statement true for our function at the target value 2?
 In other words is the statement $lim_(x->2) f(x) = f(2)$ true? Nope!
 Why? Because the limit on the left is 4, as we saw earlier, but $f(2)$ on the right is 8, and 4 is not equal to 8.
@@ -1091,6 +1092,7 @@ We can apply the point continuity requirement to every point in the interval usi
 $
 forall a:RR{a in I => lim_(x->a) f(x) = f(a)}
 $
+<prop:continuity_on_an_interval>
 
 That's really all there is to it. The function $f$ must be continuous for every point $a$ in the interval $I$.
 
@@ -1106,6 +1108,7 @@ Here's how we write the existence statement, perhaps not surprisingly, using the
 $
 exists L:RR{lim_(x->a) (f(x) - f(a))/(x-a) = L} #`// f is differentiable at a point a.`
 $
+<prop:differentiability_at_a_point>
 
 I'll mention here that limits if they exist are unique, but that's a discussion for another day.
 
@@ -1118,6 +1121,7 @@ And, as you might expect, we're going to use the universal quantifier again like
 $
 forall a:RR{a in I => exists L:RR{lim_(x->a) (f(x) - f(a))/(x-a) = L}}
 $
+<prop:differentiability_on_an_interval>
 
 In words, the function $f$ must be differentiable for every point $a$ in the interval $I$.
 
@@ -1179,6 +1183,7 @@ Before we move on, here's one quick word of caution to consider when using macro
 These macros take arguments, right?
 But don't confuse them with functions, because they're not the same thing.
 Macros are simply abbreviations for complicated mathematical statements, whereas functions are full blown mathematical objects.
+Macros are part of the language; functions are objects in the mathematical universe.
 
 
 == Preconditions
@@ -1230,6 +1235,7 @@ Here's how we write the full precondition:
 $
 forall k:NN{k <= n-1 => "diff"[f^((k)), [c,x]]} and "cont"[f^((n)), [c,x]]
 $
+<prop:precondition_taylor_polynomial>
 
 Remember $n$ represents the degree of the Taylor polynomial, so here we're saying that all of the functions
 from $f^((0))$ up to $f^((n-1))$ are differentiable which means that the derivatives $f^((1))$ up to $f^((n))$ all exist.
@@ -1239,15 +1245,30 @@ Now let's tackle the *second* precondition.
 Recall that the remainder function, which we introduced in @eq:remainder_function, contains the $(n+1)$#super[th] derivative of $f$,
 this time evaluated at the _unknown_ value $z$.
 This derivative must exist on the open interval $(c,x)$, but it doesn't need to be continuous.
+Here's how we write the second precondition:
 
 $
 "diff"[f^((n)), (c,x)]
 $
+<prop:precondition_remainder>
 
 By saying that the $n$#super[th] derivative is differentiable we're guaranteeing that the next one in the chain,
 that is the $(n+1)$#super[th] derivative, exists.
 We're not saying that the $(n+1)$#super[th] derivative is continuous,
 but that's fine because we don't need continuity for $f^((n+1))$ in this precondition.
+
+Ok, there's one last detail that we need to address.
+The two intervals, $[c,x]$ and $(c,x)$, assume that $x$ is larger than $c$, but in fact $x$ can be on either side of $c$,
+so we need to account for the case where $x<c$.
+
+== Stating the theorem in full
+
+In the last section I talked about the preconditions for the main part of Taylor's theorem,
+which we wrote down in @prop:theorem_main[statement].
+
+= Using Taylor's theorem
+
+As we've mentioned multiple times, we use Taylor's theorem to make approximations of functions.
 
 ---------------------------------------------------------------
 
