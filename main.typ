@@ -1003,7 +1003,6 @@ Here's the new statement:
 #show "{": it => scale(85%, it)
 #show "}": it => scale(85%, it)
 
-
 // Use monospace math font.
 $
 mono(
@@ -1241,6 +1240,20 @@ Remember $n$ represents the degree of the Taylor polynomial, so here we're sayin
 from $f^((0))$ up to $f^((n-1))$ are differentiable which means that the derivatives $f^((1))$ up to $f^((n))$ all exist.
 Additionally, on the right side of the *and* operator, we're saying that the $f^((n))$ itself is continuous.
 
+Now there is a fancy way of saying this exact statement that is widely used in mathematics.
+You can write it like this:
+
+$
+f in C^((n))([c,x])
+$
+
+This says that the derivatives $f^((1))$ up to $f^((n))$ all exist and are all continuous,
+which is exactly what we said in @prop:precondition_taylor_polynomial[statement].
+You can think of $C^((n))([c,x])$ as a set of functions that all have the property
+expressed in @prop:precondition_taylor_polynomial[statement].
+The statement is pronounced as "$f$ is $k$-times continuously differentiable on an interval $[c,x]$".
+
+
 Now let's tackle the *second* precondition.
 Recall that the remainder function, which we introduced in @eq:remainder_function, contains the $(n+1)$#super[th] derivative of $f$,
 this time evaluated at the _unknown_ value $z$.
@@ -1260,11 +1273,79 @@ but that's fine because we don't need continuity for $f^((n+1))$ in this precond
 Ok, there's one last detail that we need to address.
 The two intervals, $[c,x]$ and $(c,x)$, assume that $x$ is larger than $c$, but in fact $x$ can be on either side of $c$,
 so we need to account for the case where $x<c$.
+We can handle the two cases with an _if_then_ statement which recall is written with the $=>$ logical operator.
+
+$
+(x>c => (f in C^((n))([c,x]) and "diff"[f^((n)), (c,x)])) \
+and \
+(x<c => (f in C^((n))([x,c]) and "diff"[f^((n)), (x,c)]))
+$
+
+Notice that we don't need to worry about the case when $x=c$, because $f$ evaluated at the center is equal to the Taylor polynomial
+evaluated at the center, i.e. $f(c) = T_(n,c)(c)$.
+We're only interested in the remainder, or error, _near_ the center not right on top of it.
+
+Throughout this section I've been calling the requirements we place on $f$ in order for Taylor's theorem to work _preconditions_,
+which makes sense and is suggestive of the purpose of these statements, but in general mathematical literature these kinds
+of statements are mostly called _hypotheses_.
 
 == Stating the theorem in full
 
 In the last section I talked about the preconditions for the main part of Taylor's theorem,
 which we wrote down in @prop:theorem_main[statement].
+At this point, we have everything we need, preconditions and main statement, so let's throw it all into one giant statement.
+Fair warning: this statement is going to be big and complicated, but shortly we'll make a nice, pragmatic simplification.
+
+Here's the full theorem:
+
+// Local scope to confine styling.
+#[
+#set text(size: 0.9em)
+
+// Align the whole block with the left margin.
+#show math.equation.where(block: true): set align(left)
+
+// Make curly braces bold and a reasonable size.
+#show "{": set text(weight: "bold")
+#show "}": set text(weight: "bold")
+#show "{": it => scale(85%, it)
+#show "}": it => scale(85%, it)
+
+// Use monospace math font.
+$
+mono(
+& forall n:NN \
+& { \
+& #h(2em) forall x:RR \
+& #h(2em) { \
+& #h(4em) (x>c => (f in C^((n))([c,x]) and "diff"[f^((n)), (c,x)])) \
+& #h(4em) and \
+& #h(4em) (x<c => (f in C^((n))([x,c]) and "diff"[f^((n)), (x,c)])) \
+& #h(4em) => \
+& #h(4em) exists z:RR \
+& #h(4em) { \
+& #h(6em) (x > c => c < z < x) and (x < a => x < z < c) and f(x) = T_(n,c)(x) + R_(n,c)(x,z)  \
+& #h(4em) } \
+& #h(2em) } \
+& } \
+)
+$
+<prop:theorem_full>
+]
+
+This statement is certainly the most rigorous and minimalist form of Taylor's theorem,
+but there's a problem if we want to use it to measure how accurately the Taylor polynomial matches the function $f$.
+Remember I said that the derivative $f^((n+1))$ had to exist on the open interval $(c,x)$, but did not have to be continuous.
+Well, that is certainly true, and in that case there will definitely be a $z$ such that $f(x) = T_(n,c)(x) + R_(n,c)(x,z)$.
+Seems good, right? But what if there is a discontinuity in $f^((n+1))$ somewhere on the interval $(c,x)$?
+Say $f^((n+1))$ shoots off to infinity somewhere on the interval.
+If that happens, how could we find the maximum value of $f^((n+1))(z)$ over $(c,x)$? Well, we couldn't.
+With the discontinuity landmine in there we'd be stuck and Taylor's theorem would lose its usefulness for approximation.
+So what can we do?
+Well, we can tweak the preconditions to require that $f^((n+1))$ is continuous over some interval that contains $x$ and $c$.
+
+Need to fix the domain!!!!
+
 
 = Using Taylor's theorem
 
