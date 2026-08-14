@@ -929,6 +929,34 @@ $
 forall n:NN{forall x:RR{f(x) = T_(n,c)(x) + R_(n,c)(x)}}
 $
 
+-----
+
+The previous statement is pretty good, but we'll want to be a bit more specific about precisely where on the real line we're
+performing this approximation of $f$.
+Right now the statement suggests that we're approximating over the entire real line, but for a number of reasons you may want to
+restrict your approximation to a particular _region of interest_ around the center $c$.
+The accuracy of the approximation will often get worse the further away from the center you get,
+so you may want to work within small region around the center.
+Perhaps you're working with a function that isn't defined for all real numbers.
+For example, the natural log function $ln$ is only defined for the positive reals.
+
+Taylor's theorem accommodates this region of interest by requiring that $x$ and $c$ lie within a given open interval $I$.
+Now the function $f$ that we're approximating had better be defined for all points within the interval.
+Otherwise, what would be the point of approximating it?
+The interval doesn't have to be the whole domain of $f$, but it does at least have to be a subset of the domain. 
+For many functions, like sine for example, the domain is the whole real line and in those cases
+it sometimes makes sense just to use the whole domain as the interval, so we set $I = (-oo,oo)$, or equivalently $I = RR$.
+In contrast, the domain of the natural log function $ln$ is the positive reals, so in this case we may want to set $I = (0,oo)$.
+Here's the updated version of our evolving statement that includes the interval requirement:
+
+$
+forall n:NN{forall x:RR{x in I and x != c => f(x) = T_(n,c)(x) + R_(n,c)(x)}}
+$
+
+We're assuming that $I$ contains the center $c$. We have also stipulated that $x!=c$.
+This is because when evaluated at $c$ the Taylor polynomial equals $f(c)$, by definition.
+Taylor's theorem is concerned with what happens around the center but not at the center.
+
 Recall we said that the Taylor polynomial is just a polynomial function,
 which we know from experience should be easy to compute provided we have the coefficients. More on the coefficients later.
 So this statement says we can approximate a function $f$ by computing the value of the Taylor polynomial of some degree $n$
@@ -963,7 +991,7 @@ For situations like this we use the existential quantifier.\
 Let's do another re-work:
 
 $
-forall n:NN{exists z:RR{forall x:RR{f(x) = T_(n,c)(x) + R_(n,c)(x,z)}}}
+forall n:NN{forall x:RR{exists z:RR{f(x) = T_(n,c)(x) + R_(n,c)(x,z)}}}
 $
 
 Now in Taylor's theorem the value of $z$ lives somewhere _in between_ the center $c$ and the value of $x$.
@@ -984,7 +1012,7 @@ has _lower precedence_ in logic than $and$. Without the parens the $and$ operato
 like this $c < z < x and x < a$ which is definitely not what we meant to say.
 
 Now it's time for yet another rework.
-We're going to stuff this restriction on the value of $z$ into our prototype statement for Taylor's theorem.
+We're going to stuff the restriction on the value of $z$ into our prototype statement for Taylor's theorem.
 I'm going to reformat the statement over multiple lines so that it's not so dense and you can see how the quantifiers are
 nested inside of one another, kind of like those Russian matryoshka dolls.
 If you've done some coding, this new layout should look pretty familiar. It looks a little bit like nested loops. \
@@ -1350,16 +1378,6 @@ Need to fix the domain!!!!
 = Using Taylor's theorem
 
 As we've mentioned multiple times, we use Taylor's theorem to make approximations of functions.
-
----------------------------------------------------------------
-
-Now the function $f$ that we're approximating had better be defined for all points within the interval.
-Otherwise, what would be the point of approximating it?
-The interval doesn't have to be the whole domain of $f$, but it does at least have to be a subset of the domain.
-
-For many functions, like sine for example, the domain is the whole real line
-and it turns out that it's convenient just to use the whole domain as the interval, so in these cases we set $I = (-oo,oo)$.
-In contrast, the domain of the natural log function $ln$ is the positive reals, so in this case we usually set $I = (0,oo)$.
 
 
 #pagebreak()
