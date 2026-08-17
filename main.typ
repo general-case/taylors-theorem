@@ -892,12 +892,19 @@ At last we are finally in a position to launch into the details of Taylor's theo
 
 = Taylor's theorem <sec:theorem>
 
-If we try to approximate some function, say $f$ with another function, say $g$, in most cases we're going to have a little something left over,
-a difference, which we can represent with yet another function, say $d$.
-This is the nature of approximation. You don't always get an exact match. You get something close, but there's usually a difference.
-In other words, for each value of $x$ the actual value of the approximated function at $x$, $f(x)$ is going to be
+In this section, we're going to develop Taylor's theorem step-by-step using common sense reasoning.
+We'll start with the basics and then gradually add in the technical details.
+At the end we'll do a simplification that will give us a more practical version of the theorem that we can use to build approximations.
+
+== The basics
+
+If you try to approximate one function, say $f$ with another function, say $g$, in most cases we're going to have a little something left over,
+a difference, which you can represent with yet another function, say $d$.
+This is the nature of approximation. You don't always get an exact match.
+You may get something close, but there's usually going to be a difference.
+In other words, for each value of $x$, the actual value of the approximated function at $x$, $f(x)$ is going to be
 $g(x)$ plus some difference $d(x)$.
-We can state this idea formally like this:
+We can state this idea in mathematical language like this:
 
 $
 forall x:RR{f(x) = g(x) + d(x)}
@@ -922,28 +929,32 @@ which in the context of Taylor's theorem is called the _remainder_, or sometimes
 Let's rework our previous statement, but this time we'll replace $g$ the Taylor polynomial and $d$ with the remainder function.
 Because both the Taylor polynomial and the remainder function have a degree $n$, we'll need to include a quantifier for all of those.
 Also, there's a center $c$ that we'll just assume is some constant defined somewhere.
-In fact the center is quite often zero.
+In fact, the center is quite often zero.
 With those changes our reworked statement looks like this:
 
 $
 forall n:NN{forall x:RR{f(x) = T_(n,c)(x) + R_(n,c)(x)}}
 $
 
------
+You can see that this statement is true for every natural number $n$, where $n$ is the degree of the Taylor polynomial.
+The general idea here is as you increase $n$ the Taylor polynomial gets more accurate
+and the remainder gets smaller, so you can think of $n$ as a knob that you can turn, maybe like a volume control.
 
-The previous statement is pretty good, but we'll want to be a bit more specific about precisely where on the real line we're
+This statement is pretty good, but if you look closely you can probably see a problem.
+Right now the statement says that we're approximating over the _entire_ real line.
+For a number of reasons, we'll want to be a more specific than that and say precisely where on the real line we're
 performing this approximation of $f$.
-Right now the statement suggests that we're approximating over the entire real line, but for a number of reasons you may want to
-restrict your approximation to a particular _region of interest_ around the center $c$.
-The accuracy of the approximation will often get worse the further away from the center you get,
-so you may want to work within small region around the center.
-Perhaps you're working with a function that isn't defined for all real numbers.
+One reason is that the accuracy of the approximation will often get worse the further away from the center we get,
+so we'll probably want to work within small region around the center.
+Another reason is perhaps we're working with a function that isn't even defined for all real numbers.
 For example, the natural log function $ln$ is only defined for the positive reals.
+For these reasons, we need to restrict our approximation to a particular _region of interest_ around the center $c$.
 
-Taylor's theorem accommodates this region of interest by requiring that $x$ and $c$ lie within a given open interval $I$.
-Now the function $f$ that we're approximating had better be defined for all points within the interval.
+Taylor's theorem accommodates this region of interest by requiring that $x$ and $c$ lie within an open interval,
+which we'll call $I$.
+Now the function $f$ that we're approximating had better be defined for all points within that interval.
 Otherwise, what would be the point of approximating it?
-The interval doesn't have to be the whole domain of $f$, but it does at least have to be a subset of the domain. 
+The interval doesn't necessarily have to be the whole domain of $f$, but it does at least have to be a subset of the domain. 
 For many functions, like sine for example, the domain is the whole real line and in those cases
 it sometimes makes sense just to use the whole domain as the interval, so we set $I = (-oo,oo)$, or equivalently $I = RR$.
 In contrast, the domain of the natural log function $ln$ is the positive reals, so in this case we may want to set $I = (0,oo)$.
@@ -954,16 +965,16 @@ forall n:NN{forall x:RR{x in I and x != c => f(x) = T_(n,c)(x) + R_(n,c)(x)}}
 $
 
 We're assuming that $I$ contains the center $c$. We have also stipulated that $x!=c$.
-This is because when evaluated at $c$ the Taylor polynomial equals $f(c)$, by definition.
-Taylor's theorem is concerned with what happens around the center but not at the center.
+This is because when evaluated at $c$, the Taylor polynomial equals $f(c)$, by definition.
+Taylor's theorem is concerned with what happens _around_ the center but not what happens exactly at the center.
 
 Recall we said that the Taylor polynomial is just a polynomial function,
 which we know from experience should be easy to compute provided we have the coefficients. More on the coefficients later.
-So this statement says we can approximate a function $f$ by computing the value of the Taylor polynomial of some degree $n$
+So our latest statement says we can approximate a function $f$ by computing the value of the Taylor polynomial of some degree $n$
 at $x$ and we will have a remainder. The remainder measures how inaccurate our approximation is.
 The bigger the remainder the worse of an approximation we have.
 Now unfortunately we can't calculate an exact value for the remainder,
-but we can figure out a range of values and calculate the maximum value within that range.
+but we can figure out a range of values and calculate the maximum error within that range.
 The maximum is a kind of worst case remainder.
 
 I mean think about it for a second. If we could compute the exact value of the remainder then we wouldn't have an approximation anymore;
@@ -978,7 +989,7 @@ $
 <eq:remainder_function>
 
 Be aware that there are a few different versions of the remainder function.
-This one is called _the Lagrange form of the remainder_ and is commonly found in popular calculus textbooks.
+This one is called _the Lagrange form of the remainder_ and is the one commonly found in popular calculus textbooks.
 
 Notice how the remainder picks up at $n+1$, right where the Taylor polynomial left off.
 In fact, it's pretty much the $(n+1)$#super[th] term of the Taylor polynomial, but with one small twist;
@@ -991,7 +1002,7 @@ For situations like this we use the existential quantifier.\
 Let's do another re-work:
 
 $
-forall n:NN{forall x:RR{exists z:RR{f(x) = T_(n,c)(x) + R_(n,c)(x,z)}}}
+forall n:NN{forall x:RR{x in I and x != c => exists z:RR{f(x) = T_(n,c)(x) + R_(n,c)(x,z)}}}
 $
 
 Now in Taylor's theorem the value of $z$ lives somewhere _in between_ the center $c$ and the value of $x$.
@@ -999,7 +1010,7 @@ The tricky part is we don't know if the value of $x$ is bigger or smaller than $
 the two, we have to account for both situations.
 In other words, we have to say where $z$ is when $x>c$ *and* when $x<a$.
 We need to say something like if $x>c$ then $c<z<x$ and if $x<a$ then $x<z<c$.
-To write an _if-then_ statement in mathematics we use the _implies_ logical operator which has the symbol $=>$.
+To write an _if-then_ statement in mathematics we use the _implies_ logical operator which is represented by the symbol $=>$.
 We're also going to need the _and_ logical operator, represented by the symbol $and$, to say that two things are true at the same time.
 Let's put all of this together and write the the restriction on $z$ in symbols like this:
 
@@ -1012,8 +1023,9 @@ has _lower precedence_ in logic than $and$. Without the parens the $and$ operato
 like this $c < z < x and x < a$ which is definitely not what we meant to say.
 
 Now it's time for yet another rework.
-We're going to stuff the restriction on the value of $z$ into our prototype statement for Taylor's theorem.
-I'm going to reformat the statement over multiple lines so that it's not so dense and you can see how the quantifiers are
+We're going to stuff the if-then statement about the value of $z$ into our prototypical statement for Taylor's theorem.
+This statement is going to get pretty busy so I'll reformat it over multiple lines.
+That way, it won't be so dense and you'll be able to see more easily how the quantifiers are
 nested inside of one another, kind of like those Russian matryoshka dolls.
 If you've done some coding, this new layout should look pretty familiar. It looks a little bit like nested loops. \
 Here's the new statement:
@@ -1038,6 +1050,7 @@ mono(
 & { \
 & #h(2em) forall x:RR \
 & #h(2em) { \
+& #h(4em) x in I and x != c => \
 & #h(4em) exists z:RR \
 & #h(4em) { \
 & #h(6em) (x > c => c < z < x) and (x < a => x < z < c) and f(x) = T_(n,c)(x) + R_(n,c)(x,z)  \
@@ -1046,7 +1059,7 @@ mono(
 & } \
 )
 $
-<prop:theorem_main>
+<prop:theorem_basic>
 ]
 
 In words, this rather complicated mathematical statement says this:
@@ -1068,13 +1081,16 @@ Almost all theorems have _preconditions_, constraints on objects that specify ex
 the main statement in the theorem applies.
 Taylor's theorem is no exception, so let's take a look at its preconditions now.
 
-The first order of business is to explain four concepts from calculus concerning properties of functions.
-We're going to talk about _continuity_ and _differentiability_, but for each property there is a basic _point_ version plus
-an _interval_ version, making four properties in total.
 
+== Properties of functions
+
+In order to define the preconditions of Taylor's theorem we must first understand four properties of functions that come from calculus.
 Recall that a property is nothing more than a mathematical statement about one or more mathematical objects.
+In this section, we're going to talk about two concepts, _continuity_ and _differentiability_,
+but for each concept there is a basic _point_ version plus an _interval_ version, making four properties in total.
+At the end of the section we'll look at a way to make these properties more concise and readable using _macros_.
 
-== Continuity at a point
+=== Continuity at a point
 
 A function is continuous at a point, let's call it $a$, if the limit of the function as $x$ approaches $a$ is in fact $f(a)$.
 We can write this fact like this:
@@ -1109,11 +1125,12 @@ Why? Because the limit on the left is 4, as we saw earlier, but $f(2)$ on the ri
 Ok, that was a fairly long winded explanation of continuity at a point.
 Let's move on to the next property.
 
-== Continuity on an interval
+
+=== Continuity on an interval
 
 This one is fairly easy to understand.
 We just need to extend our previous _continuity at a point_ property to all of the points in some interval of our choosing,
-which we'll call $I$. The interval can be open, closed, or half-open.
+which as usual we'll call $I$. The interval can be open, closed, or half-open.
 We can apply the point continuity requirement to every point in the interval using the universal quantifier like this:
 
 $
@@ -1123,7 +1140,8 @@ $
 
 That's really all there is to it. The function $f$ must be continuous for every point $a$ in the interval $I$.
 
-== Differentiability at a point
+
+=== Differentiability at a point
 
 A function, let's call it $f$ again, is _differentiable at a point_ if its _derivative_ exists at that specific point.
 You may (or may not) recall from calculus that the derivative of a function is the limit of something called the _difference quotient_.
@@ -1139,7 +1157,8 @@ $
 
 I'll mention here that limits if they exist are unique, but that's a discussion for another day.
 
-== Differentiability on an interval
+
+=== Differentiability on an interval
 
 Just like we did with continuity, we're going to extend the point version of the differentiability property to all of the points
 in an interval $I$. Just like before, the interval can be open, closed, or half-open.
@@ -1152,7 +1171,8 @@ $
 
 In words, the function $f$ must be differentiable for every point $a$ in the interval $I$.
 
-== Making things more readable with macros
+
+=== Making things more readable with macros
 
 The two properties that we're going to be using in the next section are
 _continuity on an interval_ and _differentiability on an interval_.
@@ -1164,7 +1184,7 @@ concise package called a _macro_.
 Technically, we'll use something called a _predicate macro_, which is called that
 because it's a macro that wraps up a mathematical statement containing a predicate.
 
-Here's how bundle our properties as macros:
+Here's how we bundle our properties as macros:
 
 $
 "cont"[f,I] := forall a:RR{a in I => lim_(x->a) f(x) = f(a)} \
@@ -1301,7 +1321,7 @@ but that's fine because we don't need continuity for $f^((n+1))$ in this precond
 Ok, there's one last detail that we need to address.
 The two intervals, $[c,x]$ and $(c,x)$, assume that $x$ is larger than $c$, but in fact $x$ can be on either side of $c$,
 so we need to account for the case where $x<c$.
-We can handle the two cases with an _if_then_ statement which recall is written with the $=>$ logical operator.
+We can handle the two cases with an _if-then_ statement which recall is written using the $=>$ logical operator.
 
 $
 (x>c => (f in C^((n))([c,x]) and "diff"[f^((n)), (c,x)])) \
@@ -1320,7 +1340,7 @@ of statements are mostly called _hypotheses_.
 == Stating the theorem in full
 
 In the last section I talked about the preconditions for the main part of Taylor's theorem,
-which we wrote down in @prop:theorem_main[statement].
+which we wrote down in @prop:theorem_basic[statement].
 At this point, we have everything we need, preconditions and main statement, so let's throw it all into one giant statement.
 Fair warning: this statement is going to be big and complicated, but shortly we'll make a nice, pragmatic simplification.
 
@@ -1346,6 +1366,8 @@ mono(
 & { \
 & #h(2em) forall x:RR \
 & #h(2em) { \
+& #h(4em) x in I and x != c \
+& #h(4em) and \
 & #h(4em) (x>c => (f in C^((n))([c,x]) and "diff"[f^((n)), (c,x)])) \
 & #h(4em) and \
 & #h(4em) (x<c => (f in C^((n))([x,c]) and "diff"[f^((n)), (x,c)])) \
@@ -1361,19 +1383,60 @@ $
 <prop:theorem_full>
 ]
 
-This statement is certainly the most rigorous and minimalist form of Taylor's theorem,
+
+== A pragmatic version of Taylor's theorem
+
+The latest version of our statement is certainly the most rigorous and minimalist form of Taylor's theorem,
 but there's a problem if we want to use it to measure how accurately the Taylor polynomial matches the function $f$.
 Remember I said that the derivative $f^((n+1))$ had to exist on the open interval $(c,x)$, but did not have to be continuous.
 Well, that is certainly true, and in that case there will definitely be a $z$ such that $f(x) = T_(n,c)(x) + R_(n,c)(x,z)$.
 Seems good, right? But what if there is a discontinuity in $f^((n+1))$ somewhere on the interval $(c,x)$?
 Say $f^((n+1))$ shoots off to infinity somewhere on the interval.
 If that happens, how could we find the maximum value of $f^((n+1))(z)$ over $(c,x)$? Well, we couldn't.
-With the discontinuity landmine in there we'd be stuck and Taylor's theorem would lose its usefulness for approximation.
+With the discontinuity landmine in there we'd be stuck.
+While Taylor's theorem technically would still be true, it would lose its usefulness for approximation.
 So what can we do?
 Well, we can tweak the preconditions to require that $f^((n+1))$ is continuous over some interval that contains $x$ and $c$.
 
-Need to fix the domain!!!!
+Let's rewrite the full theorem like this:
 
+// Local scope to confine styling.
+#[
+#set text(size: 0.9em)
+
+// Align the whole block with the left margin.
+#show math.equation.where(block: true): set align(left)
+
+// Make curly braces bold and a reasonable size.
+#show "{": set text(weight: "bold")
+#show "}": set text(weight: "bold")
+#show "{": it => scale(85%, it)
+#show "}": it => scale(85%, it)
+
+// Use monospace math font.
+$
+mono(
+& forall n:NN \
+& { \
+& #h(2em) forall x:RR \
+& #h(2em) { \
+& #h(4em) x in I and x != c and f in C^((n+1))(I) \
+& #h(4em) => \
+& #h(4em) exists z:RR \
+& #h(4em) { \
+& #h(6em) (x > c => c < z < x) and (x < a => x < z < c) and f(x) = T_(n,c)(x) + R_(n,c)(x,z)  \
+& #h(4em) } \
+& #h(2em) } \
+& } \
+)
+$
+<prop:theorem_pragmatic>
+]
+
+We're still assuming $c in I$ and requiring that $x in I$, but we've done away with the narrow requirements on $[c,x]$ and $(c,x)$,
+and replaced them with the somewhat more general statement $f in C^((n+1))(I)$.
+This general statement says that that $f^((n+1))$ is continuous over the entire interval $I$, so it definitely fixes the
+discontinuity problem we talked about. There can be no discontinuities in $(c,x)$ because this is a sub-interval of $I$.
 
 = Using Taylor's theorem
 
