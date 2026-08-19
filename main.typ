@@ -1079,7 +1079,9 @@ Ok, we're real close now to having the complete formal statement of Taylor's the
 We just have a couple of picayune details that we need to include.
 Almost all theorems have _preconditions_, constraints on objects that specify exactly under what circumstances
 the main statement in the theorem applies.
-Taylor's theorem is no exception, so let's take a look at its preconditions now.
+Taylor's theorem is no exception, so we'll need to specify those preconditions.
+However, in order to formulate the preconditions, we first need to understand some important properties of functions
+that come from the world of calculus. Let's take a look at those next.
 
 
 == Properties of functions
@@ -1237,13 +1239,11 @@ Macros are part of the language; functions are objects in the mathematical unive
 
 So now that we have a reasonable understanding of what it means for a function to be continuous and differentiable,
 both at a point and over a whole interval, we are ready to explain the preconditions that must exist
-for the main statement of Taylor's theorem to be true.
+for the main statement of Taylor's theorem to be applicable.
 By the way, I'm just going to state the preconditions without proof, just like everything else in this paper.
 
-We're going to set up, or _define_, a couple of intervals on the real line and tie each precondition to one of those intervals.
+We're going to set up, or _define_, a couple of small intervals on the real line and tie each precondition to one of those intervals.
 The preconditions of course will be properties of various objects mentioned in Taylor's theorem.
-You can think of these intervals as the regions of interest, or segments of the real line where we want to use Taylor's theorem
-to approximate a function.
 
 For the preconditions of Taylor's theorem, we're going to take a minimalist approach
 and pick the absolute smallest possible intervals that will work.
@@ -1301,7 +1301,6 @@ You can think of $C^((n))([c,x])$ as a set of functions that all have the proper
 expressed in @prop:precondition_taylor_polynomial[statement].
 The statement is pronounced as "$f$ is $k$-times continuously differentiable on an interval $[c,x]$".
 
-
 Now let's tackle the *second* precondition.
 Recall that the remainder function, which we introduced in @eq:remainder_function, contains the $(n+1)$#super[th] derivative of $f$,
 this time evaluated at the _unknown_ value $z$.
@@ -1337,11 +1336,18 @@ Throughout this section I've been calling the requirements we place on $f$ in or
 which makes sense and is suggestive of the purpose of these statements, but in general mathematical literature these kinds
 of statements are mostly called _hypotheses_.
 
+
+#pagebreak()
 == Stating the theorem in full
 
-In the last section I talked about the preconditions for the main part of Taylor's theorem,
+In the last section, I talked about the preconditions for the main part of Taylor's theorem,
 which we wrote down in @prop:theorem_basic[statement].
-At this point, we have everything we need, preconditions and main statement, so let's throw it all into one giant statement.
+At this point we have everything we need, preconditions and main statement, so let's throw it all into one giant statement.
+We'll place the preconditions from the last section, plus the requirements for $x$ and $c$ on the left side of an _if-then_
+statement which recall is represented by the $=>$ symbol. Everything on the left side of $=>$ is connected by $and$ operators
+because all of those statements need to be simultaneously true. The existential statement on the right side of $=>$ is only in force
+if everything on the left is satisfied. That's how _if-then_ statements work.
+
 Fair warning: this statement is going to be big and complicated, but shortly we'll make a nice, pragmatic simplification.
 
 Here's the full theorem:
@@ -1383,18 +1389,24 @@ $
 <prop:theorem_full>
 ]
 
+Ok, so this latest version of our statement is certainly the most rigorous and minimalist form of Taylor's theorem.
+Those very narrow preconditions that we just added emerge from the proof of Taylor's theorem.
+However, it turns out that this very technical and tightly specified statement is not the most practical version
+when it comes to figuring out polynomial approximations for the usual functions we encounter in mathematics.
+In the next section we'll see how we can relax the preconditions to make a more pragmatic version of the theorem.
 
+#pagebreak()
 == A pragmatic version of Taylor's theorem
 
-The latest version of our statement is certainly the most rigorous and minimalist form of Taylor's theorem,
-but there's a problem if we want to use it to measure how accurately the Taylor polynomial matches the function $f$.
+The latest version of our statement from the previous section represents Taylor's theorem as it emerges from the proof.
+However, if we look closely at it there is a problem.
 Remember I said that the derivative $f^((n+1))$ had to exist on the open interval $(c,x)$, but did not have to be continuous.
 Well, that is certainly true, and in that case there will definitely be a $z$ such that $f(x) = T_(n,c)(x) + R_(n,c)(x,z)$.
-Seems good, right? But what if there is a discontinuity in $f^((n+1))$ somewhere on the interval $(c,x)$?
+Seems good, right? But what if there's a discontinuity in $f^((n+1))$ somewhere on the interval $(c,x)$?
 Say $f^((n+1))$ shoots off to infinity somewhere on the interval.
 If that happens, how could we find the maximum value of $f^((n+1))(z)$ over $(c,x)$? Well, we couldn't.
 With the discontinuity landmine in there we'd be stuck.
-While Taylor's theorem technically would still be true, it would lose its usefulness for approximation.
+In this situation, Taylor's theorem is technically still true, but it has lost its usefulness as a tool for approximation.
 So what can we do?
 Well, we can tweak the preconditions to require that $f^((n+1))$ is continuous over some interval that contains $x$ and $c$.
 
@@ -1433,14 +1445,35 @@ $
 <prop:theorem_pragmatic>
 ]
 
-We're still assuming $c in I$ and requiring that $x in I$, but we've done away with the narrow requirements on $[c,x]$ and $(c,x)$,
+In this new version of the theorem, we're still assuming $c in I$ and requiring that $x in I$,
+but we've done away with the narrow requirements on $[c,x]$ and $(c,x)$,
 and replaced them with the somewhat more general statement $f in C^((n+1))(I)$.
 This general statement says that that $f^((n+1))$ is continuous over the entire interval $I$, so it definitely fixes the
-discontinuity problem we talked about. There can be no discontinuities in $(c,x)$ because this is a sub-interval of $I$.
+discontinuity problem we talked about. There can be no discontinuity in $(c,x)$ because $(c,x)$ is a sub-interval of $I$.
+Because $[c,x]$ and $(c,x)$ are both contained within $I$ this general statement takes care of our two tightly specified preconditions
+from before.
+As an added bonus, we also don't need to worry about whether $x$ is greater or less than $c$,
+because in either case the interval between $x$ and $c$ is contained within $I$.
+This new precondition is a little bit more demanding than the previous ones,
+but it turns out that in most cases that won't matter and the new version of the theorem will be easier to use.
+Indeed our new precondition _implies_ the two old ones, a fact that we can write mathematically like this:
+
+$
+& f in C^((n+1))(I) \
+& => \
+& (x>c => (f in C^((n))([c,x]) and "diff"[f^((n)), (c,x)])) \
+& and \
+& (x<c => (f in C^((n))([x,c]) and "diff"[f^((n)), (x,c)]))
+$
+
+And this means our new pragmatic theorem implies the previous technical version.
+If the preconditions of the new pragmatic theorem are satisfied then so are the preconditions of the old one.
+
+Ok, it time to take Taylor's theorem out for a spin and build some polynomial approximations.
 
 = Using Taylor's theorem
 
-As we've mentioned multiple times, we use Taylor's theorem to make approximations of functions.
+As we've mentioned multiple times, we use Taylor's theorem to make polynomial approximations of functions.
 
 
 #pagebreak()
