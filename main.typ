@@ -1030,22 +1030,8 @@ nested inside of one another, kind of like those Russian matryoshka dolls.
 If you've done some coding, this new layout should look pretty familiar. It looks a little bit like nested loops. \
 Here's the new statement:
 
-// Local scope to confine styling.
-#[
-#set text(size: 0.9em)
-
-// Align the whole block with the left margin.
-#show math.equation.where(block: true): set align(left)
-
-// Make curly braces bold and a reasonable size.
-#show "{": set text(weight: "bold")
-#show "}": set text(weight: "bold")
-#show "{": it => scale(85%, it)
-#show "}": it => scale(85%, it)
-
-// Use monospace math font.
+#mono-math(<prop:theorem_basic>)[
 $
-mono(
 & forall n:NN \
 & { \
 & #h(2em) forall x:RR \
@@ -1057,16 +1043,14 @@ mono(
 & #h(4em) } \
 & #h(2em) } \
 & } \
-)
 $
-<prop:theorem_basic>
 ]
 
 In words, this rather complicated mathematical statement says this:
-assuming we have a Taylor polynomial of degree $n$, built to approximate a function $f$, and centered at some point $c$,
+assuming we have a Taylor polynomial built to approximate a function $f$, and centered at some point $c$,
 and we have the corresponding remainder function,
-then for each natural number $n$ and for each real number $x$,
-there is some value $z$ that sits in between $x$ and the center $c$ such that $f(x)$ is equal to the 
+then for each natural number $n$ and for each real number $x$, if $x$ is within $I$ and not equal to $c$,
+there is some value $z$ that sits strictly in between $x$ and the center $c$ such that $f(x)$ is equal to the 
 Taylor polynomial evaluated at $x$ plus the remainder evaluated at $x$ and $z$.
 
 This statement turns out to be super useful because although we don't know the precise value of $z$,
@@ -1352,22 +1336,8 @@ Fair warning: this statement is going to be big and complicated, but shortly we'
 
 Here's the full theorem:
 
-// Local scope to confine styling.
-#[
-#set text(size: 0.9em)
-
-// Align the whole block with the left margin.
-#show math.equation.where(block: true): set align(left)
-
-// Make curly braces bold and a reasonable size.
-#show "{": set text(weight: "bold")
-#show "}": set text(weight: "bold")
-#show "{": it => scale(85%, it)
-#show "}": it => scale(85%, it)
-
-// Use monospace math font.
+#mono-math(<prop:theorem_full>)[
 $
-mono(
 & forall n:NN \
 & { \
 & #h(2em) forall x:RR \
@@ -1384,9 +1354,7 @@ mono(
 & #h(4em) } \
 & #h(2em) } \
 & } \
-)
 $
-<prop:theorem_full>
 ]
 
 Ok, so this latest version of our statement is certainly the most rigorous and minimalist form of Taylor's theorem.
