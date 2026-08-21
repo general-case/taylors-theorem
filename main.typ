@@ -80,18 +80,21 @@ Functions like table and grid take data as a sequence of positional arguments ra
 Work in progress!\
 Taylor's theorem is one of the most important in all of mathematics and truly understanding it means that you have achieved
 a significant level of _mathematical maturity_, but it can be challenging to find an explanation of the theorem in plain language.
-Taylor's theorem has enormous practical value. In fact, it is the theorem that provides the underlying algorithm that your
+Taylor's theorem has enormous practical value.
+In fact, it is Taylor's theorem that provides the underlying algorithm that your
 calculator uses to almost instantly compute the values of functions such as sine, cosine, and the exponential function ($e^x$).
 In this paper, I'll present a somewhat informal account of what Taylor's theorem actually is, and why it is useful for calculating the 
-values of functions. On our journey to understanding Taylor's theorem we'll take a look a prerequisite objects such as
+values of functions.
+I've tried to adopt a conversational tone throughout in an attempt to make the ideas as accessible as possible.
+I love feedback, so if you think I've made a mistake of that something could be improved, shoot me an email.
+On our journey to understanding Taylor's theorem we'll take a look a prerequisite objects such as
 polynomials, power series, Taylor polynomials, and the Taylor series.
 We'll conclude with a look at how Taylor's theorem is used to define the sine function from scratch, mathematically rather than
 geometrically.
-A lot of people think that Taylor's theorem is mainly about the Taylor series but in reality the theorem is more about
+Sometimes people think that Taylor's theorem is mainly about the Taylor series, but in reality the theorem is more about
 approximating functions, particularly transcendental functions, and measuring how good or bad the approximation is over
 a given interval.
 If you're intrigued by this idea, read on.
-
 
 #pagebreak()
 
@@ -141,7 +144,7 @@ I'll introduce the formal notation first because it is more precise and can actu
 
 By the way, we should talk about that word "formal", and another word "rigor". These come up in mathematical texts all the time.
 When I was learning math as a teenager (a long time ago), I imagined that the phrase "formal mathematics" meant that you were supposed to 
-wear a tux, or at least a suit and tie, and scowl at people over a pair of reading glasses for not being formal enough.
+wear a tux, or at least a tweed jacket and a tie, and scowl at people over a pair of reading glasses for not being formal enough.
 Of course that's not what _formal_ means in mathematics at all. It simply means that the mathematics is expressed in a language
 that has a _particular form_, whether that is the standard stylized language of most textbooks on the subject or the language of formal
 logic.
@@ -149,7 +152,7 @@ As for rigor, I used to think that this meant that doing math was _arduous_ and 
 Nope! Wrong again! Rigor simply means that no step is missed out or _hand-waved_ over in the process of deriving a formula.
 Now it's fair to say that some authors do leave out steps
 that they consider _elementary_ or _trivial_, but by and large in a _rigorous mathematical proof_ all of the steps of the argument
-will be stated explicitly. Many authors will say that if you have _mathematical maturity_ then you can intuit those missing elementary steps.
+will be stated explicitly. Many authors will say that if you have _mathematical maturity_ then you can intuit any missing elementary steps.
 Having mathematical maturity means you have been exposed to a lot of math.
 
 
@@ -469,6 +472,7 @@ is meant to be held fixed while the other argument $x$ varies independently. Ess
 The process of generating a single argument function of $x$ this way by supplying one of the two arguments is called _currying_.
 Currying is a little beyond the scope of this paper,
 but if you remember that subscripted _parameters_ are really just arguments you'll be fine.
+
 
 == Taylor polynomials
 
@@ -890,11 +894,13 @@ The most commonly used name I could find is "Convergence of Taylor Series Theore
 
 At last we are finally in a position to launch into the details of Taylor's theorem.
 
+
 = Taylor's theorem <sec:theorem>
 
 In this section, we're going to develop Taylor's theorem step-by-step using common sense reasoning.
 We'll start with the basics and then gradually add in the technical details.
 At the end we'll do a simplification that will give us a more practical version of the theorem that we can use to build approximations.
+
 
 == The basics
 
@@ -1075,6 +1081,7 @@ Recall that a property is nothing more than a mathematical statement about one o
 In this section, we're going to talk about two concepts, _continuity_ and _differentiability_,
 but for each concept there is a basic _point_ version plus an _interval_ version, making four properties in total.
 At the end of the section we'll look at a way to make these properties more concise and readable using _macros_.
+
 
 === Continuity at a point
 
@@ -1425,12 +1432,14 @@ If the preconditions of the new pragmatic theorem are satisfied then so are the 
 
 Ok, it's time to take Taylor's theorem out for a spin and build some polynomial approximations.
 
+
 = Using Taylor's theorem
 
 As we've mentioned multiple times, we use Taylor's theorem to make polynomial approximations of functions.
 
 
 = But how do we get the derivatives?
+
 
 = Conclusion
 
