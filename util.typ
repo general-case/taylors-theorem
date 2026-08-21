@@ -10,6 +10,7 @@
     math.equation(block: true, numbering: n => "(" + str(num) + ")", eq)
 }
 
+
 // Number array highlight colors (RGBA).
 #let hl-green  = rgb("#1bfc06ff")
 #let hl-pink   = rgb("#ff13f0ff")
@@ -101,3 +102,31 @@
 // Alternatively, you can use a lambda abstraction for the expression function.
 // #number-array(4, 4, (i, j) => $ 1/(#i^2 #j^2) $ )
 
+
+// Typeset content as mono-spaced math.
+// Parameters:
+// label - the label object to attach to the math element
+// math-content - the math content to be typeset (must be surrounded by $ $)
+//
+#let mono-math(label, math-content) = {
+
+    // Styling is confined to the local scope within this function.
+
+    // Set the text size.
+    set text(size: 0.9em)
+
+    // Align the whole block with the left margin.
+    show math.equation.where(block: true): set align(left)
+
+    // Make curly braces bold and a reasonable size.
+    show "{": set text(weight: "bold")
+    show "}": set text(weight: "bold")
+    show "{": it => scale(85%, it)
+    show "}": it => scale(85%, it)
+
+    // Use monospace math font.
+    // Labels can only be attached in markup mode which is why we need the square brackets here.
+    // Since we are in markup mode we need the # prefix on the label argument.
+    // Be aware that label is also a function in Typst.
+    [$ mono(#math-content) $ #label]
+}

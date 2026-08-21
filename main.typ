@@ -1412,22 +1412,8 @@ Well, we can tweak the preconditions to require that $f^((n+1))$ is continuous o
 
 Let's rewrite the full theorem like this:
 
-// Local scope to confine styling.
-#[
-#set text(size: 0.9em)
-
-// Align the whole block with the left margin.
-#show math.equation.where(block: true): set align(left)
-
-// Make curly braces bold and a reasonable size.
-#show "{": set text(weight: "bold")
-#show "}": set text(weight: "bold")
-#show "{": it => scale(85%, it)
-#show "}": it => scale(85%, it)
-
-// Use monospace math font.
+#mono-math(<prop:theorem_pragmatic>)[
 $
-mono(
 & forall n:NN \
 & { \
 & #h(2em) forall x:RR \
@@ -1440,10 +1426,10 @@ mono(
 & #h(4em) } \
 & #h(2em) } \
 & } \
-)
 $
-<prop:theorem_pragmatic>
 ]
+
+In @prop:theorem_pragmatic.
 
 In this new version of the theorem, we're still assuming $c in I$ and requiring that $x in I$,
 but we've done away with the narrow requirements on $[c,x]$ and $(c,x)$,
@@ -1469,12 +1455,16 @@ $
 And this means our new pragmatic theorem implies the previous technical version.
 If the preconditions of the new pragmatic theorem are satisfied then so are the preconditions of the old one.
 
-Ok, it time to take Taylor's theorem out for a spin and build some polynomial approximations.
+Ok, it's time to take Taylor's theorem out for a spin and build some polynomial approximations.
 
 = Using Taylor's theorem
 
 As we've mentioned multiple times, we use Taylor's theorem to make polynomial approximations of functions.
 
+
+= But how do we get the derivatives?
+
+= Conclusion
 
 #pagebreak()
 
