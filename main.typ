@@ -1435,7 +1435,11 @@ Ok, it's time to take Taylor's theorem out for a spin and build some polynomial 
 
 = Using Taylor's theorem
 
-As we've mentioned multiple times, we use Taylor's theorem to make polynomial approximations of functions.
+As I've mentioned a few times, we can use Taylor's theorem to make polynomial approximations of functions.
+
+$
+|R_(n,c)(x,z)| <= M/(n+1)! |x-c|^(n+1)
+$
 
 
 = But how do we get the derivatives?
