@@ -1435,12 +1435,37 @@ Ok, it's time to take Taylor's theorem out for a spin and build some polynomial 
 
 = Using Taylor's theorem
 
-As I've mentioned a few times, we can use Taylor's theorem to make polynomial approximations of functions.
+As I've mentioned a few times, Taylor's theorem tells us that we can make a polynomial approximation of a function that we're
+interested in computing values for, and that we'll have some remainder or _error_ left over
+that represents the difference between the actual value of the function and the value of the Taylor polynomial at a given point.
+So given that we know we're going to have some error, we'll need a way to figure out just how large that error is.
+Now, we can't know the exact value of the error, but we can know the worst case error for a specific Taylor polynomial.
+This worst case value is called an _upper bound_ on the error.
+It's going to be at least the maximum size of the error of the Taylor polynomial over our chosen interval,
+but in most cases it will actually be larger than that.
+So since we can calculate the upper bound on the error we just need to decide how big of an error we're willing to tolerate.
+For example, let's say we want to evaluate sine at $45 degree$ ($pi/4 " rad"$) and we're only willing to be off by 0.01 or less.
+All we need to do is to adjust the degree of the Taylor polynomial until the upper bound on its error is 0.01 or less.
+
+So how do we calculate this upper bound?
+Simple. We use the _Remainder Estimation Theorem_, which is: 
 
 $
 |R_(n,c)(x,z)| <= M/(n+1)! |x-c|^(n+1)
 $
 
+The expression on the right is our upper bound.
+The theorem says that the absolute value of our error will be less than or equal to the upper bound.
+The absolute value is expressing that we don't really care if our error is high or low.
+But what's that variable $M$ for?
+It's a custom value that we pick for each calculation that has to be an upper bound on value of the
+$(n+1)$#super[th] derivative of our function over the interval between $c$ and $x$ inclusive, $[c,x]$ or $[x,c]$,
+$(0,pi/4)$ in this case.
+Here's how we say that in mathematical language:
+
+$
+M >= sup_(t in [c,x]) |f^((n+1)) (t)|
+$
 
 = But how do we get the derivatives?
 
