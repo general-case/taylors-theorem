@@ -1000,7 +1000,7 @@ This one is called _the Lagrange form of the remainder_ and is the one commonly 
 Notice how the remainder picks up at $n+1$, right where the Taylor polynomial left off.
 In fact, it's pretty much the $(n+1)$#super[th] term of the Taylor polynomial, but with one small twist;
 there's a new variable $z$ in the expression.
-We can think of the remainder as the next term of the Taylor polynomial, but with a teaspoon of uncertainty added in.
+We can think of the remainder as the next term of the Taylor polynomial, but with a teaspoon of uncertainty thrown in.
 That $z$ variable represents the uncertainty in the remainder.
 Now $z$ is a new mathematical variable in this expression, so we had better introduce it with a quantifier, but which one?
 We'll we know $z$ exists, but we don't know its value.
@@ -1014,8 +1014,8 @@ $
 Now in Taylor's theorem the value of $z$ lives somewhere _in between_ the center $c$ and the value of $x$.
 The tricky part is we don't know if the value of $x$ is bigger or smaller than $c$, so in order to say that $z$ lies between
 the two, we have to account for both situations.
-In other words, we have to say where $z$ is when $x>c$ *and* when $x<a$.
-We need to say something like if $x>c$ then $c<z<x$ and if $x<a$ then $x<z<c$.
+In other words, we have to say where $z$ is when $x>c$ *and* when $x<c$.
+We need to say something like if $x>c$ then $c<z<x$ and if $x<c$ then $x<z<c$.
 To write an _if-then_ statement in mathematics we use the _implies_ logical operator which is represented by the symbol $=>$.
 We're also going to need the _and_ logical operator, represented by the symbol $and$, to say that two things are true at the same time.
 Let's put all of this together and write the the restriction on $z$ in symbols like this:
@@ -1025,11 +1025,25 @@ $
 $
 
 Technical note: the parentheses around the if-then statements are necessary because the $=>$ operator
-has _lower precedence_ in logic than $and$. Without the parens the $and$ operator would bind the middle two statements together
+has _lower precedence_ in logic than the $and$ operator.
+Without the parens the $and$ operator would bind the middle two statements together
 like this $c < z < x and x < a$ which is definitely not what we meant to say.
 
-Now it's time for yet another rework.
-We're going to stuff the if-then statement about the value of $z$ into our prototypical statement for Taylor's theorem.
+You know what though; that's a real mess.
+I mean who cares whether $x$ happens to be greater than or less than $c$? We just want $z$ to be in between $c$ and $x$.
+Why don't we clean it up a bit before moving on.
+Let's unilaterally declare some new, convenient notation.
+We'll say $((c,x))$ is the _open_ interval between $c$ and $x$ without regard to the order of $c$ and $x$.
+We'll also say $[[c,x]]$ is the _closed_ interval between $c$ and $x$ without regard to the order of $c$ and $x$.
+So the double parens and double square brackets denote the _unordered_ versions of open and closed intervals.
+Now we can rewrite the previous statement about $z$ like this:
+
+$
+z in ((c,x))
+$
+
+OK, it's time for yet another rework.
+We're going to stuff the statement about the value of $z$ into our prototypical statement for Taylor's theorem.
 This statement is going to get pretty busy so I'll reformat it over multiple lines.
 That way, it won't be so dense and you'll be able to see more easily how the quantifiers are
 nested inside of one another, kind of like those Russian matryoshka dolls.
@@ -1045,7 +1059,7 @@ $
 & #h(4em) x in I and x != c => \
 & #h(4em) exists z:RR \
 & #h(4em) { \
-& #h(6em) (x > c => c < z < x) and (x < a => x < z < c) and f(x) = T_(n,c)(x) + R_(n,c)(x,z)  \
+& #h(6em) z in ((c,x)) and f(x) = T_(n,c)(x) + R_(n,c)(x,z)  \
 & #h(4em) } \
 & #h(2em) } \
 & } \
@@ -1242,20 +1256,21 @@ When using Taylor's theorem to actually build an approximation for a specific fu
 you are free to pick a larger interval, as long it encompasses the two intervals in the theorem,
 and doing so often works out to be very convenient as we shall see later.
 
-Ok, so the two intervals we're going to tie our preconditions to are the closed interval $[c,x]$
-and the open interval $(c,x)$. For now, I'm assuming $x$ is larger than the center $x$ to keep things simple.
-We'll deal with the $x<c$ situation later.
+Ok, so the two intervals we're going to tie our preconditions to are the closed interval $[[c,x]]$
+and the open interval $((c,x))$.
+Recall the double parens and square brackets denote _unordered_ intervals.
+We need unordered intervals because we don't know if $x$ is greater than or less than $c$.
 
 There are exactly two preconditions and each one is tied to one of the intervals.
-The first precondition emerges from the Taylor polynomial and is tied to the closed interval $[c,x]$.
-The second one comes from the remainder function and is tied to the open interval $(c,x)$.
+The first precondition emerges from the Taylor polynomial and is tied to the closed interval $[[c,x]]$.
+The second one comes from the remainder function and is tied to the open interval $((c,x))$.
 
 Let's talk about the *first* precondition.
 Recall that the Taylor polynomial, which we introduced in @eq:taylor_polynomial, contains derivatives of the function $f$
 evaluated at the center $c$ in its coefficients.
 In fact, the Taylor polynomial coefficients start with the zero#super[th] derivative and go up to the $n$#super[th] derivative.
 Of course the zero#super[th] derivative is not really a derivative at all; it's just $f$.
-All of these derivatives must exist on the closed interval $[c,x]$, and they all need to be continuous.
+All of these derivatives must exist on the closed interval $[[c,x]]$, and they all need to be continuous.
 If we say a function is differentiable on some interval $I$, then we're saying its derivative exists on $I$.
 Now it turns out that if a function is differentiable on some interval $I$ it is also continuous on $I$.
 In other words, differentiability implies continuity.
@@ -1271,7 +1286,7 @@ we're going to need to state the continuity property separately.
 Here's how we write the full precondition:
 
 $
-forall k:NN{k <= n-1 => "diff"[f^((k)), [c,x]]} and "cont"[f^((n)), [c,x]]
+forall k:NN{k <= n-1 => "diff"[f^((k)), [[c,x]]} and "cont"[f^((n)), [[c,x]]
 $
 <prop:precondition_taylor_polynomial>
 
@@ -1283,23 +1298,23 @@ Now there is a fancy way of saying this exact statement that is widely used in m
 You can write it like this:
 
 $
-f in C^((n))([c,x])
+f in C^((n))([[c,x]])
 $
 
 This says that the derivatives $f^((1))$ up to $f^((n))$ all exist and are all continuous,
 which is exactly what we said in @prop:precondition_taylor_polynomial[statement].
-You can think of $C^((n))([c,x])$ as a set of functions that all have the property
+You can think of $C^((n))([[c,x]])$ as a set of functions that all have the property
 expressed in @prop:precondition_taylor_polynomial[statement].
-The statement is pronounced as "$f$ is $k$-times continuously differentiable on an interval $[c,x]$".
+The statement is pronounced as "$f$ is $k$-times continuously differentiable on an interval $[[c,x]]$".
 
 Now let's tackle the *second* precondition.
 Recall that the remainder function, which we introduced in @eq:remainder_function, contains the $(n+1)$#super[th] derivative of $f$,
 this time evaluated at the _unknown_ value $z$.
-This derivative must exist on the open interval $(c,x)$, but it doesn't need to be continuous.
+This derivative must exist on the open interval $((c,x))$, but it doesn't need to be continuous.
 Here's how we write the second precondition:
 
 $
-"diff"[f^((n)), (c,x)]
+"diff"[f^((n)), ((c,x))]
 $
 <prop:precondition_remainder>
 
@@ -1307,17 +1322,6 @@ By saying that the $n$#super[th] derivative is differentiable we're guaranteeing
 that is the $(n+1)$#super[th] derivative, exists.
 We're not saying that the $(n+1)$#super[th] derivative is continuous,
 but that's fine because we don't need continuity for $f^((n+1))$ in this precondition.
-
-Ok, there's one last detail that we need to address.
-The two intervals, $[c,x]$ and $(c,x)$, assume that $x$ is larger than $c$, but in fact $x$ can be on either side of $c$,
-so we need to account for the case where $x<c$.
-We can handle the two cases with an _if-then_ statement which recall is written using the $=>$ logical operator.
-
-$
-(x>c => (f in C^((n))([c,x]) and "diff"[f^((n)), (c,x)])) \
-and \
-(x<c => (f in C^((n))([x,c]) and "diff"[f^((n)), (x,c)]))
-$
 
 Notice that we don't need to worry about the case when $x=c$, because $f$ evaluated at the center is equal to the Taylor polynomial
 evaluated at the center, i.e. $f(c) = T_(n,c)(c)$.
@@ -1349,15 +1353,11 @@ $
 & { \
 & #h(2em) forall x:RR \
 & #h(2em) { \
-& #h(4em) x in I and x != c \
-& #h(4em) and \
-& #h(4em) (x>c => (f in C^((n))([c,x]) and "diff"[f^((n)), (c,x)])) \
-& #h(4em) and \
-& #h(4em) (x<c => (f in C^((n))([x,c]) and "diff"[f^((n)), (x,c)])) \
+& #h(4em) x in I and x != c and f in C^((n))([[c,x]]) and "diff"[f^((n)), ((c,x))] \
 & #h(4em) => \
 & #h(4em) exists z:RR \
 & #h(4em) { \
-& #h(6em) (x > c => c < z < x) and (x < a => x < z < c) and f(x) = T_(n,c)(x) + R_(n,c)(x,z)  \
+& #h(6em) z in ((c,x)) and f(x) = T_(n,c)(x) + R_(n,c)(x,z)  \
 & #h(4em) } \
 & #h(2em) } \
 & } \
@@ -1397,7 +1397,7 @@ $
 & #h(4em) => \
 & #h(4em) exists z:RR \
 & #h(4em) { \
-& #h(6em) (x > c => c < z < x) and (x < a => x < z < c) and f(x) = T_(n,c)(x) + R_(n,c)(x,z)  \
+& #h(6em) z in ((c,x)) and f(x) = T_(n,c)(x) + R_(n,c)(x,z)  \
 & #h(4em) } \
 & #h(2em) } \
 & } \
@@ -1422,9 +1422,7 @@ Indeed our new precondition _implies_ the two old ones, a fact that we can write
 $
 & f in C^((n+1))(I) \
 & => \
-& (x>c => (f in C^((n))([c,x]) and "diff"[f^((n)), (c,x)])) \
-& and \
-& (x<c => (f in C^((n))([x,c]) and "diff"[f^((n)), (x,c)]))
+& f in C^((n))([[c,x]]) and "diff"[f^((n)), ((c,x))] \
 $
 
 And this means our new pragmatic theorem implies the previous technical version.
@@ -1437,7 +1435,7 @@ Ok, it's time to take Taylor's theorem out for a spin and build some polynomial 
 
 As I've mentioned a few times, Taylor's theorem tells us that we can make a polynomial approximation of a function that we're
 interested in computing values for, and that we'll have some remainder or _error_ left over
-that represents the difference between the actual value of the function and the value of the Taylor polynomial at a given point.
+that represents the difference between the actual value of the function and the value of the Taylor polynomial at a particular point.
 So given that we know we're going to have some error, we'll need a way to figure out just how large that error is.
 Now, we can't know the exact value of the error, but we can know the worst case error for a specific Taylor polynomial.
 This worst case value is called an _upper bound_ on the error.
@@ -1459,13 +1457,18 @@ The theorem says that the absolute value of our error will be less than or equal
 The absolute value is expressing that we don't really care if our error is high or low.
 But what's that variable $M$ for?
 It's a custom value that we pick for each calculation that has to be an upper bound on value of the
-$(n+1)$#super[th] derivative of our function over the interval between $c$ and $x$ inclusive, $[c,x]$ or $[x,c]$,
-$(0,pi/4)$ in this case.
-Here's how we say that in mathematical language:
+$(n+1)$#super[th] derivative of our function over the closed interval between $c$ and $x$.
+Assuming that the center $c$ is less than $x$ the closed interval is $[[c,x]]$.
+Here's how we say all of that stuff about $M$ in mathematical language:
 
 $
-M >= sup_(t in [c,x]) |f^((n+1)) (t)|
+M >= sup_(t in [[c,x]]) |f^((n+1)) (t)|
 $
+
+Since we're working with the derivatives of sine that interval will 
+$(0,pi/4)$ in this case.
+
+
 
 = But how do we get the derivatives?
 
