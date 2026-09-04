@@ -1436,12 +1436,19 @@ Ok, it's time to take Taylor's theorem out for a spin and build some polynomial 
 As I've mentioned a few times, Taylor's theorem tells us that we can make a polynomial approximation of a function that we're
 interested in computing values for, and that we'll have some remainder or _error_ left over
 that represents the difference between the actual value of the function and the value of the Taylor polynomial at a particular point.
+As a quick reminder, the remainder, or error, function from Taylor's theorem was:
+
+#restate(<eq:remainder_function>)
+
+And don't forget that $z$ is just some number strictly between the center $c$ and $x$.
+
 So given that we know we're going to have some error, we'll need a way to figure out just how large that error is.
 Now, we can't know the exact value of the error, but we can know the worst case error for a specific Taylor polynomial.
 This worst case value is called an _upper bound_ on the error.
 It's going to be at least the maximum size of the error of the Taylor polynomial over our chosen interval,
 but in most cases it will actually be larger than that.
-So since we can calculate the upper bound on the error we just need to decide how big of an error we're willing to tolerate.
+So since we can calculate the upper bound on the error
+we just need to decide how big of an error we're willing to tolerate for our particular use case.
 For example, let's say we want to evaluate sine at $45 degree$ ($pi/4 " rad"$) and we're only willing to be off by 0.01 or less.
 All we need to do is to adjust the degree of the Taylor polynomial until the upper bound on its error is 0.01 or less.
 
@@ -1449,21 +1456,69 @@ So how do we calculate this upper bound?
 Simple. We use the _Remainder Estimation Theorem_, which is: 
 
 $
-|R_(n,c)(x,z)| <= M/(n+1)! |x-c|^(n+1)
+forall z:RR {z in [[c,x]] => |R_(n,c)(x,z)| <= M/(n+1)! |x-c|^(n+1)}
 $
 
+This statement says that for any value of $z$ that we might pick in the interval $[[c,x]]$, the absolute value of the remainder
+function is going to be less than or equal to that expression on the right of the inequality.
+Now sometimes people don't even bother to include the $z$ and just give a form of the remainder function that is
+the maximum value over the closed interval $[[c,x]]$ which simplifies things quite a bit:
+
+$
+|R_(n,c)(x)| <= M/(n+1)! |x-c|^(n+1)
+$
+
+See how the $z$ is gone now.
 The expression on the right is our upper bound.
 The theorem says that the absolute value of our error will be less than or equal to the upper bound.
 The absolute value is expressing that we don't really care if our error is high or low.
 But what's that variable $M$ for?
 It's a custom value that we pick for each calculation that has to be an upper bound on value of the
 $(n+1)$#super[th] derivative of our function over the closed interval between $c$ and $x$.
-Assuming that the center $c$ is less than $x$ the closed interval is $[[c,x]]$.
+Recall that the notation we are using for the closed interval between $c$ and $x$
+when we don't know the relative sizes of the values is $[[c,x]]$.
 Here's how we say all of that stuff about $M$ in mathematical language:
 
 $
 M >= sup_(t in [[c,x]]) |f^((n+1)) (t)|
 $
+
+That $sup$ function gives us the _least upper bound_ over the interval, so all we need to do is pick an $M$ that we know for sure
+is going to be bigger than the least upper bound, which by the way is also known as the _supremum_ or _sup_.
+
+OK, let's try this for the sine function.
+We'll take a guess that a degree 5 Taylor polynomial will be accurate enough.
+Looking at the Remainder Estimation Theorem (RET) and the inequality for $M$,
+we can see that we need the $5+1$#super[th] derivative of sine to figure out $M$.
+
+The first six derivatives of sine are:
+
++ $cos$
++ $-sin$
++ $-cos$
++ $sin$
++ $cos$
++ $-sin$
+
+Don't worry about where those derivatives come from for now. We'll talk about that later.
+
+Ok so the 6th derivative is $-sin$, and we know something about this function from trigonometry or just a geometric
+understanding of the unit circle.
+We know the value of sine always lies between $-1$ and $1$, so we know that $|-sin (x)| <= 1$.
+So it looks like 1 would be a good choice for $M$.
+Besides $M$, the RET also calls for $x$, which we said we're going to use $pi/4$, and the center $c$ for which we chose $0$.
+Ok, let's plug all of that stuff into the right side of the RET:
+
+$
+& |R_(n,c)(x)| <= 1/(6)! |pi/4-0|^(6) \
+& |R_(n,c)(x)| <= 1/720 times 0.78539816339^(6) \
+& |R_(n,c)(x)| <= 0.23471415858 div 720 \
+& |R_(n,c)(x)| <= 0.00032599188 \
+$
+
+
+
+
 
 Since we're working with the derivatives of sine that interval will 
 $(0,pi/4)$ in this case.
