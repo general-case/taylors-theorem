@@ -1030,9 +1030,9 @@ Without the parens the $and$ operator would bind the middle two statements toget
 like this $c < z < x and x < a$ which is definitely not what we meant to say.
 
 You know what though; that's a real mess.
-I mean who cares whether $x$ happens to be greater than or less than $c$? We just want $z$ to be in between $c$ and $x$.
+I mean who cares whether $x$ happens to be greater than or less than $c$? We just want $z$ to be _in between_ $c$ and $x$.
 Why don't we clean it up a bit before moving on.
-Let's unilaterally declare some new, convenient notation.
+Let's unilaterally declare some new, convenient notation for intervals where we don't know, don't care what order the end-points are in.
 We'll say $((c,x))$ is the _open_ interval between $c$ and $x$ without regard to the order of $c$ and $x$.
 We'll also say $[[c,x]]$ is the _closed_ interval between $c$ and $x$ without regard to the order of $c$ and $x$.
 So the double parens and double square brackets denote the _unordered_ versions of open and closed intervals.
@@ -1404,14 +1404,12 @@ $
 $
 ]
 
-In @prop:theorem_pragmatic.
-
 In this new version of the theorem, we're still assuming $c in I$ and requiring that $x in I$,
-but we've done away with the narrow requirements on $[c,x]$ and $(c,x)$,
+but we've done away with the narrow requirements on $[[c,x]]$ and $((c,x))$,
 and replaced them with the somewhat more general statement $f in C^((n+1))(I)$.
 This general statement says that that $f^((n+1))$ is continuous over the entire interval $I$, so it definitely fixes the
-discontinuity problem we talked about. There can be no discontinuity in $(c,x)$ because $(c,x)$ is a sub-interval of $I$.
-Because $[c,x]$ and $(c,x)$ are both contained within $I$ this general statement takes care of our two tightly specified preconditions
+discontinuity problem we were worried about. There can be no discontinuity in $((c,x))$ because $((c,x))$ is a sub-interval of $I$.
+Because $[[c,x]]$ and $((c,x))$ are both contained within $I$, this general statement takes care of our two tightly specified preconditions
 from before.
 As an added bonus, we also don't need to worry about whether $x$ is greater or less than $c$,
 because in either case the interval between $x$ and $c$ is contained within $I$.
@@ -1433,10 +1431,10 @@ Ok, it's time to take Taylor's theorem out for a spin and build some polynomial 
 
 = Using Taylor's theorem
 
-As I've mentioned a few times, Taylor's theorem tells us that we can make a polynomial approximation of a function that we're
+As I've already mentioned a few times, Taylor's theorem tells us that we can make a polynomial approximation of a function that we're
 interested in computing values for, and that we'll have some remainder or _error_ left over
 that represents the difference between the actual value of the function and the value of the Taylor polynomial at a particular point.
-As a quick reminder, the remainder, or error, function from Taylor's theorem was:
+As a quick reminder, the remainder, or error function from Taylor's theorem was:
 
 #restate(<eq:remainder_function>)
 
@@ -1502,9 +1500,9 @@ The first six derivatives of sine are:
 
 Don't worry about where those derivatives come from for now. We'll talk about that later.
 
-Ok so the 6th derivative is $-sin$, and we know something about this function from trigonometry or just a geometric
-understanding of the unit circle.
-We know the value of sine always lies between $-1$ and $1$, so we know that $|-sin (x)| <= 1$.
+Ok so the 6th derivative is $-sin$, and we know something about this function from trigonometry
+or just from a geometric understanding of the unit circle.
+We know the value of sine always lies in the range from $-1$ to $1$, so we know that $|-sin (x)| <= 1$, for all values of $x$.
 So it looks like 1 would be a good choice for $M$.
 Besides $M$, the RET also calls for $x$, which we said we're going to use $pi/4$, and the center $c$ for which we chose $0$.
 Ok, let's plug all of that stuff into the right side of the RET:
@@ -1516,12 +1514,55 @@ $
 & |R_(n,c)(x)| <= 0.00032599188 \
 $
 
+Wow, that upper bound on the error is way smaller than the 0.01 that we originally said we were willing to tolerate as an error.
+
+Let's see what happens if evaluate sine at $180 degree$ ($pi " rad"$).
+This calculation will give us an upper bound on the error all the way from zero to $180 degree$.
+
+$
+& |R_(n,c)(x)| <= 1/(6)! |pi-0|^(6) \
+& |R_(n,c)(x)| <= 1/720 times 3.14159265359^(6) \
+& |R_(n,c)(x)| <= 961.389193575 div 720 \
+& |R_(n,c)(x)| <= 1.33526276885 \
+$
+
+Hmm... not good enough and you can see why.
+The value of $pi$ is greater than 1, so when we raise it to the 6th power we get a fairly large number.
+Let's try cranking up $n$ all the way to 12.
+
+$
+& |R_(n,c)(x)| <= 1/(12)! |pi-0|^(12) \
+& |R_(n,c)(x)| <= 1/479001600 times 3.14159265359^(12) \
+& |R_(n,c)(x)| <= 924269.181523 div 479001600 \
+& |R_(n,c)(x)| <= 0.0019295743 \
+$
+
+Much better and well within our requirement.
+You can see that doubling $n$ from 6 to 12 caused the factorial in the denominator to completely overwhelm $pi^12$ in the numerator
+resulting in a nice, small error bound.
+
+There's something else interesting here.
+Notice that the error bound formula uses the absolute value of $x-c$, so the error bound we got for $pi$ is the same one we'd get for $-pi$,
+with the result that we have covered the interval $(-pi, pi)$. That's an interval of length $2pi$.
+Since sine is a periodic function that repeats every $2pi$, this error bound works for the entire domain of sine,
+the whole real line, $(-oo,oo)$.
+And what's more, cosine works in exactly the same way. That's huge!
+
+Ok but what's the story with a non-periodic function like the exponential function, $e^x$.
+Well, one thing we know about the exponential function is... it's exponential.
+Yeah, so getting a an upper bound over the entire real line is going to be impossible. No surprise.
+
+Consider using $M= 2^(ceil(x)+1)$ here.
+We may also need to recenter close to the point of evaluation.
+
+$
+& |R_(n,c)(x)| <= 1/(12)! |pi-0|^(12) \
+& |R_(n,c)(x)| <= 1/479001600 times 3.14159265359^(12) \
+& |R_(n,c)(x)| <= 924269.181523 div 479001600 \
+& |R_(n,c)(x)| <= 0.0019295743 \
+$
 
 
-
-
-Since we're working with the derivatives of sine that interval will 
-$(0,pi/4)$ in this case.
 
 
 
