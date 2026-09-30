@@ -1370,6 +1370,7 @@ However, it turns out that this very technical and tightly specified statement i
 when it comes to figuring out polynomial approximations for the usual functions we encounter in mathematics.
 In the next section we'll see how we can relax the preconditions to make a more pragmatic version of the theorem.
 
+
 #pagebreak()
 == A pragmatic version of Taylor's theorem
 
@@ -1447,7 +1448,7 @@ It's going to be at least the maximum size of the error of the Taylor polynomial
 but in most cases it will actually be larger than that.
 So since we can calculate the upper bound on the error
 we just need to decide how big of an error we're willing to tolerate for our particular use case.
-For example, let's say we want to evaluate sine at $45 degree$ ($pi/4 " rad"$) and we're only willing to be off by 0.01 or less.
+For example, say we want to evaluate sine at $45 degree$ ($pi/4 " rad"$) and we're only willing to be off by 0.01 or less.
 All we need to do is to adjust the degree of the Taylor polynomial until the upper bound on its error is 0.01 or less.
 
 So how do we calculate this upper bound?
@@ -1460,7 +1461,7 @@ $
 This statement says that for any value of $z$ that we might pick in the interval $[[c,x]]$, the absolute value of the remainder
 function is going to be less than or equal to that expression on the right of the inequality.
 Now sometimes people don't even bother to include the $z$ and just give a form of the remainder function that is
-the maximum value over the closed interval $[[c,x]]$ which simplifies things quite a bit:
+assumed to be the maximum value over the closed interval $[[c,x]]$, which simplifies things quite a bit:
 
 $
 |R_(n,c)(x)| <= M/(n+1)! |x-c|^(n+1)
@@ -1469,6 +1470,7 @@ $
 See how the $z$ is gone now.
 The expression on the right is our upper bound.
 The theorem says that the absolute value of our error will be less than or equal to the upper bound.
+In textbooks, it's usually called the _Lagrange error bound_.
 The absolute value is expressing that we don't really care if our error is high or low.
 But what's that variable $M$ for?
 It's a custom value that we pick for each calculation that has to be an upper bound on value of the
@@ -1484,7 +1486,12 @@ $
 That $sup$ function gives us the _least upper bound_ over the interval, so all we need to do is pick an $M$ that we know for sure
 is going to be bigger than the least upper bound, which by the way is also known as the _supremum_ or _sup_.
 
-OK, let's try this for the sine function.
+Ok, let's try this for a couple of super famous functions, the sine function and the exponential function.
+For both functions we'll say the largest error we're willing to accept is 0.01,
+and we'll figure out how big the degree of the Taylor polynomial needs to be to get us that level of accuracy.
+
+== Approximating the sine function
+
 We'll take a guess that a degree 5 Taylor polynomial will be accurate enough.
 Looking at the Remainder Estimation Theorem (RET) and the inequality for $M$,
 we can see that we need the $5+1$#super[th] derivative of sine to figure out $M$.
@@ -1505,7 +1512,7 @@ or just from a geometric understanding of the unit circle.
 We know the value of sine always lies in the range from $-1$ to $1$, so we know that $|-sin (x)| <= 1$, for all values of $x$.
 So it looks like 1 would be a good choice for $M$.
 Besides $M$, the RET also calls for $x$, which we said we're going to use $pi/4$, and the center $c$ for which we chose $0$.
-Ok, let's plug all of that stuff into the right side of the RET:
+Let's plug all of that stuff into the right side of the RET:
 
 $
 & |R_(n,c)(x)| <= 1/(6)! |pi/4-0|^(6) \
@@ -1528,7 +1535,7 @@ $
 
 Hmm... not good enough and you can see why.
 The value of $pi$ is greater than 1, so when we raise it to the 6th power we get a fairly large number.
-Let's try cranking up $n$ all the way to 12.
+Let's try cranking up $n$ all the way to 11.
 
 $
 & |R_(n,c)(x)| <= 1/(12)! |pi-0|^(12) \
@@ -1548,6 +1555,8 @@ Since sine is a periodic function that repeats every $2pi$, this error bound wor
 the whole real line, $(-oo,oo)$.
 And what's more, cosine works in exactly the same way. That's huge!
 
+== Approximating the exponential function
+
 Ok but what's the story with a non-periodic function like the exponential function, $e^x$.
 Well, one thing we know about the exponential function is... it's exponential.
 Yeah, so getting a an upper bound over the entire real line is going to be impossible. No surprise.
@@ -1555,13 +1564,49 @@ Yeah, so getting a an upper bound over the entire real line is going to be impos
 Consider using $M= 2^(ceil(x)+1)$ here.
 We may also need to recenter close to the point of evaluation.
 
+Let's see what happens if we use the RET to bound the error for $e^3$.
+Since $e$ is approximately 2.718, we can use $3^3 = 27$ for our value of $M$.
+We'll set the center $c$ to zero and $x$ is 3.
+We'll try setting $n = 5$.
+
 $
-& |R_(n,c)(x)| <= 1/(12)! |pi-0|^(12) \
-& |R_(n,c)(x)| <= 1/479001600 times 3.14159265359^(12) \
-& |R_(n,c)(x)| <= 924269.181523 div 479001600 \
-& |R_(n,c)(x)| <= 0.0019295743 \
+& |R_(n,c)(x)| <= 27/(6)! |3-0|^(6) \
+& |R_(n,c)(x)| <= 27/720 times 3^(6) \
+& |R_(n,c)(x)| <= 27/720 times 729 \
+& |R_(n,c)(x)| <= 27.3375 \
 $
 
+Well, that's definitely not good enough: 27.3375 is way bigger than our acceptable error of 0.01.
+Let's try cranking up $n$ all the way to 11 again.
+
+$
+& |R_(n,c)(x)| <= 27/(12)! |3-0|^(12) \
+& |R_(n,c)(x)| <= 27/479001600 times 3^(12) \
+& |R_(n,c)(x)| <= 27/479001600 times 531441 \
+& |R_(n,c)(x)| <= 0.02995586444 \
+$
+
+Close but not quite there. Let's go one more.
+
+$
+& |R_(n,c)(x)| <= 81/(6)! |4-0|^(6) \
+& |R_(n,c)(x)| <= 81/720 times 4^(6) \
+& |R_(n,c)(x)| <= 81/720 times 4096 \
+& |R_(n,c)(x)| <= 460.8 \
+$
+
+
+
+
+Well, that's definitely not good enough: 460.8 is way bigger than our acceptable error of 0.01.
+Let's try cranking up $n$ all the way to 11 again.
+
+$
+& |R_(n,c)(x)| <= 81/(12)! |4-0|^(12) \
+& |R_(n,c)(x)| <= 81/479001600 times 4^(12) \
+& |R_(n,c)(x)| <= 81 times 16777216 div 479001600 \
+& |R_(n,c)(x)| <= 2.83705627706 \
+$
 
 
 
