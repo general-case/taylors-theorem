@@ -1510,6 +1510,7 @@ Don't worry about where those derivatives come from for now. We'll talk about th
 Ok so the 6th derivative is $-sin$, and we know something about this function from trigonometry
 or just from a geometric understanding of the unit circle.
 We know the value of sine always lies in the range from $-1$ to $1$, so we know that $|-sin (x)| <= 1$, for all values of $x$.
+The same is true for cosine too.
 So it looks like 1 would be a good choice for $M$.
 Besides $M$, the RET also calls for $x$, which we said we're going to use $pi/4$, and the center $c$ for which we chose $0$.
 Let's plug all of that stuff into the right side of the RET:
@@ -1552,8 +1553,8 @@ There's something else interesting here.
 Notice that the error bound formula uses the absolute value of $x-c$, so the error bound we got for $pi$ is the same one we'd get for $-pi$,
 with the result that we have covered the interval $(-pi, pi)$. That's an interval of length $2pi$.
 Since sine is a periodic function that repeats every $2pi$, this error bound works for the entire domain of sine,
-the whole real line, $(-oo,oo)$.
-And what's more, cosine works in exactly the same way. That's huge!
+the whole real line, $(-oo,oo)$. That's huge!
+And what's more, cosine works in exactly the same way.
 
 == Approximating the exponential function
 
@@ -1561,8 +1562,7 @@ Ok but what's the story with a non-periodic function like the exponential functi
 Well, one thing we know about the exponential function is... it's exponential.
 Yeah, so getting a an upper bound over the entire real line is going to be impossible. No surprise.
 
-Consider using $M= 2^(ceil(x)+1)$ here.
-We may also need to recenter close to the point of evaluation.
+The derivatives of $e^x$ are all just $e^x$, so that makes things much easier when choosing a value of $M$.
 
 Let's see what happens if we use the RET to bound the error for $e^3$.
 Since $e$ is approximately 2.718, we can use $3^3 = 27$ for our value of $M$.
@@ -1589,347 +1589,34 @@ $
 Close but not quite there. Let's go one more.
 
 $
-& |R_(n,c)(x)| <= 81/(6)! |4-0|^(6) \
-& |R_(n,c)(x)| <= 81/720 times 4^(6) \
-& |R_(n,c)(x)| <= 81/720 times 4096 \
-& |R_(n,c)(x)| <= 460.8 \
+& |R_(n,c)(x)| <= 27/(13)! |3-0|^(13) \
+& |R_(n,c)(x)| <= 27/6227020800 times 3^(13) \
+& |R_(n,c)(x)| <= 27/6227020800 times 1594323 \
+& |R_(n,c)(x)| <= 0.00691289179 \
 $
 
+That's well under our acceptable error of 0.01,
+so a Maclaurin polynomial of degree 12 will give us a good approximation for $e^x$ anywhere from zero to 3,
+or for that matter from 0 to -3.
 
-
-
-Well, that's definitely not good enough: 460.8 is way bigger than our acceptable error of 0.01.
-Let's try cranking up $n$ all the way to 11 again.
+But what if we want to use the same Maclaurin polynomial for values larger than 3?
+Let's see what the error bound looks like at $e^4$.
+Since $M$ has to be larger than $e^x$ over the interval $[0,4]$ and $e$ is approximately 2.718,
+we can use $3^4 = 81$ for our value of $M$.
 
 $
-& |R_(n,c)(x)| <= 81/(12)! |4-0|^(12) \
-& |R_(n,c)(x)| <= 81/479001600 times 4^(12) \
-& |R_(n,c)(x)| <= 81 times 16777216 div 479001600 \
-& |R_(n,c)(x)| <= 2.83705627706 \
+& |R_(n,c)(x)| <= 81/(13)! |4-0|^(13) \
+& |R_(n,c)(x)| <= 81/6227020800 times 4^(13) \
+& |R_(n,c)(x)| <= 81/6227020800 times 67108864 \
+& |R_(n,c)(x)| <= 0.87294039294 \
 $
 
-
-
+We've blown our error bound again, and unfortunately this will continue to be the case.
+The further we move away from the center the larger the error bound will get.
+This wasn't an issue for sine because sine is periodic. 
 
 = But how do we get the derivatives?
 
 
 = Conclusion
 
-#pagebreak()
-
-= Euler's solution to the Basel problem <sec:solution>
-
-Euler solved the Basel problem by proving the following theorem.
-
-#theorem(title: "Basel problem")[$ sum_(n=1)^oo 1/n^2 = pi^2/6 $] <thm:basel_problem>
-
-== Proof
-
-The sine function is defined analytically by the Maclaurin series
-
-$ sin x = x - x^3/3! + x^5/5! - x^7/7! + dots.c . $ <eq:maclaurin_series_for_sin>
-
-Maclaurin series are a special type of power series.
-Since polynomial functions — which, by definition, contain only finitely many terms — can also be viewed as finite power series,
-Euler reasoned that the Maclaurin series for the sine function could be manipulated in much the same way as a polynomial.
-In particular, he treated it as though it could be factorized into a constant multiplied by infinitely many linear factors.
-Although this approach was controversial at the time, it was later placed on a firm mathematical foundation
-with the publication of Karl Weierstrass’s factorization theorem in 1876.
-
-Polynomial functions may be re-expressed via factorization
-as the product of a constant, a finite number of real linear factors, and a finite number of irreducible real quadratics.
-The irreducible real quadratics appear only when the polynomial function has one or more non-real, complex zeros.
-If the polynomial has all real zeros, then it can be expressed solely as the product of a constant and a finite number real linear factors. \
-For example, the polynomial function $f(x) = 2x^2 - 14x + 24$, which has real zeros 3 and 4, may be expressed as $f(x) = 2(x-3)(x-4)$.
-In the polynomial case, the constant is simply the leading coefficient, i.e., the coefficient of the highest degree term.
-In the case of power series however, since there are infinitely many terms, there is no _highest degree term_ and thus no leading coefficient.
-The constant is still part of the factorization of the power series; it's just that we can't determine it by looking at the highest
-degree term and we need to use a different technique to extract it, as we'll see later in the argument.
-
-Since $sin x$ is zero _only_ at $x=0, plus.minus pi, plus.minus 2pi, plus.minus 3pi, dots$, these values are the zeros of the Maclaurin series.
-Note that since the zeros have the form $plus.minus k pi$ for all $k in NN$ and are thus all real,
-the series can be expressed as the product of a constant $c$ and infinitely many real linear factors of \
-the form $(x plus.minus k pi)$.
-It is these zeros that explain why $pi$ appears in the value of the Basel sum.
-
-#pagebreak()
-
-Thus, we have
-
-$ sin x = c (x-0)(x-pi)(x+pi)(x-2pi)(x+2pi)(x-3pi)(x+3pi) dots.c $
-$ sin x = c x(x-pi)(x+pi)(x-2pi)(x+2pi)(x-3pi)(x+3pi) dots.c $
-$ (sin x)/x = c (x-pi)(x+pi)(x-2pi)(x+2pi)(x-3pi)(x+3pi) dots.c $
-$ (sin x)/x = c (x^2 - pi^2)(x^2 - 4pi^2)(x^2 - 9pi^2 ) dots.c wide "(difference of squares)," $ <eq:diff_of_squares>
-
-for some constant $c$.
-
-The next step is to determine the value of the constant $c$. \
-At $x=0$, $(sin x)/x = 0/0$, which is undefined, but in the context of limits $0/0$ is an indeterminate form,
-so we are permitted to take the limit of both sides as $x$ goes to zero.
-Taking the limit we get
-
-$ lim_(x->0) (sin x)/x = lim_(x->0) c (x^2 - pi^2)(x^2 - 4pi^2)(x^2 - 9pi^2 ) dots.c . $
-
-The limit of the left side is simply 1, i.e., $lim_(x->0) (sin x)/x = 1$,
-which can be verified through a simple application of L'Hospital's rule.
-Thus, we have
-
-$ 1 = c (- pi^2)(- 4pi^2)(- 9pi^2) dots.c $
-$ c = 1 / ((- pi^2)(- 4pi^2)(- 9pi^2) dots.c) $
-$ c = (1 / (- pi^2)) (1 / (- 4pi^2)) (1 / (- 9pi^2)) dots.c . $
-
-Pairing each factor of $c$ with its matching difference of squares factor from @eq:diff_of_squares, we get
-
-$ (sin x)/x = (1 / (- pi^2))(x^2 - pi^2) (1 / (- 4pi^2))(x^2 - 4pi^2) (1 / (- 9pi^2))(x^2 - 9pi^2 ) dots.c $
-$ (sin x)/x = (1-x^2/(pi^2)) (1-x^2/(4pi^2)) (1-x^2/(9pi^2)) dots.c . $ <eq:weierstrass>
-
-As a brief aside, we should note that @eq:weierstrass is equivalent to Weierstrass's factorization of $sin x$.
-
-$ sin x = x product_(n=1)^oo [1-x^2/(n^2 pi^2)] wide "Weierstrass factorization" $
-
-#pagebreak()
-
-Indeed, we could have used Weierstrass as our starting point for the proof.
-However, since we are following Euler's development of the argument, we chose to begin with the Maclaurin series for sine.
-
-If we progressively FOIL a number of factors of the infinite product on the right-hand side of @eq:weierstrass from left to right we get
-
-$ (1-x^2/(pi^2)) (1-x^2/(4pi^2)) (1-x^2/(9pi^2)) $ <exp:foil_1>
-$ (1-x^2/(pi^2) - x^2/(4pi^2) + x^4/(4pi^4)) (1-x^2/(9pi^2)) $ <exp:foil_2>
-$ (1-x^2/(pi^2) - x^2/(4pi^2) + x^4/(4pi^4) - x^2/(9pi^2) + x^4/(9pi^4) + x^4/(36pi^4) - x^6/(36pi^6)) . $ <exp:foil_3>
-
-Regrouping @exp:foil_3[expression] so that the matching terms are adjacent, we get
-
-$ 1-x^2/(pi^2) - x^2/(4pi^2) - x^2/(9pi^2) + x^4/(4pi^4) + x^4/(9pi^4) + x^4/(36pi^4) - x^6/(36pi^6) $
-$ 1 - (x^2/(pi^2) + x^2/(4pi^2) + x^2/(9pi^2)) + (x^4/(4pi^4) + x^4/(9pi^4) + x^4/(36pi^4)) - (x^6/(36pi^6)) $
-$ 1 - x^2/pi^2(1/1 + 1/4 + 1/9) + x^4/pi^4(1/4 + 1/9 + 1/36) - x^6/pi^6(1/36) . $
-
-Continuing this process indefinitely, we end up with a sum of the form
-
-$
-1 -
-x^2/pi^2(1/1 + 1/4 + 1/9 + dots.c) +
-x^4/pi^4(1/4 + 1/9 + 1/36 + dots.c) -
-x^6/pi^6(1/36 + dots.c) +
-dots.c .
-$ <exp:foil_infinite>
-
-We'll set $S_2, S_4, "and" S_6$ equal to the sums in the $x^2, x^4, "and" x^6$ terms respectively.\
-We'll set $C_2, C_4, "and" C_6$ equal to the coefficients of the $x^2, x^4, "and" x^6$ terms respectively,\
-such that $C_2 = 1/pi^2 S_2, C_4 = 1/pi^4 S_6, "and" C_6 =  1/pi^6 S_6$.
-
-The $S_2$ factor of the $C_2$ coefficient is the sum of reciprocal squares that we're aiming to compute, i.e.,
-
-$ S_2 = sum_(n=1)^oo 1/n^2 . $
-
-The $S_4$ and $S_6$ sums are more complicated, involving double and triple sums respectively,
-but since we're only interested in the $S_2$ sum, we won't need $S_4$ and $S_6$.
-
-#pagebreak()
-
-Rewriting the @exp:foil_infinite[expression] using the coefficients $C_2, C_4, "and" C_6$ defined earlier, we get
-
-$
-1 -
-x^2 C_2 +
-x^4 C_4 -
-x^6 C_6 +
-dots.c .
-$
-
-Per @eq:weierstrass, this sum is equal to $(sin x)/x$, so we have
-
-$
-(sin x)/x =
-1 -
-x^2 C_2 +
-x^4 C_4 -
-x^6 C_6 +
-dots.c .
-$ <eq:sum_of_sums>
-
-Recalling the Maclaurin series for sine from @eq:maclaurin_series_for_sin and dividing both sides by $x$ we get
-
-$ (sin x)/x = 1 - x^2/3! + x^4/5! - x^6/7! + dots.c . $ <eq:maclaurin_series_for_sin_over_x>
-
-Now we have two representations of $(sin x)/x$.
-
-Equating the coefficients of the $x^2$ terms from @eq:sum_of_sums and @eq:maclaurin_series_for_sin_over_x we get
-
-$ C_2 = 1/3! . $
-
-Rewriting $C_2$ and $S_2$, we get
-
-$ 1/pi^2 S_2 = 1/3! $
-$ 1/pi^2 sum_(n=1)^oo 1/n^2 = 1/3! $
-$ sum_(n=1)^oo 1/n^2 = pi^2/3! . $
-
-This completes the proof.
-
-= Using Euler's method to prove a related theorem <sec:similar_theorem>
-
-It is instructive to look at Euler's method applied to the $x^4$ terms of the
-Maclaurin series and the Weierstrass factorization of the sine function
-in order to prove the following theorem.
-
-#theorem(title: "Basel variant")[$ sum_(m=1)^oo sum_(n=m+1)^oo 1/(m^2n^2) = pi^4/120 $] <thm:basel_variant>
-
-The proof offers a glimpse of how Euler's method may be generalized to compute the values of sums that are similar to Basel sum.
-
-#pagebreak()
-
-== Proof
-
-We begin by recalling @eq:weierstrass, which as noted earlier is a form of Weierstrass's factorization of sine,
-
-#restate(<eq:weierstrass>)
-
-We are interested in the $x^4$ terms in the expansion of the right-hand side of @eq:weierstrass.
-These terms can only arise from the multiplication of pairs of factors containing $x^2$ terms.
-Let's expand a simpler product with just four factors to see if we can observe a pattern.
-
-$
-(1 - a x^2)(1 - b x^2)(1 - c x^2)(1 - d x^2) \
-= (1 - a x^2 - b x^2 + a b x^4)(1 - c x^2)(1 - d x^2) \
-= (1 - a x^2 - b x^2 + a b x^4 - c x^2 + a c x^4 + b c x^4 - a b c x^6)(1 - d x^2) \
-= 1 - a x^2 - b x^2 + a b x^4 - c x^2 + a c x^4 + b c x^4 - a b c x^6 \
-    - d x^2 + a d x^4 + b d x^4 - a b d x^6 + c d x^4 - a c d x^6 - b c d x^6 + a b c d x^8
-$ <exp:initial_expansion>
-
-Regrouping the 16 terms of @exp:initial_expansion[expression] we get
-
-$
-& 1 & wide binom(4,0) = 1 "term " \ 
-& - a x^2 - b x^2  - c x^2 - d x^2 & wide binom(4,1) = 4 "terms"  \
-& + a b x^4 + a c x^4 + b c x^4 + a d x^4 + b d x^4  + c d x^4 & wide binom(4,2) = 6 "terms" \
-& - a b c x^6 - a b d x^6 - a c d x^6 - b c d x^6 & wide binom(4,3) = 4 "terms" \
-& + a b c d x^8 & wide binom(4,4) = 1 "term."
-$ <exp:full_expansion>
-
-We note that the coefficients of the $x^4$ terms in @exp:full_expansion[expression] are the products of every #box([_2-combination_])
-drawn from the set of coefficients of the $x^2$ terms, ${a,b,c,d}$.
-That is, they are the products of every possible pair drawn from ${a,b,c,d}$ where the order does not matter and there are no repeats.
-
-Translating this pattern to the situation in @eq:weierstrass, where the coefficients of the $x^2$ terms have the form $1/(k^2pi^2)$,
-we need to sum the products of every possible pair of reciprocal square coefficients,
-such that the order does not matter and there are no repeats.
-
-#pagebreak()
-
-To get the required sum of products, we'll need two indexes, say $m$ and $n$, with appropriate constraints applied so that we have
-
-$ sum_(m=1)^oo sum_(n=m+1)^oo 1/(m^2 pi^2) x^2 1/(n^2 pi^2) x^2 . $ <exp:sum_of_reciprocal_products>
-
-Here, for each $m$ we run through every $n$ that is greater than $m$.
-Another option would be to run through every $n$ less than $m$, but in that case we would have to start $m$ at 2.
-Ultimately, it doesn't matter which indexing scheme we choose as long as $m != n$ and that either $m < n$ or $m > n$, but not both.
-Rewriting @exp:sum_of_reciprocal_products[expression], we get
-
-$ x^4/pi^4 sum_(m=1)^oo sum_(n=m+1)^oo 1/(m^2 n^2) . $ <exp:sum_of_reciprocal_products_final>
-
-Recalling @eq:maclaurin_series_for_sin_over_x, we have
-
-#restate(<eq:maclaurin_series_for_sin_over_x>)
-
-We can equate the coefficient of the $x^4$ term in the Maclaurin series on the right-hand side of @eq:maclaurin_series_for_sin_over_x
-with the coefficient of the $x^4$ term in @exp:sum_of_reciprocal_products_final[expression] to get
-
-$ 1/pi^4 sum_(m=1)^oo sum_(n=m+1)^oo 1/(m^2 n^2) = 1/5! . $
-
-Rewriting leads to the following statement which completes the proof.
-
-$ sum_(m=1)^oo sum_(n=m+1)^oo 1/(m^2 n^2) = pi^4/5! $
-
-#pagebreak()
-
-= Evaluating the 4-series
-
-Armed with the previous results, we can easily evaluate the 4-series.
-
-#theorem(title: "Sum of the 4-series")[$ sum_(n=1)^oo 1/(n^4) = pi^4/90 $] <thm:sum_of_4-series>
-
-== Proof
-
-We begin by using the Basel sum to evaluate the double sum
-
-$ sum_(m=1)^oo sum_(n=1)^oo 1/(m^2 n^2) , $ <exp:double_sum_reciprocal_product_squares>
-
-which is the sum of all reciprocals of the product of two squares of a natural number greater than zero.
-Note that this double sum is different from the one in @thm:basel_variant[theorem] because here the indexes are _unrestricted_,
-that is, $n$ does not depend on $m$.
-
-Clearly, we can rewrite the double sum as
-
-$ sum_(m=1)^oo sum_(n=1)^oo 1/m^2 1/n^2 . $
-
-And, since the $1/m^2$ term is not captured by the $n$ index of the inner sum, we can move it outside the inner sum to get
-
-$ sum_(m=1)^oo (1/m^2 sum_(n=1)^oo 1/n^2) . $
-
-Now in @thm:basel_problem[theorem], the Basel problem theorem, we showed that the Basel sum, $sum_(n=1)^oo 1/n^2$, converges to $pi^2/6$,
-so it is effectively just a constant multiplying each $1/m^2$ term, and thus by the distributive property, we can move it outside the outer sum to get
-
-$ sum_(n=1)^oo 1/n^2 dot sum_(m=1)^oo 1/m^2 . $
-
-In fact, this is a general result, so that we can always rewrite the double sum of a product as the product of a sum, provided that the two series are convergent.
-
-Finally, since we know that both series in the product evaluate to $pi^2/6$, we have
-
-$ sum_(m=1)^oo sum_(n=1)^oo 1/(m^2 n^2) = pi^4/36 . $ <eq:double_sum_reciprocal_product_squares>
-
-#pagebreak()
-
-@fig:reciprocal-product-of-squares depicts the terms of @exp:double_sum_reciprocal_product_squares[series] arranged in a grid.
-
-// Define the function that renders the content for each (i,j) cell.
-#let reciprocal-product-of-squares(i, j) = $ 1/(#i^2 #j^2) $
-
-// Alternatively, we can use a lambda abstraction for the expression function.
-// #number-array(4, 4, (i, j) => $ 1/(#i^2 #j^2) $ )
-
-// Create the number array table and render it inside a figure.
-#let number-array = number-array(5, 5,
-                                 reciprocal-product-of-squares,
-                                 upper-triangle-hl: hl-yellow,
-                                 diagonal-hl: hl-pink,
-                                 lower-triangle-hl: hl-green,
-                                 ellipsis: true)
-
-#figure(number-array, caption: [Sum of reciprocal product squares]) <fig:reciprocal-product-of-squares>
-
-Observe that the sum of the terms in upper triangle, highlighted in yellow, is the sum of @thm:basel_variant[theorem], that is, $pi^4/120$,
-and by symmetry the sum of the terms in the lower triangle, highlighted in green, has the the same value, also $pi^4/120$.
-
-The terms along the major diagonal, highlighted in pink, satisfy $m=n$.
-Thus the sum of the terms along the major diagonal is
-
-$ sum_(n=1)^oo 1/(n^2 n^2) = sum_(n=1)^oo 1/n^4  , $
-
-which is the series we are looking to evaluate.
-
-To compute the sum of the terms along the major diagonal we can subtract the sums of the upper and lower triangles, each $pi^4/120$,
-from the sum of all terms in the table, which we already showed in @eq:double_sum_reciprocal_product_squares is equal to $pi^4/36$.
-
-Thus we have
-
-$ sum_(n=1)^oo 1/n^4 =  pi^4/36 - 2pi^4/120 = 10pi^4/360 - 6pi^4/360 = 4pi^4/360 = pi^4/90 , $
-
-which concludes the proof.
-
-#pagebreak()
-
-= Conclusion <sec:conclusion>
-
-Euler's remarkable insight in solving the Basel problem was recognizing that the coefficients of like terms could be equated
-from two different representations of the function $(sin x)/x$.
-The Maclaurin series representation of sine was well known at the time of Euler's work.
-However, to establish a second representation of $(sin x)/x$, Euler assumed that sine could be expressed
-as an infinite product.
-His assumption anticipated Weierstrass's factorization theorem published in 1876 as part of a work on the theory of analytic functions.
-As noted in the introduction, Euler's method was an important step towards understanding p-series in general,
-and in particular can be used to compute the values of all p-series where p is a non-zero even natural number.
-Although many tests exist that determine whether a series converges or diverges,
-explicitly calculating the value of a series is often challenging.
-Euler's method therefore is a significant contribution to mathematics
-because it provides a tool for evaluating a whole class of p-series and related infinite series.
