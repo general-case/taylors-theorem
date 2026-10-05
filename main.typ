@@ -990,7 +990,7 @@ In order to see how this all works, we need to delve into the remainder in more 
 The remainder function is defined like this:
 
 $
-R_(n,c)(x, z) = (f^((n+1))(z))/(n+1)!(x-c)^n
+R_(n,c)(x, z) = (f^((n+1))(z))/(n+1)!(x-c)^(n+1)
 $
 <eq:remainder_function>
 
@@ -1487,12 +1487,23 @@ That $sup$ function gives us the _least upper bound_ over the interval, so all w
 is going to be bigger than the least upper bound, which by the way is also known as the _supremum_ or _sup_.
 
 Ok, let's try this for a couple of super famous functions, the sine function and the exponential function.
-For both functions we'll say the largest error we're willing to accept is 0.01,
-and we'll figure out how big the degree of the Taylor polynomial needs to be to get us that level of accuracy.
+To approximate these functions we'll use Taylor polynomials centered at zero, which you'll recall are called Maclaurin polynomials.
 
+The reason we don't use some value other than zero as the center is because doing so would require us to know the values derivatives of the
+functions evaluated at the chosen non-zero center, which we don't know, so we would find ourselves in a kind of _chicken and egg_ situation.
+One of the main reasons for building a Taylor polynomial in the first place is to make it easier, or even possible,
+to compute the derivatives of a function, but with a non-zero center we need to evaluate those derivatives at the non-zero center
+in order to build the Taylor polynomial. You see what I'm saying here I hope.
+Anyway, long story short, we'll use zero as the center for our Taylor polynomials.
+In other words, well use Maclaurin polynomials.
+
+For both functions we'll say the largest error we're willing to accept is 0.01,
+and we'll figure out how big the degree of the Maclaurin polynomial needs to be to get us that level of accuracy.
+
+#pagebreak()
 == Approximating the sine function
 
-We'll take a guess that a degree 5 Taylor polynomial will be accurate enough.
+We'll take a guess that a degree 5 Maclaurin polynomial will be accurate enough.
 Looking at the Remainder Estimation Theorem (RET) and the inequality for $M$,
 we can see that we need the $5+1$#super[th] derivative of sine to figure out $M$.
 
@@ -1507,6 +1518,22 @@ The first six derivatives of sine are:
 
 Don't worry about where those derivatives come from for now. We'll talk about that later.
 
+By the way, the degree 5 Maclaurin polynomial for sine looks like this:
+
+$
+(sin^((0))(0))/0! x^0 + (sin^((1))(0))/1! x^1 + (sin^((2))(0))/2! x^2 + (sin^((3))(0))/3! x^3 +
+(sin^((4))(0))/4! x^4 + (sin^((5))(0))/5! x^5
+$
+
+Notice that every even number derivative of sine is either positive or negative sine, and sine evaluated at zero is just zero,
+so all of those even numbered terms drop out of the Maclaurin polynomial.
+What's more the derivatives in the odd numbered terms are alternating positive and negative cosine, and cosine evaluated at zero is just 1,
+so we end up with this Maclaurin polynomial:
+
+$
+1/1! x^1 - 1/3! x^3 + 1/5! x^5
+$
+
 Ok so the 6th derivative is $-sin$, and we know something about this function from trigonometry
 or just from a geometric understanding of the unit circle.
 We know the value of sine always lies in the range from $-1$ to $1$, so we know that $|-sin (x)| <= 1$, for all values of $x$.
@@ -1516,10 +1543,10 @@ Besides $M$, the RET also calls for $x$, which we said we're going to use $pi/4$
 Let's plug all of that stuff into the right side of the RET:
 
 $
-& |R_(n,c)(x)| <= 1/(6)! |pi/4-0|^(6) \
-& |R_(n,c)(x)| <= 1/720 times 0.78539816339^(6) \
-& |R_(n,c)(x)| <= 0.23471415858 div 720 \
-& |R_(n,c)(x)| <= 0.00032599188 \
+& |R_(5,0)(x)| <= 1/(6)! |pi/4-0|^(6) \
+& |R_(5,0)(x)| <= 1/720 times 0.78539816339^(6) \
+& |R_(5,0)(x)| <= 0.23471415858 div 720 \
+& |R_(5,0)(x)| <= 0.00032599188 \
 $
 
 Wow, that upper bound on the error is way smaller than the 0.01 that we originally said we were willing to tolerate as an error.
@@ -1528,10 +1555,10 @@ Let's see what happens if evaluate sine at $180 degree$ ($pi " rad"$).
 This calculation will give us an upper bound on the error all the way from zero to $180 degree$.
 
 $
-& |R_(n,c)(x)| <= 1/(6)! |pi-0|^(6) \
-& |R_(n,c)(x)| <= 1/720 times 3.14159265359^(6) \
-& |R_(n,c)(x)| <= 961.389193575 div 720 \
-& |R_(n,c)(x)| <= 1.33526276885 \
+& |R_(5,0)(x)| <= 1/(6)! |pi-0|^(6) \
+& |R_(5,0)(x)| <= 1/720 times 3.14159265359^(6) \
+& |R_(5,0)(x)| <= 961.389193575 div 720 \
+& |R_(5,0)(x)| <= 1.33526276885 \
 $
 
 Hmm... not good enough and you can see why.
@@ -1539,13 +1566,13 @@ The value of $pi$ is greater than 1, so when we raise it to the 6th power we get
 Let's try cranking up $n$ all the way to 11.
 
 $
-& |R_(n,c)(x)| <= 1/(12)! |pi-0|^(12) \
-& |R_(n,c)(x)| <= 1/479001600 times 3.14159265359^(12) \
-& |R_(n,c)(x)| <= 924269.181523 div 479001600 \
-& |R_(n,c)(x)| <= 0.0019295743 \
+& |R_(11,0)(x)| <= 1/(12)! |pi-0|^(12) \
+& |R_(11,0)(x)| <= 1/479001600 times 3.14159265359^(12) \
+& |R_(11,0)(x)| <= 924269.181523 div 479001600 \
+& |R_(11,0)(x)| <= 0.0019295743 \
 $
 
-Much better and well within our requirement.
+Much better, and well within our requirement.
 You can see that doubling $n$ from 6 to 12 caused the factorial in the denominator to completely overwhelm $pi^12$ in the numerator
 resulting in a nice, small error bound.
 
@@ -1556,6 +1583,7 @@ Since sine is a periodic function that repeats every $2pi$, this error bound wor
 the whole real line, $(-oo,oo)$. That's huge!
 And what's more, cosine works in exactly the same way.
 
+#pagebreak()
 == Approximating the exponential function
 
 Ok but what's the story with a non-periodic function like the exponential function, $e^x$.
@@ -1570,29 +1598,29 @@ We'll set the center $c$ to zero and $x$ is 3.
 We'll try setting $n = 5$.
 
 $
-& |R_(n,c)(x)| <= 27/(6)! |3-0|^(6) \
-& |R_(n,c)(x)| <= 27/720 times 3^(6) \
-& |R_(n,c)(x)| <= 27/720 times 729 \
-& |R_(n,c)(x)| <= 27.3375 \
+& |R_(5,0)(x)| <= 27/(6)! |3-0|^(6) \
+& |R_(5,0)(x)| <= 27/720 times 3^(6) \
+& |R_(5,0)(x)| <= 27/720 times 729 \
+& |R_(5,0)(x)| <= 27.3375 \
 $
 
 Well, that's definitely not good enough: 27.3375 is way bigger than our acceptable error of 0.01.
 Let's try cranking up $n$ all the way to 11 again.
 
 $
-& |R_(n,c)(x)| <= 27/(12)! |3-0|^(12) \
-& |R_(n,c)(x)| <= 27/479001600 times 3^(12) \
-& |R_(n,c)(x)| <= 27/479001600 times 531441 \
-& |R_(n,c)(x)| <= 0.02995586444 \
+& |R_(11,0)(x)| <= 27/(12)! |3-0|^(12) \
+& |R_(11,0)(x)| <= 27/479001600 times 3^(12) \
+& |R_(11,0)(x)| <= 27/479001600 times 531441 \
+& |R_(11,0)(x)| <= 0.02995586444 \
 $
 
-Close but not quite there. Let's go one more.
+Close but still not quite there. Let's go one more.
 
 $
-& |R_(n,c)(x)| <= 27/(13)! |3-0|^(13) \
-& |R_(n,c)(x)| <= 27/6227020800 times 3^(13) \
-& |R_(n,c)(x)| <= 27/6227020800 times 1594323 \
-& |R_(n,c)(x)| <= 0.00691289179 \
+& |R_(12,0)(x)| <= 27/(13)! |3-0|^(13) \
+& |R_(12,0)(x)| <= 27/6227020800 times 3^(13) \
+& |R_(12,0)(x)| <= 27/6227020800 times 1594323 \
+& |R_(12,0)(x)| <= 0.00691289179 \
 $
 
 That's well under our acceptable error of 0.01,
@@ -1613,7 +1641,15 @@ $
 
 We've blown our error bound again, and unfortunately this will continue to be the case.
 The further we move away from the center the larger the error bound will get.
-This wasn't an issue for sine because sine is periodic. 
+This wasn't an issue for sine because sine is periodic.
+
+== Approximating functions with larger values of x
+
+So far we have looked at the error bounds for values of $x$ pretty close to the center.
+For sine, we chose $pi$ as our farthest point from the center, and for the exponential function we chose 3.
+That was all good and we were able to get decent error bounds for those values, but what happens if we move farther away from the center?
+For sine we got lucky because sine is periodic, and we were able to exploit its periodicity to get a low error bound for the entire
+domain of sine, i.e. $(-oo,oo)$.
 
 = But how do we get the derivatives?
 
