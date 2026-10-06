@@ -1586,16 +1586,32 @@ And what's more, cosine works in exactly the same way.
 #pagebreak()
 == Approximating the exponential function
 
-Ok but what's the story with a non-periodic function like the exponential function, $e^x$.
+Ok so what's the story with a non-periodic function like the exponential function, $e^x$.
 Well, one thing we know about the exponential function is... it's exponential.
 Yeah, so getting a an upper bound over the entire real line is going to be impossible. No surprise.
 
+Again, we'll take a guess that a degree 5 Maclaurin polynomial will be accurate enough for our purpose.
+Looking at the Remainder Estimation Theorem (RET) and the inequality for $M$,
+we can see that we need the $5+1$#super[th] derivative of sine to figure out $M$.
+
 The derivatives of $e^x$ are all just $e^x$, so that makes things much easier when choosing a value of $M$.
 
-Let's see what happens if we use the RET to bound the error for $e^3$.
+The degree 5 Maclaurin polynomial for the exponential function looks like this:
+
+$
+(e^((0))(0))/0! x^0 + (e^((1))(0))/1! x^1 + (e^((2))(0))/2! x^2 + (e^((3))(0))/3! x^3 +
+(e^((4))(0))/4! x^4 + (e^((5))(0))/5! x^5
+$
+
+We said all of those derivatives are just $e^x$ and each one is evaluated at zero, i.e. $e^0$, which is just 1,
+so our polynomial ends up like this:
+
+$
+1 + x + x^2/2! + x^3/3! + x^4/4! + x^5/5!
+$
+
+Let's see what happens when we use the RET to bound the error for $x=3$.
 Since $e$ is approximately 2.718, we can use $3^3 = 27$ for our value of $M$.
-We'll set the center $c$ to zero and $x$ is 3.
-We'll try setting $n = 5$.
 
 $
 & |R_(5,0)(x)| <= 27/(6)! |3-0|^(6) \
@@ -1623,11 +1639,26 @@ $
 & |R_(12,0)(x)| <= 0.00691289179 \
 $
 
-That's well under our acceptable error of 0.01,
-so a Maclaurin polynomial of degree 12 will give us a good approximation for $e^x$ anywhere from zero to 3,
+That's much better and well under our acceptable error of 0.01,
+so a Maclaurin polynomial of degree 12 will give a good approximation for $e^x$ anywhere from zero to 3,
 or for that matter from 0 to -3.
 
 But what if we want to use the same Maclaurin polynomial for values larger than 3?
+We'll talk about that in the next section.
+
+== Approximating functions with larger values of x
+
+So far we have looked at the error bounds for values of $x$ that are pretty close to the center.
+For sine, we chose $pi$ as our farthest point from the center, and for the exponential function we chose 3.
+That was all good and we were able to get decent error bounds for those values, but what happens if we move farther away from the center?
+Well, in general the farther away we get from the center the larger the error bound gets
+and the more terms we have to add in to our Maclaurin polynomial to compensate for the worsening accuracy.
+Adding more terms means the degree gets larger and we end up having to deal with large factorials and power
+which means we have to compute huge numbers, so this approach is just not going to work.
+
+For sine we lucked out because sine is periodic, and we were able to exploit this periodicity to get a low error bound for the entire
+domain of sine, i.e. $(-oo,oo)$. In fact, 
+
 Let's see what the error bound looks like at $e^4$.
 Since $M$ has to be larger than $e^x$ over the interval $[0,4]$ and $e$ is approximately 2.718,
 we can use $3^4 = 81$ for our value of $M$.
@@ -1643,15 +1674,10 @@ We've blown our error bound again, and unfortunately this will continue to be th
 The further we move away from the center the larger the error bound will get.
 This wasn't an issue for sine because sine is periodic.
 
-== Approximating functions with larger values of x
-
-So far we have looked at the error bounds for values of $x$ pretty close to the center.
-For sine, we chose $pi$ as our farthest point from the center, and for the exponential function we chose 3.
-That was all good and we were able to get decent error bounds for those values, but what happens if we move farther away from the center?
-For sine we got lucky because sine is periodic, and we were able to exploit its periodicity to get a low error bound for the entire
-domain of sine, i.e. $(-oo,oo)$.
 
 = But how do we get the derivatives?
+
+We have one more loose end to tie up.
 
 
 = Conclusion
