@@ -1653,11 +1653,8 @@ For sine, we chose $pi$ as our farthest point from the center, and for the expon
 That was all good and we were able to get decent error bounds for those values, but what happens if we move farther away from the center?
 Well, in general the farther away we get from the center the larger the error bound gets
 and the more terms we have to add in to our Maclaurin polynomial to compensate for the worsening accuracy.
-Adding more terms means the degree gets larger and we end up having to deal with large factorials and power
-which means we have to compute huge numbers, so this approach is just not going to work.
-
-For sine we lucked out because sine is periodic, and we were able to exploit this periodicity to get a low error bound for the entire
-domain of sine, i.e. $(-oo,oo)$. In fact, 
+Adding more terms means the degree gets larger and we'll end up having to deal with really large factorials and powers,
+which means we'll have to compute huge numbers, so this approach is just not sustainable.
 
 Let's see what the error bound looks like at $e^4$.
 Since $M$ has to be larger than $e^x$ over the interval $[0,4]$ and $e$ is approximately 2.718,
@@ -1670,9 +1667,49 @@ $
 & |R_(n,c)(x)| <= 0.87294039294 \
 $
 
-We've blown our error bound again, and unfortunately this will continue to be the case.
-The further we move away from the center the larger the error bound will get.
-This wasn't an issue for sine because sine is periodic.
+We've blown our error bound again just by going from $x=3$ to $x=4$,
+and unfortunately this will continue to be the case the farther away from zero we get.
+
+We were able to get around this problem with the sine function by exploiting its periodicity.
+Sine has its particular, characteristic shape over the small interval $[-pi,pi]$
+and it retains this exact shape over every other interval of length $2pi$ shifted right or left by $2pi$,
+so we never needed to get more than $pi$ away from zero and our error bound was good for the whole real line.
+
+But the exponential function is not periodic, so what can we do?
+What if we do something similar to what we did with sine?
+With sine we built the Maclaurin polynomial over a small interval, bounded the error over that small interval,
+and then for all the other intervals away from zero we, well, we really didn't do anything to adjust because sine retains its shape,
+so essentially we multiplied by 1.
+For $e^x$, we could also bound the error over a small interval and then make an adjustment as we get farther from zero,
+but this time we will need to do something other than multiplying by 1, i.e. nothing at all.
+
+Let's explore this idea.
+Say we rewrite the $x$ in $e^x$ like this:
+
+$
+x = k ln 2 + r quad "where k is an integer and" r < ln 2.
+$
+
+We broke up $x$ into a bunch of $ln 2$'s and a small number $r$.
+With this rewrite $e^x$ will look like this:
+
+$
+e^(k ln 2 + r)
+$
+
+Which if you remember your rules of exponents, you recognize is just this:
+
+$
+e^(k ln 2) dot e^r
+$
+
+Let's do a little more rewriting using the rules of exponents.
+
+$
+e^(k ln 2) dot e^r = e^((ln 2) k) dot e^r = 2^k dot e^r
+$
+
+Now we've got something useful.
 
 
 = But how do we get the derivatives?
