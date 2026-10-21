@@ -1572,12 +1572,12 @@ $
 & |R_(11,0)(x)| <= 0.0019295743 \
 $
 
-Much better, and well within our requirement.
+Much better, and well within our accuracy requirement.
 You can see that doubling $n$ from 6 to 12 caused the factorial in the denominator to completely overwhelm $pi^12$ in the numerator
 resulting in a nice, small error bound.
 
 There's something else interesting here.
-Notice that the error bound formula uses the absolute value of $x-c$, so the error bound we got for $pi$ is the same one we'd get for $-pi$,
+Notice that the error bound formula uses the _absolute value_ of $x-c$, so the error bound we got for $pi$ is the same one we'd get for $-pi$,
 with the result that we have covered the interval $(-pi, pi)$. That's an interval of length $2pi$.
 Since sine is a periodic function that repeats every $2pi$, this error bound works for the entire domain of sine,
 the whole real line, $(-oo,oo)$. That's huge!
@@ -1596,14 +1596,17 @@ we can see that we need the $5+1$#super[th] derivative of sine to figure out $M$
 
 The derivatives of $e^x$ are all just $e^x$, so that makes things much easier when choosing a value of $M$.
 
+I'm going to temporarily switch to the $exp$ form of the exponential function in the Maclaurin polynomial
+so that the derivatives don't look weird.
+
 The degree 5 Maclaurin polynomial for the exponential function looks like this:
 
 $
-(e^((0))(0))/0! x^0 + (e^((1))(0))/1! x^1 + (e^((2))(0))/2! x^2 + (e^((3))(0))/3! x^3 +
-(e^((4))(0))/4! x^4 + (e^((5))(0))/5! x^5
+& (exp^((0))(0))/0! x^0 + (exp^((1))(0))/1! x^1 + (exp^((2))(0))/2! x^2 + (exp^((3))(0))/3! x^3 + \
+& (exp^((4))(0))/4! x^4 + (exp^((5))(0))/5! x^5
 $
 
-We said all of those derivatives are just $e^x$ and each one is evaluated at zero, i.e. $e^0$, which is just 1,
+We said all of those derivatives are just $e^x$, or as we just wrote it, $exp(x)$, and each one is evaluated at zero, i.e. $e^0$, which is just 1,
 so our polynomial ends up like this:
 
 $
@@ -1650,7 +1653,8 @@ We'll talk about that in the next section.
 
 So far we have looked at the error bounds for values of $x$ that are pretty close to the center.
 For sine, we chose $pi$ as our farthest point from the center, and for the exponential function we chose 3.
-That was all good and we were able to get decent error bounds for those values, but what happens if we move farther away from the center?
+That was all good and we were able to get decent error bounds for those values,
+but what happens if we move even farther away from the center?
 Well, in general the farther away we get from the center the larger the error bound gets
 and the more terms we have to add in to our Maclaurin polynomial to compensate for the worsening accuracy.
 Adding more terms means the degree gets larger and we'll end up having to deal with really large factorials and powers,
@@ -1668,7 +1672,7 @@ $
 $
 
 We've blown our error bound again just by going from $x=3$ to $x=4$,
-and unfortunately this will continue to be the case the farther away from zero we get.
+and unfortunately this trend will continue as we get farther away from zero.
 
 We were able to get around this problem with the sine function by exploiting its periodicity.
 Sine has its particular, characteristic shape over the small interval $[-pi,pi]$
@@ -1681,7 +1685,7 @@ With sine we built the Maclaurin polynomial over a small interval, bounded the e
 and then for all the other intervals away from zero we, well, we really didn't do anything to adjust because sine retains its shape,
 so essentially we multiplied by 1.
 For $e^x$, we could also bound the error over a small interval and then make an adjustment as we get farther from zero,
-but this time we will need to do something other than multiplying by 1, i.e. nothing at all.
+but this time we will need to actually do something other than multiplying by 1, i.e. nothing at all.
 
 Let's explore this idea.
 Say we rewrite the $x$ in $e^x$ like this:
@@ -1704,12 +1708,15 @@ e^(k ln 2) dot e^r
 $
 
 Let's do a little more rewriting using the rules of exponents.
+We'll use the fact that if you raise $e$ to a natural log of something you just get back that something.
+In other words, $e^(ln y) = y$, and in particular $e^(ln 2) = 2$. Using this fact we get:
 
 $
 e^(k ln 2) dot e^r = e^((ln 2) k) dot e^r = 2^k dot e^r
 $
 
-Now we've got something useful.
+Now we've got something really useful, because powers of 2 are easy to calculate, especially on a computer,
+and we said we'll make $r$ less than $ln 2$ which is just a constant, about 0.69315.
 
 
 = But how do we get the derivatives?
