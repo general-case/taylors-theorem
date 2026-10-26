@@ -94,7 +94,7 @@ geometrically.
 Sometimes people think that Taylor's theorem is mainly about the Taylor series, but in reality the theorem is more about
 approximating functions, particularly transcendental functions, and measuring how good or bad the approximation is over
 a given interval.
-If you're intrigued by this idea, read on.
+If you're intrigued by this idea, grab a coffee and read on.
 
 #pagebreak()
 
@@ -158,12 +158,18 @@ Having mathematical maturity means you have been exposed to a lot of math.
 
 == Objects
 
-Mathematics is all about objects: natural numbers, real numbers, functions, vectors, matrices, perfectoid spaces, and on and on.
-All mathematical objects have to be introduced into your paper via a official _declaration_ at some point
+If you asked a random person on the street or in Walmart, say, what is mathematics all about, they'd probably say
+something like it's all about numbers and calculating things.
+In fact, mathematics is all about _objects_, specifically _mathematical objects_.
+These objects include numbers of course, but there are many other kinds of objects that are not numbers.
+For example, here are some mathematical objects:
+natural numbers, real numbers, functions, vectors, matrices, perfectoid spaces, and on and on.
+
+When you are writing mathematics, your mathematical objects must be introduced into your paper via a official _declaration_ at some point
 before you start making statements about them.
 That said, for many ordinary objects, like say the real numbers, the declaration is understood to be elsewhere, outside your paper.
 For example, if you write a paper in which you prove something about the real numbers, you don't have to declare the set of
-real numbers inside your paper. They are assumed to be _predefined_ somewhere else.
+real numbers inside your paper. They are assumed to be _predefined_ somewhere else, _in the literature_.
 However, if you introduce some new object of your own invention, then you do have to declare it within your paper.
 Let's say you want to introduce some special integer, call it $n$, that you want to talk about in your paper.
 The notation to do that is like this:
@@ -1665,10 +1671,10 @@ Since $M$ has to be larger than $e^x$ over the interval $[0,4]$ and $e$ is appro
 we can use $3^4 = 81$ for our value of $M$.
 
 $
-& |R_(n,c)(x)| <= 81/(13)! |4-0|^(13) \
-& |R_(n,c)(x)| <= 81/6227020800 times 4^(13) \
-& |R_(n,c)(x)| <= 81/6227020800 times 67108864 \
-& |R_(n,c)(x)| <= 0.87294039294 \
+& |R_(12,0)(x)| <= 81/(13)! |4-0|^(13) \
+& |R_(12,0)(x)| <= 81/6227020800 times 4^(13) \
+& |R_(12,0)(x)| <= 81/6227020800 times 67108864 \
+& |R_(12,0)(x)| <= 0.87294039294 \
 $
 
 We've blown our error bound again just by going from $x=3$ to $x=4$,
@@ -1701,7 +1707,7 @@ $
 e^(k ln 2 + r)
 $
 
-Which if you remember your rules of exponents, you recognize is just this:
+Which if you remember your rules of exponents, you'll recognize is just this:
 
 $
 e^(k ln 2) dot e^r
@@ -1717,6 +1723,67 @@ $
 
 Now we've got something really useful, because powers of 2 are easy to calculate, especially on a computer,
 and we said we'll make $r$ less than $ln 2$ which is just a constant, about 0.69315.
+
+Let's try an example. Say we want to calculate $e^10$, which is fairly far away from zero, and we want an accuracy of 0.01.
+Our exponent is 10 and we need to split it up into $k * ln 2$ and $r < ln 2$.
+To get $k$ we can simply divide 10 by $ln 2$, that is approximately 0.69315, and $r$ will be the remainder.
+When we do the division we get $k=14$ and $r=0.2959$.
+So now we need to calculate $2^14$, which is 16384, and $e^0.2959$.
+We can use a Maclaurin polynomial of degree 12 to calculate $e^0.2959$.
+
+Let's see what the error bound looks like for that degree 12 Maclaurin polynomial.
+Since $M$ has to be larger than $e^x$ over the interval $[0,0.2959]$ and $e$ is approximately 2.718,
+we can use $3^0.3 approx 1.4$ for our value of $M$. I've just used 0.3 instead of 0.2959 for the value of $x$.
+Here's the error bound calculation:
+
+$
+& |R_(12,0)(x)| <= 1.4/(13)! |0.3-0|^(13) \
+& |R_(12,0)(x)| <= 1.4/6227020800 times 0.3^(13) \
+& |R_(12,0)(x)| <= 1.4/6227020800 times 1.594323 times 10^(-7) \
+& |R_(12,0)(x)| <= 3.5844624 times 10^(-17) \
+$
+
+That is an astonishing small error bound, and you can see why.
+The value of $M$ we used, 1.4, is pretty small and because $r$ is less than one when we raise to 13th power
+the result is incredibly small.
+
+It turns out this super small error bound is a good thing because of what I'm about to point out.
+
+The approach of splitting the $e^x$ into two factors, $2^k$ and $e^r$, and then multiplying them together is called _range reduction_,
+because it reduces the range of our exponential function, in this case from $[0,e^10]$ to $[0,0.2959]$.
+When we use range reduction, we bound the error on the smaller range.
+However, at the end we have to multiply by $2^k$ and this _amplifies_ the error by a factor of $2^k$.
+So is this amplification a problem. Well, not really. Our bound was so small that even multiplying by $2^14$, or 16384,
+has a negligible effect.
+Let's see that:
+
+$
+3.5844624 times 10^(-17) times 16384 = 5.8727832 times 10^(-13)
+$
+
+This is still an insanely small error bound.
+
+Choosing different values for $x$ could in some cases result in $r$ being almost exactly $ln 2$, and this would be the largest
+$r$ can get using our range reduction procedure.
+So how large will the error bound get with $r = 0.69315$ for a degree 12 Maclaurin polynomial?
+Let's take a look.
+
+Since $M$ has to be larger than $e^x$ over the interval $[0,0.69315]$ and $e$ is approximately 2.718,
+we can use $3^0.7 approx 2.2$ for our value of $M$. I've just used 0.7 instead of 0.69315 for the value of $x$.
+Here's the error bound calculation:
+
+$
+& |R_(12,0)(x)| <= 2.2/(13)! |0.7-0|^(13) \
+& |R_(12,0)(x)| <= 2.2/6227020800 times 0.7^(13) \
+& |R_(12,0)(x)| <= 2.2/6227020800 times 0.00968890104 \
+& |R_(12,0)(x)| <= 3.4230787 times 10^(-12) \
+$
+
+This is still an extremely small error bound and as a result the error amplification will be negligible.
+
+$
+3.4230787 times 10^(-12) times 16384 = 5.60837214 times 10^(-8)
+$
 
 
 = But how do we get the derivatives?
