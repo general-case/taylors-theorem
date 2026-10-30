@@ -1683,9 +1683,9 @@ and unfortunately this trend will continue as we get farther away from zero.
 We were able to get around this problem with the sine function by exploiting its periodicity.
 Sine has its particular, characteristic shape over the small interval $[-pi,pi]$
 and it retains this exact shape over every other interval of length $2pi$ shifted right or left by $2pi$,
-so we never needed to get more than $pi$ away from zero and our error bound was good for the whole real line.
+so we never needed to get more than $pi$ away from zero, and our error bound was good for the whole real line.
 
-But the exponential function is not periodic, so what can we do?
+But the exponential function is not periodic, so what can we do in that case?
 What if we do something similar to what we did with sine?
 With sine we built the Maclaurin polynomial over a small interval, bounded the error over that small interval,
 and then for all the other intervals away from zero we, well, we really didn't do anything to adjust because sine retains its shape,
@@ -1714,7 +1714,7 @@ e^(k ln 2) dot e^r
 $
 
 Let's do a little more rewriting using the rules of exponents.
-We'll use the fact that if you raise $e$ to a natural log of something you just get back that something.
+We'll use the fact that if you raise $e$ to the natural log of something you just get back that something.
 In other words, $e^(ln y) = y$, and in particular $e^(ln 2) = 2$. Using this fact we get:
 
 $
@@ -1722,16 +1722,17 @@ e^(k ln 2) dot e^r = e^((ln 2) k) dot e^r = 2^k dot e^r
 $
 
 Now we've got something really useful, because powers of 2 are easy to calculate, especially on a computer,
-and we said we'll make $r$ less than $ln 2$ which is just a constant, about 0.69315.
+and we said we'll make $r$ less than $ln 2$, which by the way, is just a constant, about 0.69315 actually.
 
 Let's try an example. Say we want to calculate $e^10$, which is fairly far away from zero, and we want an accuracy of 0.01.
 Our exponent is 10 and we need to split it up into $k * ln 2$ and $r < ln 2$.
 To get $k$ we can simply divide 10 by $ln 2$, that is approximately 0.69315, and $r$ will be the remainder.
 When we do the division we get $k=14$ and $r=0.2959$.
 So now we need to calculate $2^14$, which is 16384, and $e^0.2959$.
-We can use a Maclaurin polynomial of degree 12 to calculate $e^0.2959$.
+To calculate the $e^0.2959$ part we use Maclaurin polynomial of degree 12.
+At the end, we simply multiply the two numbers together, i.e. $e^0.2959 times 2^k$ to get the value of $e^10$.
 
-Let's see what the error bound looks like for that degree 12 Maclaurin polynomial.
+Let's see what the error bound looks like for that degree 12 Maclaurin polynomial we've been using.
 Since $M$ has to be larger than $e^x$ over the interval $[0,0.2959]$ and $e$ is approximately 2.718,
 we can use $3^0.3 approx 1.4$ for our value of $M$. I've just used 0.3 instead of 0.2959 for the value of $x$.
 Here's the error bound calculation:
@@ -1743,17 +1744,17 @@ $
 & |R_(12,0)(x)| <= 3.5844624 times 10^(-17) \
 $
 
-That is an astonishing small error bound, and you can see why.
-The value of $M$ we used, 1.4, is pretty small and because $r$ is less than one when we raise to 13th power
+That is an astonishingly small error bound, and you can see why.
+The value of $M$ we used, 1.4, is pretty small, and, because $r$ is less than one, when we raise to 13th power
 the result is incredibly small.
 
-It turns out this super small error bound is a good thing because of what I'm about to point out.
+It turns out that this super small error bound is a good thing because of what I'm about to point out.
 
 The approach of splitting the $e^x$ into two factors, $2^k$ and $e^r$, and then multiplying them together is called _range reduction_,
 because it reduces the range of our exponential function, in this case from $[0,e^10]$ to $[0,0.2959]$.
 When we use range reduction, we bound the error on the smaller range.
-However, at the end we have to multiply by $2^k$ and this _amplifies_ the error by a factor of $2^k$.
-So is this amplification a problem. Well, not really. Our bound was so small that even multiplying by $2^14$, or 16384,
+However, at the end we have to multiply by $2^k$, and this _amplifies_ the error by a factor of $2^k$.
+So is this amplification a problem? Well, not really. Our bound was so small that even multiplying by $2^14$, or 16384,
 has a negligible effect.
 Let's see that:
 
@@ -1764,7 +1765,7 @@ $
 This is still an insanely small error bound.
 
 Choosing different values for $x$ could in some cases result in $r$ being almost exactly $ln 2$, and this would be the largest
-$r$ can get using our range reduction procedure.
+possible value of $r$ can get using our range reduction procedure.
 So how large will the error bound get with $r = 0.69315$ for a degree 12 Maclaurin polynomial?
 Let's take a look.
 
@@ -1779,16 +1780,21 @@ $
 & |R_(12,0)(x)| <= 3.4230787 times 10^(-12) \
 $
 
-This is still an extremely small error bound and as a result the error amplification will be negligible.
+This is still an extremely small error bound and as a result the error amplification will still be negligible.
 
 $
 3.4230787 times 10^(-12) times 16384 = 5.60837214 times 10^(-8)
 $
 
+We have quite a bit of room here to evaluate the exponential function with even larger values of $x$,
+and we can always fiddle with the numbers to keep $r$ in $2^k dot e^r$ small, so that most of the burden of the calculation
+is shifted to calculating the power of 2.
 
 = But how do we get the derivatives?
 
 We have one more loose end to tie up.
+The Taylor (or Maclaurin) polynomial for a given function $f$ needs the derivative of $f$, i.e. $f'$ evaluated at the center $c$,
+so a nagging concern you may have is if we're trying to define a function like say sine, how do we know it's derivatives beforehand?
 
 
 = Conclusion
