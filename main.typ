@@ -45,6 +45,7 @@ Functions like table and grid take data as a sequence of positional arguments ra
 #import "util.typ":*
 #import "@preview/theorion:0.3.3":*
 #import emoji:face
+#import "@preview/cetz:0.5.3"
 
 // Apply the show-theorion function to all elements in the document.
 #show : show-theorion
@@ -1796,6 +1797,55 @@ We have one more loose end to tie up.
 The Taylor (or Maclaurin) polynomial for a given function $f$ needs the derivative of $f$, i.e. $f'$ evaluated at the center $c$,
 so a nagging concern you may have is if we're trying to define a function like say sine, how do we know it's derivatives beforehand?
 
+
+#let unit-circle-diagram(debug) = cetz.canvas(length: 3cm, debug: debug, {
+  import cetz.draw: *
+
+  // Draw 2 x 2 grid.
+  // grid((-2, -2), (2, 2), step: 0.2, stroke: gray + 0.32pt)
+
+  // Draw axes.
+  line((-2, 0), (2, 0), stroke: 0.8pt) // x-axis.
+  line((0, -2), (0, 2), stroke: 0.8pt) // y-axis.
+
+  // Draw axis labels.
+  content((2.2, 0), [$x$], anchor: "west")
+  content((0, 2.2), [$y$], anchor: "south")
+
+  // Draw the unit circle.
+  circle((0, 0), radius: 1, stroke: blue + 1.5pt, fill: rgb("3b82f615"))
+
+  // Draw vector lines.
+  // Note: rel causes angles and lengths to be calculated relative to the previous point (radius.1 in this case).
+  // Note: radius.1 is the end-point of the radius line.
+  let pi-rad = calc.pi * 1rad
+  let angle-theta = pi-rad / 4
+  line((0, 0), (angle-theta, 1), mark: (end: "stealth", fill: red), stroke: red + 1.2pt, name: "radius")
+  line("radius.1", (rel: (angle-theta + pi-rad/2, 1)),  mark: (end: "stealth", fill: purple), stroke: purple + 1.2pt, name: "tangent")
+
+  // Draw geometry lines.
+  line("radius.1", ("radius.1", "|-", (0, 0)), stroke: black + 1.2pt)
+
+  // Draw points.
+  circle((0, 0), radius: 0.03, fill: black, stroke: none)
+  content((0, 0), [$O$], anchor: "north-east", padding: 0.15)
+
+  circle("radius.1", radius: 0.03, fill: black, stroke: none)
+  content("radius.1", [$p(x, y)$], anchor: "south-west", padding: 0.05)
+
+  // Draw angle arc.
+  arc((0, 0), anchor:"origin", start: 0rad, stop: angle-theta, radius: 0.5, stroke: 1pt + green.darken(20%))
+
+  // 7. Draw callouts.
+  content((0.5, 0.4), [$r = 1$], anchor: "south-east", padding: 0.1) // Radius label.
+  content((0.3, 0.1), $theta$) // Radius label.
+
+  line((-1.4, 1.4), (-0.7, 0.7), stroke: 0.6pt + gray)
+  content((-2.0, 1.5), [Unit Circle: $x^2 + y^2 = r^2$], anchor: "west", padding: 0.1)
+})
+
+#figure(unit-circle-diagram(false),
+        caption: [Unit circle.]) <figure:unit_circle_diagram>
 
 = Conclusion
 
