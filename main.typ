@@ -1791,26 +1791,65 @@ We have quite a bit of room here to evaluate the exponential function with even 
 and we can always fiddle with the numbers to keep $r$ in $2^k dot e^r$ small, so that most of the burden of the calculation
 is shifted to calculating the power of 2.
 
+= In the limit
+
+As we've seen Taylor's theorem is strictly a statement about the relationship of the polynomial approximation of a function to the remainder,
+aka the error.
+But you've probably come across textbooks and other materials that talk about Taylor's theorem being used to _define_ functions,
+especially the transcendental ones. So what's that all about?
+Well imagine what happens if you increase the degree of the Taylor polynomial without stopping, or as mathematicians say _without bound_.
+If you do that the remainder will shrink to a vanishingly small quantity and, _in the limit_, all the way to zero in fact.
+At that point, your polynomial won't just be an approximation of the function; it will actually _equal_ the function!
+This is all subject to certain caveats of course, but that's true of almost anything we say in mathematics.
+
 = But how do we get the derivatives?
 
 We have one more loose end to tie up.
 The Taylor (or Maclaurin) polynomial for a given function $f$ needs the derivative of $f$, i.e. $f'$ evaluated at the center $c$,
 so a nagging concern you may have is if we're trying to define a function like say sine, how do we know it's derivatives beforehand?
+I mean it seems like we have a chicken and egg situation here.
+If we're interested in defining the sine function as a Maclaurin series, we need the derivative of sine to build the series,
+but how do we get that without the definition of the function?
+This is actually a pretty deep question that is related to an important and on-going debate in the mathematics community.
+Is it ok to define a function without giving a way to evaluate it?
+One faction of mathematics, the constructivists say no, while another, the platonists say yes.
+We won't go too far down that rabbit hole here.
 
+For the sine function we'll start with a _non constructive_ definition which we'll use to get the derivatives.
+Once we have the derivatives we'll build a _constructive_ Maclaurin series definition.
+The key idea is that you can pin down the exact behavior of a function without giving an algorithm to compute it.
+The way we'll do that for sine is to make observations of a geometric model that we'll use
+to discover the precise properties we want the sine function to have.
+The model we'll use is a point moving along the perimeter of a _unit circle_ at a fixed angular velocity.
+A unit circle is just a circle of radius 1.
+This may sound a bit like a physics problem, but in reality our model is entirely geometric and abstract.
+The point rotating around the unit circle at a fixed velocity is kind of the _canonical model_ for trigonometric functions
+and captures everything we need to know about them.
 
-#let unit-circle-diagram(debug) = cetz.canvas(length: 3cm, debug: debug, {
+Take a look at the diagram in @figure:unit_circle_diagram.
+You can see there is a point labeled $p(x,y)$ on the perimeter of the unit circle.
+That point is defined by the red-colored radial position vector pointing to it from the origin.
+Now imagine that point is rotating counterclockwise at unit angular velocity (usually called $omega$ in physics).
+We'll choose an angular velocity of one radian/second because that will allow us to draw the velocity vector
+with the same length as the position vector.
+Ok so there is also a purple-colored tangential velocity vector at tip of the position vector on the perimeter of the circle.
+The tangential velocity vector represents the instantaneous linear velocity of the rotating point and it is orthogonal to
+the position vector.
+
+// Unit circle diagram.
+#let unit-circle-diagram(debug) = cetz.canvas(length: 4cm, debug: debug, {
   import cetz.draw: *
 
   // Draw 2 x 2 grid.
   // grid((-2, -2), (2, 2), step: 0.2, stroke: gray + 0.32pt)
 
   // Draw axes.
-  line((-2, 0), (2, 0), stroke: 0.8pt) // x-axis.
-  line((0, -2), (0, 2), stroke: 0.8pt) // y-axis.
+  line((-1.5, 0), (1.5, 0), stroke: 0.8pt) // x-axis.
+  line((0, -1.5), (0, 1.5), stroke: 0.8pt) // y-axis.
 
   // Draw axis labels.
-  content((2.2, 0), [$x$], anchor: "west")
-  content((0, 2.2), [$y$], anchor: "south")
+  content((1.5, 0), [$x$], anchor: "west", padding: 0.1)
+  content((0, 1.5), [$y$], anchor: "south", padding: 0.1)
 
   // Draw the unit circle.
   circle((0, 0), radius: 1, stroke: blue + 1.5pt, fill: rgb("3b82f615"))
@@ -1819,31 +1858,43 @@ so a nagging concern you may have is if we're trying to define a function like s
   // Note: rel causes angles and lengths to be calculated relative to the previous point (radius.1 in this case).
   // Note: radius.1 is the end-point of the radius line.
   let pi-rad = calc.pi * 1rad
-  let angle-theta = pi-rad / 4
+  let angle-theta = pi-rad / 3
   line((0, 0), (angle-theta, 1), mark: (end: "stealth", fill: red), stroke: red + 1.2pt, name: "radius")
-  line("radius.1", (rel: (angle-theta + pi-rad/2, 1)),  mark: (end: "stealth", fill: purple), stroke: purple + 1.2pt, name: "tangent")
+
+  line("radius.1", (rel: (angle-theta + pi-rad/2, 1)),
+       mark: (end: "stealth", fill: purple), stroke: purple + 1.2pt, name: "tangent")
+
+  line((0,0), (rel: (angle-theta + pi-rad/2, 1)),
+       mark: (end: "stealth", fill: purple), stroke: (paint: purple, thickness: 1.2pt, dash: "dotted"), name: "orthogonal")
+
 
   // Draw geometry lines.
-  line("radius.1", ("radius.1", "|-", (0, 0)), stroke: black + 1.2pt)
+  // Note: |- drops a vertical line from the first point to the the horizontal line on which the second point lies, (0,0).
+  // Note: -| extends a horizontal line from the first point to the the vertical line on which the second point lies, (0,0).
+  line("radius.1", ("radius.1", "|-", (0, 0)), stroke: black + 1.0pt, name: "sin-line") // Vertical line.
+  line("radius.1", ("radius.1", "-|", (0, 0)), stroke: black + 1.0pt, name: "cos-line") // Horizontal line.
 
   // Draw points.
   circle((0, 0), radius: 0.03, fill: black, stroke: none)
   content((0, 0), [$O$], anchor: "north-east", padding: 0.15)
 
-  circle("radius.1", radius: 0.03, fill: black, stroke: none)
+  circle("radius.1", radius: 0.02, fill: black, stroke: none)
   content("radius.1", [$p(x, y)$], anchor: "south-west", padding: 0.05)
 
   // Draw angle arc.
-  arc((0, 0), anchor:"origin", start: 0rad, stop: angle-theta, radius: 0.5, stroke: 1pt + green.darken(20%))
+  arc((0, 0), anchor:"origin", start: 0rad, stop: angle-theta, radius: 0.3, stroke: 1pt + green.darken(20%))
 
-  // 7. Draw callouts.
-  content((0.5, 0.4), [$r = 1$], anchor: "south-east", padding: 0.1) // Radius label.
-  content((0.3, 0.1), $theta$) // Radius label.
+  // 7. Draw callouts and labels.
+  content((0.15, 0.1), $theta$) // Angle label.
 
-  line((-1.4, 1.4), (-0.7, 0.7), stroke: 0.6pt + gray)
-  content((-2.0, 1.5), [Unit Circle: $x^2 + y^2 = r^2$], anchor: "west", padding: 0.1)
+  content("sin-line.mid", $sin theta$, anchor: "west", padding: 0.05) // Sine label.
+  content("cos-line.mid", $cos theta$, anchor: "north", padding: 0.05) // Cosine label.
+
+  line((-1, 1), (-0.7, 0.7), stroke: 0.6pt + gray)
+  content((-1.5, 1.2), [Unit circle:\ $x^2 + y^2 = r^2$\ $r = 1$], anchor: "west", padding: 0.1) // Unit circle label.
 })
 
+// Render the unit circle figure.
 #figure(unit-circle-diagram(false),
         caption: [Unit circle.]) <figure:unit_circle_diagram>
 
