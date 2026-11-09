@@ -1800,41 +1800,49 @@ especially the transcendental ones. So what's that all about?
 Well imagine what happens if you increase the degree of the Taylor polynomial without stopping, or as mathematicians say _without bound_.
 If you do that the remainder will shrink to a vanishingly small quantity and, _in the limit_, all the way to zero in fact.
 At that point, your polynomial won't just be an approximation of the function; it will actually _equal_ the function!
+Also, as we learned earlier, an infinite degree polynomial not really a polynomial; it's a Taylor series.
 This is all subject to certain caveats of course, but that's true of almost anything we say in mathematics.
 
 = But how do we get the derivatives?
 
 We have one more loose end to tie up.
-The Taylor (or Maclaurin) polynomial for a given function $f$ needs the derivative of $f$, i.e. $f'$ evaluated at the center $c$,
-so a nagging concern you may have is if we're trying to define a function like say sine, how do we know it's derivatives beforehand?
+The Taylor (or Maclaurin) series for a given function $f$ needs the derivatives of $f$, $f'$, $f''$, and so on,
+evaluated at the center $c$,
+so a nagging concern you may have is if we're trying to define a function using a Taylor series, how do we know those derivatives beforehand?
 I mean it seems like we have a chicken and egg situation here.
-If we're interested in defining the sine function as a Maclaurin series, we need the derivative of sine to build the series,
-but how do we get that without the definition of the function?
+Let's say we're interested in defining the sine function as a Maclaurin series.
+We need the derivatives of sine to build the series, but how do we get those without the definition of the function?
 This is actually a pretty deep question that is related to an important and on-going debate in the mathematics community.
 Is it ok to define a function without giving a way to evaluate it?
-One faction of mathematics, the constructivists say no, while another, the platonists say yes.
+One faction of the mathematics community, the _constructivists_ say no, while another, the _platonists_, say yes.
 We won't go too far down that rabbit hole here.
+Suffice it to say we can in fact pin down the precise behavior of a function by stating enough properties about it
+without ever giving a _constructive_ definition of it.
 
-For the sine function we'll start with a _non constructive_ definition which we'll use to get the derivatives.
-Once we have the derivatives we'll build a _constructive_ Maclaurin series definition.
-The key idea is that you can pin down the exact behavior of a function without giving an algorithm to compute it.
-The way we'll do that for sine is to make observations of a geometric model that we'll use
-to discover the precise properties we want the sine function to have.
+For the sine function, we'll start with a _non-constructive_ definition which we'll use to get the derivatives.
+Once we have the derivatives we'll build a _constructive_ definition using a Maclaurin series.
+The way we'll get the initial non-constructive definition of the sine function is by making observations of a geometric model.
+We'll use our observations to discover the properties we want the sine function to have.
 The model we'll use is a point moving along the perimeter of a _unit circle_ at a fixed angular velocity.
 A unit circle is just a circle of radius 1.
 This may sound a bit like a physics problem, but in reality our model is entirely geometric and abstract.
 The point rotating around the unit circle at a fixed velocity is kind of the _canonical model_ for trigonometric functions
 and captures everything we need to know about them.
 
-Take a look at the diagram in @figure:unit_circle_diagram.
-You can see there is a point labeled $p(x,y)$ on the perimeter of the unit circle.
-That point is defined by the red-colored radial position vector pointing to it from the origin.
-Now imagine that point is rotating counterclockwise at unit angular velocity (usually called $omega$ in physics).
-We'll choose an angular velocity of one radian/second because that will allow us to draw the velocity vector
-with the same length as the position vector.
-Ok so there is also a purple-colored tangential velocity vector at tip of the position vector on the perimeter of the circle.
-The tangential velocity vector represents the instantaneous linear velocity of the rotating point and it is orthogonal to
+Take a careful look at the diagram in @figure:unit_circle_diagram.
+You can see there is a point labeled $P$ on the perimeter of the unit circle.
+The height of the point, $sin theta$, is what were interested learning about.
+The horizontal distance to the point, $cos theta$, will also be important as we'll see shortly.
+
+The point $P$ is defined by the red-colored _radial position vector_ labeled $arrow(r)$ pointing to it from the origin.
+Now imagine that the point is rotating counterclockwise at constant angular velocity (usually called $omega$ in physics).
+We'll choose an angular velocity of one radian/second because that will allow us to make the velocity vector
+the same length as the position vector.
+The purple-colored vector labeled $arrow(v)$ at tip of the position vector on the perimeter of the circle is the _tangential velocity vector_.
+The tangential velocity vector represents the instantaneous linear velocity of the rotating point and it is perpendicular to
 the position vector.
+I've also redrawn the same velocity vector as a purple-colored vector with a dotted line repositioned so that its tail lies on the origin.
+Looking at the repositioned velocity vector should convince you that it is indeed perpendicular to the radial position vector.
 
 // Unit circle diagram.
 #let unit-circle-diagram(debug) = cetz.canvas(length: 4cm, debug: debug, {
@@ -1855,31 +1863,34 @@ the position vector.
   circle((0, 0), radius: 1, stroke: blue + 1.5pt, fill: rgb("3b82f615"))
 
   // Draw vector lines.
-  // Note: rel causes angles and lengths to be calculated relative to the previous point (radius.1 in this case).
-  // Note: radius.1 is the end-point of the radius line.
+  // Note: rel causes angles and lengths to be calculated relative to the previous point (radial.1 in this case).
+  // Note: radial.1 is the end-point of the radial vector line.
   let pi-rad = calc.pi * 1rad
   let angle-theta = pi-rad / 3
-  line((0, 0), (angle-theta, 1), mark: (end: "stealth", fill: red), stroke: red + 1.2pt, name: "radius")
+  line((0, 0), (angle-theta, 1), mark: (end: "stealth", fill: red), stroke: red + 1.2pt, name: "radial")
+  content("radial.mid", $arrow(r)$, anchor: "west", padding: 0.05) // Radial vector label.
 
-  line("radius.1", (rel: (angle-theta + pi-rad/2, 1)),
-       mark: (end: "stealth", fill: purple), stroke: purple + 1.2pt, name: "tangent")
+  line("radial.1", (rel: (angle-theta + pi-rad/2, 1)),
+       mark: (end: "stealth", fill: purple), stroke: purple + 1.2pt, name: "tangential")
+  content("tangential.mid", $arrow(v)$, anchor: "south", padding: 0.05) // Tangential vector label.
 
   line((0,0), (rel: (angle-theta + pi-rad/2, 1)),
        mark: (end: "stealth", fill: purple), stroke: (paint: purple, thickness: 1.2pt, dash: "dotted"), name: "orthogonal")
+  content("orthogonal.mid", $arrow(v)$, anchor: "south", padding: 0.05) // Tangential vector label.
 
-
-  // Draw geometry lines.
+  // Draw sin and cos lines.
   // Note: |- drops a vertical line from the first point to the the horizontal line on which the second point lies, (0,0).
   // Note: -| extends a horizontal line from the first point to the the vertical line on which the second point lies, (0,0).
-  line("radius.1", ("radius.1", "|-", (0, 0)), stroke: black + 1.0pt, name: "sin-line") // Vertical line.
-  line("radius.1", ("radius.1", "-|", (0, 0)), stroke: black + 1.0pt, name: "cos-line") // Horizontal line.
+  line("radial.1", ("radial.1", "|-", (0, 0)), stroke: black + 1.0pt, name: "sin-line") // Vertical line.
+  line("radial.1", ("radial.1", "-|", (0, 0)), stroke: black + 1.0pt, name: "cos-line") // Horizontal line.
 
-  // Draw points.
+  // Draw origin.
   circle((0, 0), radius: 0.03, fill: black, stroke: none)
   content((0, 0), [$O$], anchor: "north-east", padding: 0.15)
 
-  circle("radius.1", radius: 0.02, fill: black, stroke: none)
-  content("radius.1", [$p(x, y)$], anchor: "south-west", padding: 0.05)
+  // Draw point P at the tip of the radial vector.
+  circle("radial.1", radius: 0.02, fill: black, stroke: none)
+  content("radial.1", [$P$], anchor: "south-west", padding: 0.05)
 
   // Draw angle arc.
   arc((0, 0), anchor:"origin", start: 0rad, stop: angle-theta, radius: 0.3, stroke: 1pt + green.darken(20%))
@@ -1897,6 +1908,31 @@ the position vector.
 // Render the unit circle figure.
 #figure(unit-circle-diagram(false),
         caption: [Unit circle.]) <figure:unit_circle_diagram>
+
+Of course $arrow(r)$ and $arrow(v)$ are not just static vectors.
+They are vector valued-functions of the angle $theta$, so they are in fact $arrow(r)(theta)$ and $arrow(v)(theta)$.
+This observation is important for the punch-line of this whole discussion.
+The velocity vector-valued function is the derivative of the position vector-valued function.
+In other words:
+
+$
+d/(d theta) arrow(r)(theta) = arrow(v)(theta)
+$
+
+And how do we differentiate a vector-valued function?
+We take the derivative of each of its component functions.
+In our model, we can see that the component functions of $arrow(r)(theta)$ are $cos theta$ and $sin theta$.
+We defined it this way.
+
+So now we know that the derivative of $cos theta$ is the first component function of $arrow(v)(theta)$ and
+the derivative of $sin theta$ is the second component function of $arrow(v)(theta)$.
+All we need now are the components of $arrow(v)(theta)$.
+
+How do we get those components.
+Well, because $arrow(v)(theta)$ is tangential to $arrow(r)(theta)$ for any angle $theta$ the two vectors are always perpendicular,
+and it turns out there is a standard way to calculate a perpendicular vector.
+
+
 
 = Conclusion
 
