@@ -272,7 +272,7 @@ In everyday English, there are three kinds of sentences:
 
 - Interrogative which ask a question
 - Imperative which give an instruction or a command
-- Declarative which simply assert something is true
+- Declarative which simply asserts something is true
 
 That last one, the _declarative sentence_, has a parallel in mathematics called the _mathematical statement_.
 In English, declarative sentences can be either true or false. For example, I can say that "the sky is blue", but you can look up and perhaps
@@ -885,7 +885,7 @@ that we already saw when discussing Taylor polynomials earlier.
 
 Here is the definition of the Taylor series:
 
-$ sum_(n=0)^oo (f^((n))(c))/n! (x-c)^n $
+$ sum_(n=0)^oo (f^((n))(c))/n! (x-c)^n $ <exp:taylor_series>
 
 The Taylor series is a function, of course, with the usual center $c$, and again it's one of those limits of a sum that we
 talked about in the power series section.
@@ -1531,6 +1531,7 @@ $
 (sin^((0))(0))/0! x^0 + (sin^((1))(0))/1! x^1 + (sin^((2))(0))/2! x^2 + (sin^((3))(0))/3! x^3 +
 (sin^((4))(0))/4! x^4 + (sin^((5))(0))/5! x^5
 $
+<exp:maclaurin_polynomial_sine>
 
 Notice that every even number derivative of sine is either positive or negative sine, and sine evaluated at zero is just zero,
 so all of those even numbered terms drop out of the Maclaurin polynomial.
@@ -1815,7 +1816,7 @@ We need the derivatives of sine to build the series, but how do we get those wit
 This is actually a pretty deep question that is related to an important and on-going debate in the mathematics community.
 Is it ok to define a function without giving a way to evaluate it?
 One faction of the mathematics community, the _constructivists_ say no, while another, the _platonists_, say yes.
-We won't go too far down that rabbit hole here.
+We won't go too far down that philosophical rabbit hole here.
 Suffice it to say we can in fact pin down the precise behavior of a function by stating enough properties about it
 without ever giving a _constructive_ definition of it.
 
@@ -1831,8 +1832,8 @@ and captures everything we need to know about them.
 
 Take a careful look at the diagram in @figure:unit_circle_diagram.
 You can see there is a point labeled $P$ on the perimeter of the unit circle.
-The height of the point, $sin theta$, is what were interested learning about.
-The horizontal distance to the point, $cos theta$, will also be important as we'll see shortly.
+The height of the point above the x-axis, $sin theta$, is what were interested learning about.
+The horizontal distance to the point from the y-axis, $cos theta$, will also be important as we'll see shortly.
 
 The point $P$ is defined by the red-colored _radial position vector_ labeled $arrow(r)$ pointing to it from the origin.
 Now imagine that the point is rotating counterclockwise at constant angular velocity (usually called $omega$ in physics).
@@ -1920,19 +1921,94 @@ d/(d theta) arrow(r)(theta) = arrow(v)(theta)
 $
 
 And how do we differentiate a vector-valued function?
-We take the derivative of each of its component functions.
+Easy! We take the derivative of each of its component functions. Differentiation for vector-valued functions is _defined_ this way.
 In our model, we can see that the component functions of $arrow(r)(theta)$ are $cos theta$ and $sin theta$.
-We defined it this way.
+We defined it that way in our geometric model, so we can write the definition in mathematical language like this:
+
+$
+forall theta: RR{arrow(r)(theta) = vec(cos theta, sin theta, delim: "[")}
+$
 
 So now we know that the derivative of $cos theta$ is the first component function of $arrow(v)(theta)$ and
 the derivative of $sin theta$ is the second component function of $arrow(v)(theta)$.
 All we need now are the components of $arrow(v)(theta)$.
 
-How do we get those components.
-Well, because $arrow(v)(theta)$ is tangential to $arrow(r)(theta)$ for any angle $theta$ the two vectors are always perpendicular,
+How do we get those components?
+Well, because $arrow(v)(theta)$ is tangential to $arrow(r)(theta)$ for any angle $theta$, the two vectors are always perpendicular,
 and it turns out there is a standard way to calculate a perpendicular vector.
+If a vector has two components, say $a$ and $b$,
+then the perpendicular vector of the same length has the components $-b$ and $a$, like this:
 
+$
+"For some vector" vec(a, b, delim: "[")", the perpendicular vector of the same length is" vec(-b, a, delim: "[")"."
+$
 
+By the way, this formulation comes from a result in linear algebra that says the _dot product_ of perpendicular vectors
+is always zero, and you can see that the statement is true for our example perpendicular vectors in the following:
+
+$
+vec(a, b, delim: "[") circle.filled.tiny vec(-b, a, delim: "[") = (a times -b) + (b times a) = 0
+$
+
+Let's summarize all of the facts we've discovered so far from our geometric model in one statement like this:
+
+$
+d/(d theta) arrow(r)(theta) = vec(cos' theta, sin' theta, delim: "[")= arrow(v)(theta) = vec(-sin theta, cos theta, delim: "[")
+$
+
+And just like that, by matching the components of the vectors in the previous equation, we have the derivatives of sine and cosine.
+We can see that $sin' theta = cos theta$ and $cos' theta = -sin theta$, and that's all we need to get all of the other derivatives:
+
+$
+& sin' theta = cos theta \
+& sin'' theta = cos' theta = -sin theta \
+& sin''' theta = cos'' theta = -sin' theta = -cos theta \
+& sin'''' theta = cos''' theta = -sin'' theta = -cos' theta = sin theta \
+& "... rinse repeat..."
+$
+
+Notice we did all of this without giving a way to calculate sine or cosine.
+
+There's one last piece of the puzzle that is needed before we can build the Maclaurin series for the sine function.
+We need to be able to evaluate the sine function and all of its derivatives at zero.
+We can get those values by making two more observations from our geometric model.
+The first one is when angle $theta$ is zero the height of point $P$ above the x-axis is zero, so we can confidently say that $sin 0 = 0$.
+Second, when angle $theta$ is zero the horizontal distance of point $P$ from the y-axis is exactly 1, so we can say that $cos 0 = 1$.
+Using these two observations and our derivatives we can evaluate all of the derivatives at zer, like this:
+
+$
+& sin 0 = 0 \
+& sin' 0 = cos 0 = 1 \
+& sin'' 0 = cos' 0 = -sin 0 = 0 \
+& sin''' 0 = cos'' 0 = -sin' 0 = -cos 0 = -1 \
+& sin'''' 0 = cos''' 0 = -sin'' 0 = -cos' 0 = sin 0 = 0 \
+& "... rinse repeat..."
+$
+
+At last we have everything we need to build the Maclaurin series for sine.
+Recall the definition for the Taylor series is:
+
+#restate(<exp:taylor_series>)
+
+The Maclaurin series just sets $c=0$, so it is:
+
+$ sum_(n=0)^oo (f^((n))(0))/n! (x)^n $ <exp:maclaurin_series>
+
+Recall we gave a Maclaurin polynomial for sine previously:
+
+#restate(<exp:maclaurin_polynomial_sine>)
+
+Our Maclaurin series for sine will be an infinite version of the polynomial, but notice that all of the even numbered
+derivatives evaluated at zero are just zero, so they will all drop out.
+Also notice that the odd numbered derivatives evaluated at zero alternate between 1 and -1.
+What we end up with is this:
+
+$
+sin x = x/1! - (x^3)/3! + x^5/5! - x^7/7! + dots.h.c
+$
+
+And there you have it.
+We took the non-constructive definition of sine derived from the geometric model and built a constructive Maclaurin series based definition.
 
 = Conclusion
 
