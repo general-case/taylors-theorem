@@ -87,7 +87,7 @@ calculator uses to almost instantly compute the values of functions such as sine
 In this paper, I'll present a somewhat informal account of what Taylor's theorem actually is, and why it is useful for calculating the 
 values of functions.
 I've tried to adopt a conversational tone throughout in an attempt to make the ideas as accessible as possible.
-I love feedback, so if you think I've made a mistake of that something could be improved, shoot me an email.
+I love feedback, so if you think I've made a mistake or that something could be improved, shoot me an email.
 On our journey to understanding Taylor's theorem we'll take a look a prerequisite objects such as
 polynomials, power series, Taylor polynomials, and the Taylor series.
 We'll conclude with a look at how Taylor's theorem is used to define the sine function from scratch, mathematically rather than
@@ -1206,7 +1206,7 @@ $
 $
 
 The $:=$ operator is used to define the macro.
-The macro name and any parameters are on the left side of the $:=$ symbol, whereas the statement is on the right.
+The macro name and any parameters go on the left side of the $:=$ symbol, whereas the statement goes on the right.
 The expression on the right is often called the _body_ of the macro, especially in programming books.
 When you're ready to use the macro in a larger statement like Taylor's theorem, you _call_ it
 by writing its name followed by any required arguments as a comma separated list inside square brackets.
@@ -1507,6 +1507,7 @@ In other words, well use Maclaurin polynomials.
 For both functions we'll say the largest error we're willing to accept is 0.01,
 and we'll figure out how big the degree of the Maclaurin polynomial needs to be to get us that level of accuracy.
 
+
 #pagebreak()
 == Approximating the sine function
 
@@ -1591,6 +1592,7 @@ Since sine is a periodic function that repeats every $2pi$, this error bound wor
 the whole real line, $(-oo,oo)$. That's huge!
 And what's more, cosine works in exactly the same way.
 
+
 #pagebreak()
 == Approximating the exponential function
 
@@ -1656,6 +1658,7 @@ or for that matter from 0 to -3.
 
 But what if we want to use the same Maclaurin polynomial for values larger than 3?
 We'll talk about that in the next section.
+
 
 == Approximating functions with larger values of x
 
@@ -1792,6 +1795,7 @@ We have quite a bit of room here to evaluate the exponential function with even 
 and we can always fiddle with the numbers to keep $r$ in $2^k dot e^r$ small, so that most of the burden of the calculation
 is shifted to calculating the power of 2.
 
+
 = In the limit
 
 As we've seen Taylor's theorem is strictly a statement about the relationship of the polynomial approximation of a function to the remainder,
@@ -1804,6 +1808,7 @@ At that point, your polynomial won't just be an approximation of the function; i
 Also, as we learned earlier, an infinite degree polynomial not really a polynomial; it's a Taylor series.
 This is all subject to certain caveats of course, but that's true of almost anything we say in mathematics.
 
+
 = But how do we get the derivatives?
 
 We have one more loose end to tie up.
@@ -1813,12 +1818,15 @@ so a nagging concern you may have is if we're trying to define a function using 
 I mean it seems like we have a chicken and egg situation here.
 Let's say we're interested in defining the sine function as a Maclaurin series.
 We need the derivatives of sine to build the series, but how do we get those without the definition of the function?
-This is actually a pretty deep question that is related to an important and on-going debate in the mathematics community.
+This is actually a pretty deep question that is related to an important and on-going debate in mathematics.
 Is it ok to define a function without giving a way to evaluate it?
 One faction of the mathematics community, the _constructivists_ say no, while another, the _platonists_, say yes.
 We won't go too far down that philosophical rabbit hole here.
 Suffice it to say we can in fact pin down the precise behavior of a function by stating enough properties about it
 without ever giving a _constructive_ definition of it.
+
+
+== Getting the derivatives of the sine function
 
 For the sine function, we'll start with a _non-constructive_ definition which we'll use to get the derivatives.
 Once we have the derivatives we'll build a _constructive_ definition using a Maclaurin series.
@@ -2009,6 +2017,37 @@ $
 
 And there you have it.
 We took the non-constructive definition of sine derived from the geometric model and built a constructive Maclaurin series based definition.
+
+
+== Getting the derivatives of the exponential function
+
+Unlike the sine function, the exponential function doesn't have a geometric interpretation, so we can't use a geometric model
+to observe and define its properties mathematically like we did with sine.
+So how do we get the derivatives?
+
+Well, one way is to use a particular definition of the exponential function.
+Mathematicians often define the exponential function as the unique function that is its own derivative.
+In other words:
+
+$
+exp'(x) = exp(x) "or if you prefer" d/(d x) e^x = e^x
+$
+
+Couple that definition with the statement $e^0 = 1$, which seems perfectly reasonable, and you have everything you need to pin down
+the exact behavior of $e^x$, including the derivatives which come right out of the box.
+
+But does this approach feel like cheating to you? Yeah, it does a bit, right?
+
+The exponential function originally came about when mathematicians started thinking about compound interest
+and how interest accumulates for a given rate charged periodically, and being mathematicians they asked what
+if the period shrinks to zero and we compound the interest continuously.
+The two guys mostly credited with the early theory are Leonhard Euler and Jacob Bernoulli.
+
+You may also be wondering why the exponential function is called _the_ exponential function.
+After all, there are many exponential functions, $2^x$, $3^x$, $pi^x$, and on and on, so what makes $e^x$ so special?
+Well, it's the very property we just stated. The gradient of $e^x$ at $x=0$ is 1.
+
+
 
 = Conclusion
 
