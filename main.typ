@@ -2034,9 +2034,10 @@ exp'(x) = exp(x) "or if you prefer" d/(d x) e^x = e^x
 $
 
 Couple that definition with the statement $e^0 = 1$, which seems perfectly reasonable, and you have everything you need to pin down
-the exact behavior of $e^x$, including the derivatives which come right out of the box.
+the exact behavior of $e^x$, including the derivatives, which come right out of the box.
 
 But does this approach feel like cheating to you? Yeah, it does a bit, right?
+Let's look at a different approach.
 
 The exponential function originally came about when mathematicians started thinking about compound interest
 and how interest accumulates for a given rate charged periodically, and being mathematicians they asked what
@@ -2051,3 +2052,21 @@ Well, it's the very property we just stated. The gradient of $e^x$ at $x=0$ is 1
 
 = Conclusion
 
+
+#v(1fr)
+#line(length: 100%, stroke: 0.4pt + luma(200))
+#v(4pt)
+
+#text(size: 7.5pt, weight: "bold", tracking: 0.06em, fill: luma(60))[AI DISCLAIMER]
+
+#set text(
+  font: "Inter", // Or match your main body font
+  size: 8.5pt,
+  fill: luma(90),
+)
+
+I used no AI in the writing or editing of this paper.
+You can probably tell by the complete lack of polish.
+However, I did use AI, including ChatGPT and Gemini, to check or lookup various mathematical formulas and historical facts.
+I mean who wouldn't -- it's just so convenient.
+I also used AI to help with typesetting tasks in Typst, such as formatting this section.
