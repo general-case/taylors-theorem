@@ -1805,7 +1805,7 @@ especially the transcendental ones. So what's that all about?
 Well imagine what happens if you increase the degree of the Taylor polynomial without stopping, or as mathematicians say _without bound_.
 If you do that the remainder will shrink to a vanishingly small quantity and, _in the limit_, all the way to zero in fact.
 At that point, your polynomial won't just be an approximation of the function; it will actually _equal_ the function!
-Also, as we learned earlier, an infinite degree polynomial not really a polynomial; it's a Taylor series.
+Also, as we learned earlier, an infinite degree polynomial is not really a polynomial; it's a power series.
 This is all subject to certain caveats of course, but that's true of almost anything we say in mathematics.
 
 
@@ -2032,6 +2032,7 @@ In other words:
 $
 exp'(x) = exp(x) "or if you prefer" d/(d x) e^x = e^x
 $
+<eq:exponential_function_differential_form>
 
 Couple that definition with the statement $e^0 = 1$, which seems perfectly reasonable, and you have everything you need to pin down
 the exact behavior of $e^x$, including the derivatives, which come right out of the box.
@@ -2040,13 +2041,117 @@ But does this approach feel like cheating to you? Yeah, it does a bit, right?
 Let's look at a different approach.
 
 The exponential function originally came about when mathematicians started thinking about compound interest
-and how interest accumulates for a given rate charged periodically, and being mathematicians they asked what
+and how interest accumulates for a given rate charged periodically, and being mathematicians they asked what happens
 if the period shrinks to zero and we compound the interest continuously.
 The two guys mostly credited with the early theory are Leonhard Euler and Jacob Bernoulli.
+Euler came up with this definition for the exponential function:
 
-You may also be wondering why the exponential function is called _the_ exponential function.
+$
+e^x = lim_(n->oo)(1 + x/n)^n
+$
+<eq:exponential_function_binomial_form>
+
+How can we get the derivatives of $e^x$ from this original definition?
+Well, it turns out that's a pretty complicated process, which I won't try to do here,
+but the good news is we can go directly to Maclaurin series, so let's do that.
+Notice the Euler's definition is the limit of a _binomial_.
+Now to expand a binomial we can always FOIL it, but once the power gets above 3 FOILing becomes very painful very quickly,
+and the power of our binomial is not just large, it's infinite!
+So instead we should use something called the _binomial theorem_, which is:
+
+$
+(a + b)^n = sum_(k=0)^n binom(n,k) a^(n-k) b^k
+$
+<thm:binomial>
+
+Before going any further, I'll explain that weird symbol $binom(n,k)$, in case you're not familiar with it.
+First and foremost, notice that it's not just a fraction in parentheses because there's no fraction bar.
+It is called the _binomial coefficient_, and it's usually pronounced "n choose k".
+All it is really is just a shorthand for an expression involving factorials.
+Here is the definition:
+
+$
+binom(n,k) = n!/(k!(n-k)!)
+$
+
+The n choose k operator generates the rows of numbers in Pascal's triangle,
+which it turns out are exactly the coefficients of the terms of a binomial expansion.
+It is also used to count the number of combinations of things like hands of cards.
+You can do your own research on-line to get more comfortable with the idea.
+
+Ok, let's plug in the $(1+x/n)$ binomial from Euler's definition into the binomial theorem and see what happens.
+
+$
+(1 + x/n)^n = sum_(k=0)^n binom(n,k) 1^(n-k) (x/n)^k
+$
+
+Notice that the 1 factor in each term just disappears because 1 raised to any power is just 1, so we end up with this:
+
+$
+(1 + x/n)^n = sum_(k=0)^n binom(n,k) (x/n)^k
+$
+
+Next, I'm just going to expand $binom(n, k)$ using the definition from earlier, so that we get this:
+
+$
+(1 + x/n)^n = sum_(k=0)^n n!/(k!(n-k)!) (x/n)^k
+$
+
+Ok, now let's work on the expression inside the summation:
+
+$
+n!/(k!(n-k)!) (x/n)^k = x^k/k! n!/((n-k)!n^k)
+$
+
+Now the $n!/(n-k)!$ bit can be rewritten like this $(n-0)(n-1)(n-2) dots.c (n-k+1)$, so we end up with this:
+
+$
+x^k/k! ((n-0)(n-1)(n-2) dots.c (n-k+1))/n^k
+$
+
+Notice that there are $k$ factors of $n$ on the bottom so we can divide each factor on the top by one of the $n$'s.
+After doing that we get:
+
+$
+x^k/k! (1-0/n)(1-1/n)(1-2/n) dots.c (1-(k+1)/n)
+$
+
+So our full binomial expansion now looks like this:
+
+$
+(1 + x/n)^n = sum_(k=0)^n x^k/k! (1-0/n)(1-1/n)(1-2/n) dots.c (1-(k+1)/n)
+$
+
+All of these expressions have been for some particular $n$, could be 5, could be 10, whatever.
+But Euler's formula says that $e^x$ is the _limit_ of the binomial expression as $n$ grows without bound all the way to infinity.
+Look at those factors on the right $(1-0/n)(1-1/n)(1-2/n) dots.c (1-(k+1)/n)$ and ask yourself what will happen to them as
+$n$ goes to infinity. That's right! They all just end up as 1.
+So after all of that work our limit expression is just this:
+
+$
+lim_(n->oo)(1 + x/n)^n = lim_(n->oo) sum_(k=0)^n x^k/k!
+$
+
+That infinite series on the right is a Maclaurin series, and in particular it's the one we got from Euler's compound interest
+definition of the exponential function.
+So the punch-line of all of these manipulations is:
+
+$
+e^x = lim_(n->oo) sum_(k=0)^n x^k/k!
+$
+
+We started with Euler's definition of the exponential function that essentially came out of the study of continuously compounded interest,
+and, by using the binomial theorem, we were able to go directly to the Maclaurin series for the exponential function.
+No derivatives were required along the way.
+
+Before we finish up this section, here's a little extra tidbit that you may find interesting.
+You may have wondered why the exponential function is called _the_ exponential function.
 After all, there are many exponential functions, $2^x$, $3^x$, $pi^x$, and on and on, so what makes $e^x$ so special?
-Well, it's the very property we just stated. The gradient of $e^x$ at $x=0$ is 1.
+Well, it's because of a property that comes right out of that very first definition of $e^x$
+we gave back in @eq:exponential_function_differential_form.
+If $e^0 = 1$ and $exp'(x) = exp(x)$ then the gradient of $e^x$ at $x=0$ is 1.
+All exponential functions pass through the point $(0,1)$, but none other than the exponential function has a slope of 1 at $x=0$.
+That makes $e^x$ kind of special, perhaps even _natural_.
 
 
 
